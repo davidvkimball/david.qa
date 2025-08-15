@@ -1,4 +1,4 @@
 ---
-title: 'Draft Example'
-pubDate: '2025-07-09'
+title:
+pubDate: <% tp.date.now("YYYY-MM-DD") %>
 ---

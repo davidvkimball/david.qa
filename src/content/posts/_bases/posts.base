@@ -1,0 +1,26 @@
+filters:
+  and:
+    - '!file.name.startsWith("_")'
+    - file.ext.startsWith("md")
+    - '!file.name.contains("template")'
+properties:
+  note.title:
+    displayName: Title
+  note.pubDate:
+    displayName: Date
+views:
+  - type: table
+    name: Table
+    order:
+      - title
+      - pubDate
+    sort:
+      - property: pubDate
+        direction: DESC
+    columnSize:
+      note.title: 349
+  - type: cards
+    name: Cards
+    order:
+      - title
+      - pubDate
