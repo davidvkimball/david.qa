@@ -6,7 +6,8 @@ import { render } from 'astro:content'
 export async function getStaticPaths() {
   const posts = await getCollection('posts')
   return posts
-    .filter((post) => !post.id.startsWith('_'))
+    // Include drafts (starting with "_") only in dev mode
+    .filter((post) => !post.id.startsWith('_') || (post.id.startsWith('_') && import.meta.env.DEV))
     .map((post) => ({
       params: { slug: post.id },
       props: post

@@ -1,31 +1,46 @@
 ---
 import { themeConfig } from '@/config'
-import { formatDate } from '@/utils/date'
 import type { FormattedDateProps } from '@/types'
 
-const {
-  date,
-  format,
-  context = 'default'
-} = Astro.props as FormattedDateProps & { context?: 'list' | 'post' | 'default' }
----
+const { date, context = 'default' } =
+  Astro.props as FormattedDateProps & { context?: 'list' | 'post' | 'default' }
 
+// Parse MM-DD-YYYY safely (avoid JS Date auto-guessing)
+function parseMDY(input: string): Date {
+  const m = input.match(/^(\d{2})-(\d{2})-(\d{4})$/)
+  if (!m) return new Date(input) // fallback if something else is passed
+  const [, mm, dd, yyyy] = m
+  // Create a UTC *noon* time to avoid any off-by-one from timezones/DST
+  return new Date(Date.UTC(Number(yyyy), Number(mm) - 1, Number(dd), 12, 0, 0))
+}
+
+// Normalize incoming prop to a Date
+const parsed = typeof date === 'string'
+  ? parseMDY(date)
+  : (date instanceof Date ? date : new Date(date))
+
+// For the <time> attribute, output a date-only string (no TZ issues)
+const y = parsed.getUTCFullYear()
+const m = String(parsed.getUTCMonth() + 1).padStart(2, '0')
+const d = String(parsed.getUTCDate()).padStart(2, '0')
+const datetimeAttr = `${y}-${m}-${d}`
+
+// Display as MM.DD.YYYY (uses your theme separator, defaults to ".")
+const sep = themeConfig?.date?.dateSeparator ?? '.'
+const display = `${m}${sep}${d}${sep}${y}`
+---
 <time
-  datetime={date.toISOString()}
+  datetime={datetimeAttr}
   class={!themeConfig.date.dateOnRight &&
-  (themeConfig.date.dateFormat === 'MONTH DAY YYYY' ||
-    themeConfig.date.dateFormat === 'DAY MONTH YYYY') &&
-  context === 'list'
-    ? 'date-left'
-    : ''}
+    (themeConfig.date.dateFormat === 'MONTH DAY YYYY' ||
+     themeConfig.date.dateFormat === 'MONTH DAY YYYY') &&
+    context === 'list'
+      ? 'date-left'
+      : ''}
 >
-  <Fragment set:html={formatDate(date, format)} />
+  {display}
 </time>
 
 <style>
-  .date-left {
-    display: inline-block;
-    min-width: 86px;
-    text-align: right;
-  }
+  .date-left { display:inline-block; min-width:86px; text-align:right; }
 </style>

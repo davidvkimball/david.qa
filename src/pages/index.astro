@@ -1,11 +1,18 @@
 ---
-import IndexLayout from '@/layouts/IndexLayout.astro'
-import About from '@/components/widgets/About.astro'
-import PostList from '@/components/widgets/PostList.astro'
-import { themeConfig } from '@/config'
-import { getSortedFilteredPosts } from '@/utils/draft'
+import IndexLayout from '@/layouts/IndexLayout.astro';
+import About from '@/components/widgets/About.astro';
+import PostList from '@/components/widgets/PostList.astro';
+import { themeConfig } from '@/config';
+import { getSortedFilteredPosts } from '@/utils/draft';
 
-const posts = await getSortedFilteredPosts()
+const posts = await getSortedFilteredPosts();
+
+// Optional: Add debug log to verify draft inclusion
+if (import.meta.env.DEV) {
+  console.log('Dev mode: Posts include drafts', posts.map(p => p.id));
+} else {
+  console.log('Build mode: Posts exclude drafts', posts.map(p => p.id));
+}
 ---
 
 <IndexLayout title={themeConfig.site.title} description={themeConfig.site.description}>
