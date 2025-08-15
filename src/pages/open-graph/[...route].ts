@@ -4,25 +4,28 @@ import { themeConfig } from '../../config';
 
 const collectionEntries = await getCollection('posts');
 
+// Filter out template entries (e.g., those in _templates) to avoid processing them
+const validEntries = collectionEntries.filter(entry => !entry.id.includes('_templates'));
+
 // Map the array of content collection entries to create an object.
 // Converts [{ id: 'post.md', data: { title: 'Example', pubDate: Date } }]
 // to { 'post.md': { title: 'Example', pubDate: Date } }
 const pages = Object.fromEntries(
-  collectionEntries.map(({ id, data }) => [id.replace(/\.(md|mdx)$/, ''), data])
+  validEntries.map(({ id, data }) => [id.replace(/\.(md|mdx)$/, ''), data])
 );
 
 export const { getStaticPaths, GET } = OGImageRoute({
   param: 'route',
   pages,
   getImageOptions: (_path, page) => {
-    // Check if title is valid; fall back to default image if not
-    if (!page?.title || typeof page.title !== 'string' || page.title.trim() === '') {
+    // Check if page data is valid; fall back to default image if not
+    if (!page || !page.title || typeof page.title !== 'string' || page.title.trim() === '') {
       return {
         logo: {
           path: 'public/og/og-logo.png',
           size: [80, 80]
         },
-        bgGradient: [[255, 255, 255]],
+        bgGradient: [[255, 255, 255]], // White background
         padding: 64,
         fonts: [
           'https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-600-normal.ttf',
