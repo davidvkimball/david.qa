@@ -3,7 +3,7 @@
     height: 100%;
 }
 
-.cm-scroller::before {
+.cm-scroller::before, .titlebar::before {
     content: "";
     position: absolute;
     top: 0;
@@ -15,6 +15,6 @@
     /* background: rgba(255, 0, 0, 0.2);*/ /* Semi-transparent red for debugging */
 }
 
-.cm-scroller, .cm-scroller .cm-content {
+.cm-scroller, .cm-scroller .cm-content, .titlebar {
     -webkit-app-region: no-drag;
 }

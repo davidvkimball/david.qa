@@ -1,4 +1,9 @@
 {
   "showInlineTitle": true,
-  "promptDelete": false
+  "promptDelete": false,
+  "showIndentGuide": false,
+  "attachmentFolderPath": "_assets",
+  "userIgnoreFilters": [
+    "_templates/"
+  ]
 }

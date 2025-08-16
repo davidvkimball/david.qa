@@ -2,8 +2,12 @@
 title: Theme Guide
 pubDate:
 ---
+david.qa is based on Chiri, is a minimal blog theme built with [Astro](https://astro.build), offering customization options while preserving its clean aesthetic.
 
-Chiri is a minimal blog theme built with [Astro](https://astro.build), offering customization options while preserving its clean aesthetic.
+## References
+
+- [[_formatting-reference|Formatting Reference]]: see markdown, embedded, and other formatting examples 
+- [[_mdx-example.mdx|MDX Example]]: mdx file example
 
 ---
 

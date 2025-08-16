@@ -1,8 +1,10 @@
 filters:
   and:
-    - '!file.name.startsWith("_")'
     - file.ext.startsWith("md")
-    - '!file.name.contains("template")'
+    - '!file.name.startsWith("_template")'
+    - '!file.name.startsWith("_mdx")'
+formulas:
+  Draft: file.name.startsWith("_")
 properties:
   note.title:
     displayName: Title
@@ -14,12 +16,19 @@ views:
     order:
       - title
       - pubDate
+      - formula.Draft
+    sort:
+      - property: pubDate
+        direction: DESC
   - type: table
     name: Table
     order:
       - pubDate
       - title
       - file.name
+    sort:
+      - property: pubDate
+        direction: DESC
     columnSize:
-      note.pubDate: 118
+      note.pubDate: 125
       note.title: 286
