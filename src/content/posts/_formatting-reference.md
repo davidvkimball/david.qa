@@ -2,7 +2,6 @@
 title: Formatting Reference
 pubDate: 2025-07-01
 ---
-
 This theme does not define more levels of headlines. If needed, you can define them in `src/styles/post.css`.
 
 ---

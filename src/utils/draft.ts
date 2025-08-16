@@ -16,10 +16,13 @@ export async function getFilteredPosts() {
  */
 export async function getSortedFilteredPosts() {
   const posts = await getFilteredPosts();
-  return posts.sort((a, b) => {
-    // Handle null or undefined pubDate by falling back to 0 (earliest date)
+  return [...posts].sort((a, b) => {
+    // Primary sort by pubDate (descending)
     const aDate = a.data.pubDate ? a.data.pubDate.getTime() : 0;
     const bDate = b.data.pubDate ? b.data.pubDate.getTime() : 0;
-    return bDate - aDate; // Sort descending
+    if (aDate !== bDate) return bDate - aDate; // Sort by date if different
+
+    // Secondary sort by id (ascending) to preserve stability
+    return a.id.localeCompare(b.id);
   });
 }

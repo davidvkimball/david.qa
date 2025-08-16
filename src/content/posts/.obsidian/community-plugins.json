@@ -1,5 +1,7 @@
 [
   "templater-obsidian",
+  "mdx-as-md-obsidian",
+  "homepage",
   "obsidian-hider",
-  "mdx-as-md-obsidian"
+  "new-tab-default-page"
 ]

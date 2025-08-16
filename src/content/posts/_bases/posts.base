@@ -9,18 +9,17 @@ properties:
   note.pubDate:
     displayName: Date
 views:
-  - type: table
-    name: Table
-    order:
-      - title
-      - pubDate
-    sort:
-      - property: pubDate
-        direction: DESC
-    columnSize:
-      note.title: 349
   - type: cards
     name: Cards
     order:
       - title
       - pubDate
+  - type: table
+    name: Table
+    order:
+      - pubDate
+      - title
+      - file.name
+    columnSize:
+      note.pubDate: 118
+      note.title: 286

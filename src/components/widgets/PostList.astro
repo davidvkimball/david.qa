@@ -4,12 +4,14 @@ import type { PostListProps } from '@/types';
 import { themeConfig } from '@/config';
 
 const { posts } = Astro.props as PostListProps;
+
+// Debug log to verify posts passed to PostList
+console.log('Posts in PostList.astro:', posts.map(p => ({ id: p.id, title: p.data.title, pubDate: p.data.pubDate?.toISOString() || 'null' })));
 ---
 
 <ul>
   {
     posts.map((post) => {
-      // Check if title and pubDate are valid
       const isValid = post.data.title && typeof post.data.title === 'string' && post.data.title.trim() !== '' &&
                       post.data.pubDate instanceof Date && !isNaN(post.data.pubDate.getTime());
       return isValid ? (
@@ -35,12 +37,11 @@ const { posts } = Astro.props as PostListProps;
             </div>
           </a>
         </li>
-      ) : null; // Skip rendering the <li> if invalid
+      ) : null;
     })
   }
 </ul>
 <div class="placeholder"></div>
-
 <style>
   ul {
     padding: 0;

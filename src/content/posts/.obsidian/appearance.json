@@ -1,5 +1,9 @@
 {
   "cssTheme": "Minimal",
   "showViewHeader": false,
-  "showRibbon": false
+  "showRibbon": false,
+  "enabledCssSnippets": [
+    "bases-toolbar-tweak",
+    "custom-draggable-top-area"
+  ]
 }
