@@ -1,39 +1,51 @@
 ---
-import { themeConfig } from '@/config'
-import type { FormattedDateProps } from '@/types'
+import { themeConfig } from '@/config';
+import type { FormattedDateProps } from '@/types';
 
-const { date, context = 'default' } =
-  Astro.props as FormattedDateProps & { context?: 'list' | 'post' | 'default' }
+const { date, context = 'default' } = Astro.props as FormattedDateProps & { context?: 'list' | 'post' | 'default' };
 
-// Parse MM-DD-YYYY safely (avoid JS Date auto-guessing)
-function parseMDY(input: string): Date {
-  const m = input.match(/^(\d{2})-(\d{2})-(\d{4})$/)
-  if (!m) return new Date(input) // fallback if something else is passed
-  const [, mm, dd, yyyy] = m
-  // Create a UTC *noon* time to avoid any off-by-one from timezones/DST
-  return new Date(Date.UTC(Number(yyyy), Number(mm) - 1, Number(dd), 12, 0, 0))
+// Parse date as YYYY-MM-DD (frontmatter format, always uses dashes)
+function parseDate(input: string | Date): Date {
+  if (input instanceof Date) return input;
+  if (typeof input !== 'string') return new Date();
+
+  // Always split on '-' regardless of config
+  const [year, month, day] = input.split('-');
+  return new Date(Date.UTC(Number(year), Number(month) - 1, Number(day), 12, 0, 0));
 }
 
 // Normalize incoming prop to a Date
-const parsed = typeof date === 'string'
-  ? parseMDY(date)
-  : (date instanceof Date ? date : new Date(date))
+const parsed = typeof date === 'string' ? parseDate(date) : (date instanceof Date ? date : new Date());
 
-// For the <time> attribute, output a date-only string (no TZ issues)
-const y = parsed.getUTCFullYear()
-const m = String(parsed.getUTCMonth() + 1).padStart(2, '0')
-const d = String(parsed.getUTCDate()).padStart(2, '0')
-const datetimeAttr = `${y}-${m}-${d}`
+// For the <time> attribute, output a date-only ISO string
+const datetimeAttr = parsed.toISOString().split('T')[0];
 
-// Display as MM.DD.YYYY (uses your theme separator, defaults to ".")
-const sep = themeConfig?.date?.dateSeparator ?? '.'
-const display = `${m}${sep}${d}${sep}${y}`
+// Display based on configured format and separator
+const sep = themeConfig.date.dateSeparator || '-'; // Use config separator (e.g., '.')
+const format = themeConfig.date.dateFormat;
+const y = parsed.getUTCFullYear();
+const m = String(parsed.getUTCMonth() + 1).padStart(2, '0');
+const d = String(parsed.getUTCDate()).padStart(2, '0');
+let display = '';
+if (format === 'YYYY-MM-DD' || format === 'YYYY.MM.DD') {
+  display = `${y}${sep}${m}${sep}${d}`;
+} else if (format === 'MM-DD-YYYY' || format === 'MM.DD.YYYY') {
+  display = `${m}${sep}${d}${sep}${y}`;
+} else if (format === 'DD-MM-YYYY' || format === 'DD.MM.YYYY') {
+  display = `${d}${sep}${m}${sep}${y}`;
+} else if (format === 'MONTH DAY YYYY') {
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  display = `${months[parsed.getUTCMonth()]} ${d} ${y}`;
+} else if (format === 'DAY MONTH YYYY') {
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  display = `${d} ${months[parsed.getUTCMonth()]} ${y}`;
+}
+
 ---
 <time
   datetime={datetimeAttr}
   class={!themeConfig.date.dateOnRight &&
-    (themeConfig.date.dateFormat === 'MONTH DAY YYYY' ||
-     themeConfig.date.dateFormat === 'MONTH DAY YYYY') &&
+    (format === 'MONTH DAY YYYY' || format === 'DAY MONTH YYYY') &&
     context === 'list'
       ? 'date-left'
       : ''}
@@ -42,5 +54,9 @@ const display = `${m}${sep}${d}${sep}${y}`
 </time>
 
 <style>
-  .date-left { display:inline-block; min-width:86px; text-align:right; }
+  .date-left {
+    display: inline-block;
+    min-width: 86px;
+    text-align: right;
+  }
 </style>
