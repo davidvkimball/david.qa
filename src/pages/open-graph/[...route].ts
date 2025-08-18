@@ -8,8 +8,8 @@ const collectionEntries = await getCollection('posts');
 const validEntries = collectionEntries.filter(entry => !entry.id.includes('_templates'));
 
 // Map the array of content collection entries to create an object.
-// Converts [{ id: 'post.md', data: { title: 'Example', pubDate: Date } }]
-// to { 'post.md': { title: 'Example', pubDate: Date } }
+// Converts [{ id: 'post.md', data: { title: 'Example', date: Date } }]
+// to { 'post.md': { title: 'Example', date: Date } }
 const pages = Object.fromEntries(
   validEntries.map(({ id, data }) => [id.replace(/\.(md|mdx)$/, ''), data])
 );

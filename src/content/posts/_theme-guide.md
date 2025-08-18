@@ -1,6 +1,6 @@
 ---
 title: Theme Guide
-pubDate:
+date:
 ---
 david.qa is based on Chiri, is a minimal blog theme built with [Astro](https://astro.build), offering customization options while preserving its clean aesthetic.
 
@@ -67,12 +67,12 @@ post: {
 
 ## Post Frontmatter
 
-Only `title` and `pubDate` are required fields
+Only `title` and `date` are required fields
 
 ```ts
 ---
 title: 'Post Title'
-pubDate: '2025-07-10'
+date: '2025-07-10'
 ---
 ```
 

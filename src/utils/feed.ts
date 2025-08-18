@@ -127,7 +127,7 @@ async function generateFeedInstance(context: APIContext) {
   )
   const sortedPosts = posts.sort(
     (a: CollectionEntry<'posts'>, b: CollectionEntry<'posts'>) =>
-      b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+      b.data.date.valueOf() - a.data.date.valueOf()
   )
 
   for (const post of sortedPosts) {
@@ -150,8 +150,8 @@ async function generateFeedInstance(context: APIContext) {
       id: postUrl,
       link: postUrl,
       content: cleanHtml,
-      date: post.data.pubDate,
-      published: post.data.pubDate
+      date: post.data.date,
+      published: post.data.date
     })
   }
 

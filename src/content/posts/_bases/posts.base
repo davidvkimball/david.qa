@@ -1,34 +1,34 @@
 filters:
   and:
-    - file.ext.startsWith("md")
-    - '!file.name.startsWith("_template")'
-    - '!file.name.startsWith("_mdx")'
+    - file.ext == "md"
+    - file.folder != "_templates"
 formulas:
   Draft: file.name.startsWith("_")
 properties:
   note.title:
     displayName: Title
-  note.pubDate:
+  note.date:
     displayName: Date
 views:
   - type: cards
     name: Cards
     order:
       - title
-      - pubDate
+      - date
       - formula.Draft
     sort:
-      - property: pubDate
+      - property: date
         direction: DESC
+    cardSize: 350
   - type: table
     name: Table
     order:
-      - pubDate
+      - date
       - title
       - file.name
     sort:
-      - property: pubDate
+      - property: date
         direction: DESC
     columnSize:
-      note.pubDate: 125
+      note.date: 125
       note.title: 286

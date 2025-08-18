@@ -6,21 +6,21 @@ import { themeConfig } from '@/config';
 const { posts } = Astro.props as PostListProps;
 
 // Debug log to verify posts passed to PostList
-console.log('Posts in PostList.astro:', posts.map(p => ({ id: p.id, title: p.data.title, pubDate: p.data.pubDate?.toISOString() || 'null' })));
+console.log('Posts in PostList.astro:', posts.map(p => ({ id: p.id, title: p.data.title, date: p.data.date?.toISOString() || 'null' })));
 ---
 
 <ul>
   {
     posts.map((post) => {
       const isValid = post.data.title && typeof post.data.title === 'string' && post.data.title.trim() !== '' &&
-                      post.data.pubDate instanceof Date && !isNaN(post.data.pubDate.getTime());
+                      post.data.date instanceof Date && !isNaN(post.data.date.getTime());
       return isValid ? (
-        <li>
+        <li style={post.id.startsWith('_') && import.meta.env.DEV ? 'opacity: 0.6;' : ''}>
           <a href={`/${post.id}/`}>
             <div class={`post-item ${!themeConfig.date.dateOnRight ? 'date-left' : ''}`}>
               {!themeConfig.date.dateOnRight && (
                 <p class="date font-features">
-                  <FormattedDate date={post.data.pubDate} context="list" />
+                  <FormattedDate date={post.data.date} context="list" />
                 </p>
               )}
               <p class="title">{post.data.title}</p>
@@ -31,7 +31,7 @@ console.log('Posts in PostList.astro:', posts.map(p => ({ id: p.id, title: p.dat
               )}
               {themeConfig.date.dateOnRight && (
                 <p class="date font-features">
-                  <FormattedDate date={post.data.pubDate} context="list" />
+                  <FormattedDate date={post.data.date} context="list" />
                 </p>
               )}
             </div>

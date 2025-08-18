@@ -1,8 +1,8 @@
 ---
 title: How
-pubDate: 2025-08-15
+date: 2025-08-15
 ---
-Using [Astro](https://astro.build/) and [Obsidian](https://obsidian.md/), mostly.
+Using [Astro](https://astro.build/) and [Obsidian](https://obsidian.md/), mostly. Specifically with the [Chiri theme](github.com/the3ash/astro-chiri).
 
 I host this website publicly on [GitHub](https://github.com/davidvkimball/david.qa) and deploy the site with [Netlify](https://netlify.com/). 
 

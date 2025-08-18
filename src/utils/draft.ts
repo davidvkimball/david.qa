@@ -17,9 +17,9 @@ export async function getFilteredPosts() {
 export async function getSortedFilteredPosts() {
   const posts = await getFilteredPosts();
   return [...posts].sort((a, b) => {
-    // Primary sort by pubDate (descending)
-    const aDate = a.data.pubDate ? a.data.pubDate.getTime() : 0;
-    const bDate = b.data.pubDate ? b.data.pubDate.getTime() : 0;
+    // Primary sort by date (descending)
+    const aDate = a.data.date ? a.data.date.getTime() : 0;
+    const bDate = b.data.date ? b.data.date.getTime() : 0;
     if (aDate !== bDate) return bDate - aDate; // Sort by date if different
 
     // Secondary sort by id (ascending) to preserve stability

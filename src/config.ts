@@ -6,7 +6,7 @@ export const themeConfig: ThemeConfig = {
     website: 'https://david.qa', // Site domain
     title: 'david.qa', // Site title
     author: 'David V. Kimball', // Author name
-    description: 'Questions answered by me, David.', // Site description
+    description: 'Questions asked and answered by me, David.', // Site description
     language: 'en-US' // Default language
   },
 
@@ -17,7 +17,7 @@ export const themeConfig: ThemeConfig = {
     themeToggle: true, // Show theme toggle button (uses system theme by default)
     postListDottedDivider: false, // Show dotted divider in post list
     footer: true, // Show footer
-    fadeAnimation: true // Enable fade animations
+    fadeAnimation: false // Enable fade animations
   },
 
   // DATE SETTINGS ///////////////////////////////////////////////////////////////////////////////////////

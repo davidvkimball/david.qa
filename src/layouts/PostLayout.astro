@@ -19,7 +19,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro'
 
 import { themeConfig } from '@/config'
 
-const { title, pubDate, readingTime, toc } = Astro.props as PostLayoutProps
+const { title, date, readingTime, toc } = Astro.props as PostLayoutProps
 
 const postSlug = Astro.url.pathname.split('/').filter(Boolean).pop() || ''
 const ogImage = `/open-graph/${postSlug}.png`
@@ -45,7 +45,7 @@ const ogImage = `/open-graph/${postSlug}.png`
         <div class="title">
           <h1>{title}</h1>
           <div class="date">
-            <FormattedDate date={pubDate} context="post" />
+            <FormattedDate date={date} context="post" />
             {
               themeConfig.post.readingTime && readingTime && (
                 <span class="reading-time">

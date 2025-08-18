@@ -1,6 +1,6 @@
 ---
 title: Who
-pubDate: 2025-08-16
+date: 2025-08-16
 ---
 It's me, [David V. Kimball](https://davidvkimball.com). 
 

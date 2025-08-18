@@ -6,7 +6,7 @@ const posts = defineCollection({
   schema: () =>
     z.object({
       title: z.string().nullish(), // Allows null/undefined
-      pubDate: z
+      date: z
         .union([z.string(), z.date()]) // Accept string or Date
         .transform((val, ctx) => {
           if (val instanceof Date) return val; // If already a Date, use it

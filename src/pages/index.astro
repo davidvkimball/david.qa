@@ -12,7 +12,7 @@ if (import.meta.env.DEV) {
   console.log('Dev mode: Posts include drafts', posts.map(p => ({
     id: p.id,
     title: p.data.title,
-    pubDate: p.data.pubDate?.toISOString() || 'null'
+    date: p.data.date?.toISOString() || 'null'
   })));
 } else {
   console.log('Build mode: Posts exclude drafts', posts.map(p => p.id));

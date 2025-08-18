@@ -1,15 +1,13 @@
-# Chiri 🌸
+# david.qa
 
-![screenshot-light](public/screenshots/screenshot-light.png)
-![screenshot-dark](public/screenshots/screenshot-dark.png)
+A minimal blog based on [Chiri](https://github.com/the3ash/astro-chiri) (an [Astro](https://astro.build) theme) with a preconfigured minimal [Obsidian](https://obsidian.md) vault.
 
-Chiri is a minimal blog theme built with [Astro](https://astro.build), offering customization options while preserving its clean aesthetic.
-
-Check the [demo](https://astro-chiri.netlify.app/) for more details.
+Check the [website](https://david.qa/) to see it in action.
 
 ## Features
 
 - Built with Astro
+- Works with Obsidian
 - Responsive
 - Light / Dark mode
 - MDX
@@ -17,11 +15,11 @@ Check the [demo](https://astro-chiri.netlify.app/) for more details.
 - Sitemap
 - OpenGraph
 - RSS
-- ...
+- Preview Drafts
 
 ## Getting Started
 
-1. [Fork](https://github.com/the3ash/astro-chiri/fork) this repository, or use this template to [create a new repository](https://github.com/new?template_name=astro-chiri&template_owner=the3ash).
+1. [Fork](https://github.com/davidvkimball/david.qa/fork) this repository.
 
 2. Run the following commands:
 
@@ -37,7 +35,7 @@ Check the [demo](https://astro-chiri.netlify.app/) for more details.
 
 3. Edit `src/config.ts` and `src/content/about/about.md` to your liking.
 
-4. Use `pnpm new <title>` to create new posts, or add your posts to `src/content/posts`.
+4. Use `pnpm new <title>` to create new posts, or add your posts to `src/content/posts` with Obsidian.
 
 5. You need to set adapter as follows before deploying to Netlify, Vercel, or other platforms, but you can set `linkCard` to `false` in `src/config.ts` to skip this step:
    - **Netlify**: `pnpm add @astrojs/netlify` and add `adapter: netlify()` in `astro.config.ts`.
@@ -46,12 +44,11 @@ Check the [demo](https://astro-chiri.netlify.app/) for more details.
    - **Static (e.g. GitHub Pages)**: `pnpm add @astrojs/static` and add `adapter: static()` in `astro.config.ts`.
    - Refer to [Astro Deployment Guides](https://docs.astro.build/en/guides/deploy/) for more details.
 
-&emsp;[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start) [![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new) [![Deploy to Cloudflare Pages](https://deploy.workers.cloudflare.com/button)](https://pages.cloudflare.com/start)
+&emsp;[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/davidvkimball/david.qa)
 
 ## Commands
 
 - `pnpm new <title>` - Create a new post (use `_title` for drafts)
-- `pnpm update-theme` - Update the theme to the latest version
 
 ## References
 
