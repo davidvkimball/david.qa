@@ -1,9 +1,10 @@
 [
-  "templater-obsidian",
   "mdx-as-md-obsidian",
   "homepage",
   "obsidian-hider",
   "new-tab-default-page",
   "obsidian-paste-image-rename",
-  "obsidian-minimal-settings"
+  "obsidian-minimal-settings",
+  "disable-tabs",
+  "astro-composer"
 ]

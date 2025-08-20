@@ -1,0 +1,20 @@
+.cm-scroller {
+    position: relative;
+    height: 100%;
+}
+
+.cm-scroller::before, .titlebar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 130px); /* Adjust this value to leave space for buttons (e.g., ~100px for 3 buttons) */
+    height: 20px;
+    -webkit-app-region: drag;
+    z-index: 10;
+    /* background: rgba(255, 0, 0, 0.2);*/ /* Semi-transparent red for debugging */
+}
+
+.cm-scroller, .cm-scroller .cm-content, .titlebar {
+    -webkit-app-region: no-drag;
+}

@@ -1,0 +1,9 @@
+{
+  "draftStyle": "filename",
+  "defaultTemplate": "---\ntitle: \"{{title}}\"\ndate: \"{{date}}\"\n---\n\n",
+  "linkBasePath": "",
+  "postsFolder": "",
+  "enableAutoRename": true,
+  "creationMode": "file",
+  "indexFileName": "index"
+}

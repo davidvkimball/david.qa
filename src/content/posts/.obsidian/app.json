@@ -3,7 +3,6 @@
   "promptDelete": false,
   "showIndentGuide": false,
   "attachmentFolderPath": "_assets",
-  "userIgnoreFilters": [
-    "_templates/"
-  ]
+  "userIgnoreFilters": null,
+  "focusNewTab": false
 }

@@ -25,10 +25,11 @@ views:
     order:
       - date
       - title
+      - formula.Draft
       - file.name
     sort:
       - property: date
         direction: DESC
     columnSize:
       note.date: 125
-      note.title: 286
+      note.title: 361
