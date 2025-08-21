@@ -1,9 +1,12 @@
 {
-  "draftStyle": "filename",
-  "defaultTemplate": "---\ntitle: \"{{title}}\"\ndate: \"{{date}}\"\n---\n\n",
+  "enableUnderscorePrefix": true,
+  "defaultTemplate": "---\ntitle: \"{{title}}\"\ndate: {{date}}\n---\n\n",
   "linkBasePath": "",
   "postsFolder": "",
   "enableAutoRename": true,
-  "creationMode": "file",
-  "indexFileName": "index"
+  "enableAutoInsertFrontmatter": true,
+  "creationMode": "folder",
+  "indexFileName": "index",
+  "dateFormat": "YYYY-MM-DD",
+  "draftStyle": "filename"
 }

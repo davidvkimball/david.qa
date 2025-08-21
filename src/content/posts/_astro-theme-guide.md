@@ -1,5 +1,5 @@
 ---
-title: Theme Guide
+title: Astro Theme Guide
 date:
 ---
 david.qa is based on Chiri, is a minimal blog theme built with [Astro](https://astro.build), offering customization options while preserving its clean aesthetic.
@@ -8,12 +8,15 @@ david.qa is based on Chiri, is a minimal blog theme built with [Astro](https://a
 
 - [[_formatting-reference|Formatting Reference]]: see markdown, embedded, and other formatting examples 
 - [[_mdx-example.mdx|MDX Example]]: mdx file example
+- [[_obsidian-guide|Obsidian Guide]]: how the bundled Obsidian vault is set up
 
 ---
 
 ## Basic Commands
 
 - `pnpm new <title>` - Create a new post (use `_title` for drafts)
+
+Draft posts will only appear in a dev environment like running locally.
 
 ## Main Files & Directories
 
@@ -75,6 +78,7 @@ date: '2025-07-10'
 ---
 ```
 
+If either field is invalid or blank, the post won't show up.
 ## Syntax Highlighting
 
 You can configure the theme via `shikiConfig` in `astro.config.ts`.
@@ -94,6 +98,3 @@ export default defineConfig({
   }
 })
 ```
-
----
-
