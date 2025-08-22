@@ -1,9 +1,7 @@
 ---
 import { themeConfig } from '@/config'
-import { ClientRouter } from 'astro:transitions'
 import ThemeManager from '@/components/ui/ThemeManager.astro'
 import FaviconThemeSwitcher from '@/components/ui/FaviconThemeSwitcher.astro'
-import TransitionWrapper from '@/components/layout/TransitionWrapper.astro'
 import type { LayoutProps } from '@/types'
 
 type Props = LayoutProps
@@ -11,15 +9,13 @@ type Props = LayoutProps
 const { type = 'page' } = Astro.props
 const language = themeConfig.site.language || 'en-US'
 const contentWidth = themeConfig.general.contentWidth
-const fadeAnimation = themeConfig.general.fadeAnimation
 const widthValue = Math.min(parseFloat(contentWidth), 50)
 const shouldUseCustomWidth = widthValue > 25
 const finalWidth = shouldUseCustomWidth ? `${widthValue}rem` : '25rem'
 ---
 
-<html lang={language} class="light">
+<html lang={language}>
   <head>
-    {fadeAnimation && <ClientRouter />}
     <ThemeManager />
     <slot name="head" />
   </head>
@@ -32,17 +28,9 @@ const finalWidth = shouldUseCustomWidth ? `${widthValue}rem` : '25rem'
   >
     <FaviconThemeSwitcher />
 
-    {
-      fadeAnimation ? (
-        <TransitionWrapper type={type} class="layout-wrapper">
-          <slot />
-        </TransitionWrapper>
-      ) : (
-        <div class="layout-wrapper">
-          <slot />
-        </div>
-      )
-    }
+    <div class="layout-wrapper">
+      <slot />
+    </div>
   </body>
 </html>
 

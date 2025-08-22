@@ -11,7 +11,6 @@ export interface PostLayoutProps {
   date: Date
   image?: string
   readingTime?: ReadingTime
-  toc?: TOCItem[]
 }
 
 // Transition props interface

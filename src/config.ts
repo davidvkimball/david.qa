@@ -16,8 +16,7 @@ export const themeConfig: ThemeConfig = {
     centeredLayout: true, // Use centered layout (false for left-aligned)
     themeToggle: true, // Show theme toggle button (uses system theme by default)
     postListDottedDivider: false, // Show dotted divider in post list
-    footer: true, // Show footer
-    fadeAnimation: false // Enable fade animations
+    footer: true // Show footer
   },
 
   // DATE SETTINGS ///////////////////////////////////////////////////////////////////////////////////////
@@ -30,9 +29,7 @@ export const themeConfig: ThemeConfig = {
   // POST SETTINGS ///////////////////////////////////////////////////////////////////////////////////////
   post: {
     readingTime: false, // Show reading time in posts
-    toc: false, // Show table of contents (when there is enough page width)
     imageViewer: true, // Enable image viewer
-    copyCode: true, // Enable copy button in code blocks
     linkCard: true // Enable link card
   }
 }

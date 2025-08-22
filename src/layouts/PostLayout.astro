@@ -6,15 +6,12 @@ import FootnoteScroll from '@/components/widgets/FootnoteScroll.astro'
 import BaseHead from '@/components/layout/BaseHead.astro'
 import Footer from '@/components/layout/Footer.astro'
 import BackButton from '@/components/ui/BackButton.astro'
-import TableOfContents from '@/components/ui/TableOfContents.astro'
 import GradientMask from '@/components/ui/GradientMask.astro'
 import ImageOptimizer from '@/components/ui/ImageOptimizer.astro'
 import ImageViewer from '@/components/ui/ImageViewer.astro'
 import GitHubCard from '@/components/ui/GitHubCard.astro'
 import LinkCard from '@/components/ui/LinkCard.astro'
-import NeoDBCard from '@/components/ui/NeoDBCard.astro'
 import XPOST from '@/components/ui/XPOST.astro'
-import CopyCode from '@/components/ui/CopyCode.astro'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 
 import { themeConfig } from '@/config'
@@ -41,7 +38,6 @@ const ogImage = `/open-graph/${postSlug}.png`
       <div class="prose">
         <GradientMask />
         <BackButton />
-        {themeConfig.post.toc && <TableOfContents toc={toc} />}
         <div class="title">
           <h1>{title}</h1>
           <div class="date">
@@ -61,10 +57,8 @@ const ogImage = `/open-graph/${postSlug}.png`
     </main>
     <ImageOptimizer />
     <FootnoteScroll />
-    <CopyCode />
     <GitHubCard />
     <XPOST />
-    <NeoDBCard />
     {themeConfig.post.imageViewer && <ImageViewer />}
     {themeConfig.post.linkCard && <LinkCard />}
     {themeConfig.general.footer && <Footer />}

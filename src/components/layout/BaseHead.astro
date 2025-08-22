@@ -11,14 +11,6 @@ const { title, description, ogImage } = Astro.props as BaseHeadProps
 const imageUrl = ogImage ? new URL(ogImage, Astro.url) : new URL('/og/og.png', Astro.url)
 ---
 
-<script>  
-  (function() {  
-    const stored = localStorage.getItem('chiri-theme');  
-    const theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');  
-    document.documentElement.classList.add(theme);  
-  })();  
-</script>
-
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
