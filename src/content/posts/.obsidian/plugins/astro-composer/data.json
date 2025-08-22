@@ -5,7 +5,7 @@
   "postsFolder": "",
   "enableAutoRename": true,
   "enableAutoInsertFrontmatter": true,
-  "creationMode": "folder",
+  "creationMode": "file",
   "indexFileName": "index",
   "dateFormat": "YYYY-MM-DD",
   "draftStyle": "filename"

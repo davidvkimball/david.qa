@@ -4,5 +4,6 @@
   "showIndentGuide": false,
   "attachmentFolderPath": "_assets",
   "userIgnoreFilters": null,
-  "focusNewTab": false
+  "focusNewTab": false,
+  "mobilePullAction": "file-explorer:new-file"
 }
