@@ -19,7 +19,7 @@ views:
     sort:
       - property: date
         direction: DESC
-    cardSize: 350
+    cardSize: 230
   - type: table
     name: Table
     order:
@@ -29,7 +29,7 @@ views:
       - file.name
     sort:
       - property: date
-        direction: DESC
+        direction: ASC
     columnSize:
       note.date: 125
       note.title: 361
