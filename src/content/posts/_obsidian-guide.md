@@ -22,6 +22,8 @@ The [Minimal Theme Settings](https://github.com/kepano/obsidian-minimal-settings
 
 A custom CSS snippet called `custom-draggable-top-area.css` is active so moving your window is easier when the window frame is hidden and there's no tab bar. 
 
+`hide-add-properties-button.css` simply removes the button at the end of the list of properties. 
+
 ## Important Hotkeys
 
 Because Obsidian's interface has been stripped down to its bare essence, relying on hotkeys is imperative. Here's a guide:
@@ -35,6 +37,8 @@ Because Obsidian's interface has been stripped down to its bare essence, relying
 - Toggle right side panel: `CTRL + ALT + X`
 - Toggle tab bar: `CTRL + ALT + S`
 - Open homepage: `CTRL + M` 
+- Add a new property: `CTRL + ;`
+- Toggle reading view: `CTRL + E`
 
 If you're on Mac, `CTRL` = `CMD`.
 
@@ -45,7 +49,7 @@ Disabled default core plugins:
 - Canvas
 - Daily Notes
 
-Community plugins used: 
+Community plugins enabled: 
 - Astro Composer
 - Default New Tab Page
 - Disable Tabs

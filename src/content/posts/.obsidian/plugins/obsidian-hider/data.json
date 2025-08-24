@@ -8,6 +8,6 @@
   "hideSearchSuggestions": false,
   "hideSearchCounts": true,
   "hideInstructions": true,
-  "hidePropertiesReading": false,
+  "hidePropertiesReading": true,
   "hideVault": true
 }
