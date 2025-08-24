@@ -8,7 +8,7 @@
         "type": "tabs",
         "children": [
           {
-            "id": "3b27a6ced085057f",
+            "id": "e7a7b303c61786dc",
             "type": "leaf",
             "state": {
               "type": "bases",
@@ -135,10 +135,16 @@
       "homepage:Open homepage": false
     }
   },
-  "active": "3b27a6ced085057f",
+  "active": "e7a7b303c61786dc",
   "lastOpenFiles": [
-    "_test-post.md",
+    "_sleep.md",
     "_bases/posts.base",
+    "Untitled 3.md",
+    "Untitled 2.md",
+    "Untitled 1.md",
+    "imitation.md",
+    "hyperfixation.md",
+    "_test-post.md",
     "_imitation.md",
     "focus.md",
     "_limitations.md",
