@@ -81,5 +81,22 @@
       ],
       "key": "S"
     }
+  ],
+  "insert-unsplash-image:insert": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "'"
+    }
+  ],
+  "insert-unsplash-image:insert-in-frontmatter": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "'"
+    }
   ]
 }

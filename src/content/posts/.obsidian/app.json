@@ -6,5 +6,6 @@
   "userIgnoreFilters": null,
   "focusNewTab": false,
   "mobilePullAction": "file-explorer:new-file",
-  "trashOption": "system"
+  "trashOption": "system",
+  "alwaysUpdateLinks": true
 }

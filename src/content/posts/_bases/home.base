@@ -19,7 +19,7 @@ views:
     sort:
       - property: date
         direction: DESC
-    cardSize: 230
+    cardSize: 260
   - type: table
     name: Table
     order:

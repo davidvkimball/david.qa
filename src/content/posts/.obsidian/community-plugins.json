@@ -1,11 +1,13 @@
 [
-  "mdx-as-md-obsidian",
-  "homepage",
-  "obsidian-hider",
-  "new-tab-default-page",
-  "obsidian-paste-image-rename",
-  "obsidian-minimal-settings",
-  "disable-tabs",
+  "custom-save",
   "astro-composer",
-  "obsidian-git"
+  "new-tab-default-page",
+  "disable-tabs",
+  "obsidian-git",
+  "obsidian-hider",
+  "homepage",
+  "insert-unsplash-image",
+  "mdx-as-md-obsidian",
+  "obsidian-minimal-settings",
+  "obsidian-paste-image-rename"
 ]

@@ -1,7 +1,8 @@
 ---
-title: Obsidian Guide
+title: Astro Suite Vault (Minimal) Guide
 date:
 ---
+
 ## Overview
 
 All plugins, key bindings, and the theme can be customized to your liking, but this is what's on by default.
@@ -47,14 +48,22 @@ If you're on Mac, `CTRL` = `CMD`.
 Disabled default core plugins: 
 - Backlinks
 - Canvas
-- Daily Notes
+- Daily notes
+- Graph view
+- Note composer
+- Outgoing links
+- Page preview
+- Templates
+- Sync
 
 Community plugins enabled: 
 - Astro Composer
+- Custom save
 - Default New Tab Page
 - Disable Tabs
 - Hider
 - Homepage
+- Image Inserter
 - Minimal Theme Settings
 - Paste image rename
 
@@ -62,9 +71,12 @@ Community plugins enabled:
 
 Handy for easily creating new notes as Astro blog posts. Just create a new note with `CTRL + N`, type in a title in Title case or with special characters, and the note or folder name generated is a kebab-case version of the title without special characters. This is ideal for automating post slugs. 
 
-You can also define and set default frontmatter that can be generated automatically or manually set for any open note as well.
+You can also define and set default properties that can be generated automatically or manually set for any open note as well.
 
 Once you've used Wikilinks or markdown links, you can also convert those automatically to internal links for Astro with the "Convert internal links for Astro" command. 
+### Custom save
+
+This defines a set of commands to fire once `CTRL + S` is initiated. For convenience, both "Convert internal links for Astro" and "Standardize properties" commands from the Astro Composer plugin are included. You can add or remove any if you'd like - this is designed for posts to be "publish-ready" when manually saved.
 
 ### Homepage and Default New Tab Page
 
@@ -78,7 +90,11 @@ Should you need to reveal any of the main hidden panels, you can use `CTRL + ALT
 
 ### Paste Image Rename 
 
-Quickly drag and drop image files or paste directly from your clipboard and give them proper, SEO-ready names. 
+Quickly drag and drop image files or paste directly from your clipboard and give them kebab-case, SEO-friendly names. 
+
+### Image Inserter
+
+Pull in images from Unsplash or other sources easily with just a few keystrokes. 
 
 ### Disable Tabs
 

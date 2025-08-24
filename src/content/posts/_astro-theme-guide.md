@@ -8,7 +8,7 @@ david.qa is based on Chiri, is a minimal blog theme built with [Astro](https://a
 
 - [[_formatting-reference|Formatting Reference]]: see markdown, embedded, and other formatting examples 
 - [[_mdx-example.mdx|MDX Example]]: mdx file example
-- [[_obsidian-guide|Obsidian Guide]]: how the bundled Obsidian vault is set up
+- [[_astro-suite-vault-minimal-guide|Obsidian Guide]]: how the bundled Obsidian vault is set up
 
 ---
 
