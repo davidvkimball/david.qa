@@ -1,6 +1,7 @@
 /* --- knobs --- */
 :root {
-  --drag-bump: 8px; /* bump for notes */
+  --drag-bump: 8px;           /* bump for notes */
+  --toolbar-left-offset: 100px; /* padding for base controls on left */
 }
 
 /* Draggable strip (leave OS window buttons untouched) */
@@ -38,4 +39,9 @@ body.hider-tabs .workspace-leaf-content[data-type="markdown"] .view-content,
 body.hider-tabs .workspace-leaf-content[data-type="markdown"] .cm-scroller,
 body.hider-tabs .workspace-leaf-content[data-type="markdown"] .markdown-preview-view {
   padding-top: var(--drag-bump) !important;
+}
+
+/* Push specific base controls to the left of Mac window buttons */
+.query-toolbar-item.mod-views {
+  padding-left: var(--toolbar-left-offset) !important;
 }

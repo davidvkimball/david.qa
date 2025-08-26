@@ -3,7 +3,7 @@
   "showViewHeader": false,
   "showRibbon": false,
   "enabledCssSnippets": [
-    "custom-draggable-top-area",
-    "hide-add-properties-button"
+    "hide-add-properties-button",
+    "custom-draggable-top-area-windows"
   ]
 }
