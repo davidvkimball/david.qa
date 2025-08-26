@@ -1,12 +1,16 @@
 {
   "enableUnderscorePrefix": true,
-  "defaultTemplate": "---\ntitle: \"{{title}}\"\ndate: {{date}}\n---\n\n",
-  "linkBasePath": "",
+  "defaultTemplate": "---\ntitle: \"{{title}}\"\ndate: {{date}}\nimage: \"\"\n---",
+  "linkBasePath": "/blog/",
   "postsFolder": "",
-  "enableAutoRename": true,
-  "enableAutoInsertFrontmatter": true,
+  "automatePostCreation": true,
+  "autoInsertProperties": true,
   "creationMode": "file",
   "indexFileName": "index",
   "dateFormat": "YYYY-MM-DD",
+  "excludedDirectories": "",
+  "onlyAutomateInPostsFolder": false,
+  "enableAutoRename": true,
+  "enableAutoInsertFrontmatter": true,
   "draftStyle": "filename"
 }

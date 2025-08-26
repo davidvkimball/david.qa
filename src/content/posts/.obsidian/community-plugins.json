@@ -1,6 +1,5 @@
 [
   "custom-save",
-  "astro-composer",
   "new-tab-default-page",
   "disable-tabs",
   "obsidian-git",
@@ -9,5 +8,6 @@
   "mdx-as-md-obsidian",
   "obsidian-minimal-settings",
   "obsidian-paste-image-rename",
-  "obsidian-hider"
+  "obsidian-hider",
+  "astro-composer"
 ]
