@@ -4,7 +4,7 @@
   "showRibbon": false,
   "enabledCssSnippets": [
     "hide-add-properties-button",
-    "custom-draggable-top-area-windows",
-    "hide-tabs-icon-mobile"
+    "hide-tabs-icon-mobile",
+    "custom-draggable-top-area-windows"
   ]
 }
