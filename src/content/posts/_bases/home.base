@@ -30,7 +30,9 @@ views:
       - file.name
     sort:
       - property: date
-        direction: ASC
+        direction: DESC
+      - property: file.name
+        direction: DESC
     columnSize:
       note.date: 125
       note.title: 361
