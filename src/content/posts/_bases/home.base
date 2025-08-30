@@ -11,7 +11,7 @@ properties:
     displayName: Date
 views:
   - type: cards
-    name: Cards
+    name: Posts
     order:
       - title
       - date
@@ -21,18 +21,3 @@ views:
         direction: DESC
     cardSize: 260
     imageAspectRatio: 0.4
-  - type: table
-    name: Table
-    order:
-      - date
-      - title
-      - formula.Draft
-      - file.name
-    sort:
-      - property: date
-        direction: DESC
-      - property: file.name
-        direction: DESC
-    columnSize:
-      note.date: 125
-      note.title: 361

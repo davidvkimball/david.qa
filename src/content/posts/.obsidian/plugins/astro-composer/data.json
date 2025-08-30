@@ -1,7 +1,7 @@
 {
   "enableUnderscorePrefix": true,
   "defaultTemplate": "---\ntitle: \"{{title}}\"\ndate: {{date}}\n---",
-  "linkBasePath": "/blog/",
+  "linkBasePath": "",
   "postsFolder": "",
   "automatePostCreation": true,
   "autoInsertProperties": true,
