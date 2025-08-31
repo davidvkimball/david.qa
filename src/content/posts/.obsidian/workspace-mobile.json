@@ -8,16 +8,16 @@
         "type": "tabs",
         "children": [
           {
-            "id": "e7a7b303c61786dc",
+            "id": "888e541e53fefc7a",
             "type": "leaf",
             "state": {
               "type": "bases",
               "state": {
-                "file": "_bases/posts.base",
-                "viewName": "Cards"
+                "file": "_bases/home.base",
+                "viewName": "Posts"
               },
               "icon": "lucide-layout-grid",
-              "title": "posts"
+              "title": "home"
             }
           }
         ]
@@ -115,7 +115,7 @@
         "state": {
           "type": "outline",
           "state": {
-            "file": "_bases/posts.base",
+            "file": "_bases/home.base",
             "followCursor": false,
             "showSearch": false,
             "searchQuery": ""
@@ -129,14 +129,22 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:Open quick switcher": false,
-      "command-palette:Open command palette": false,
-      "bases:Create new base": false,
-      "homepage:Open homepage": false
+      "switcher:Open quick switcher": true,
+      "command-palette:Open command palette": true,
+      "bases:Create new base": true,
+      "homepage:Open homepage": true
     }
   },
-  "active": "e7a7b303c61786dc",
+  "active": "888e541e53fefc7a",
   "lastOpenFiles": [
+    "github.com/the3ash/astro-chiri.md",
+    "_bases/home.base",
+    "github.com/the3ash",
+    "github.com",
+    "modularity.md",
+    "Untitled.base",
+    "Untitled.md",
+    "food.md",
     "_sleep.md",
     "_bases/posts.base",
     "Untitled 3.md",

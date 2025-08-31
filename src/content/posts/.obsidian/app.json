@@ -8,5 +8,6 @@
   "mobilePullAction": "file-explorer:new-file",
   "trashOption": "system",
   "alwaysUpdateLinks": true,
-  "useMarkdownLinks": true
+  "useMarkdownLinks": true,
+  "mobileQuickRibbonItem": "command-palette:Open command palette"
 }
