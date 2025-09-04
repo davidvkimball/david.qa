@@ -6,4 +6,4 @@ Where's the line between ambition and delusion?
 
 In goal setting, you want to aim high. 
 
-But it's difficult to pinpoint where stretch goals become unattainable. 
+But it's difficult to pinpoint where stretch goals become unattainable.
