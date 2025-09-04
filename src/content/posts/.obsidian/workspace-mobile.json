@@ -8,7 +8,7 @@
         "type": "tabs",
         "children": [
           {
-            "id": "888e541e53fefc7a",
+            "id": "576f0e575636485f",
             "type": "leaf",
             "state": {
               "type": "bases",
@@ -135,15 +135,15 @@
       "homepage:Open homepage": true
     }
   },
-  "active": "888e541e53fefc7a",
+  "active": "576f0e575636485f",
   "lastOpenFiles": [
-    "github.com/the3ash/astro-chiri.md",
+    "forgiveness.md",
     "_bases/home.base",
+    "github.com/the3ash/astro-chiri.md",
     "github.com/the3ash",
     "github.com",
     "modularity.md",
     "Untitled.base",
-    "Untitled.md",
     "food.md",
     "_sleep.md",
     "_bases/posts.base",
