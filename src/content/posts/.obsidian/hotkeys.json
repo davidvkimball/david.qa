@@ -90,15 +90,6 @@
       "key": "'"
     }
   ],
-  "insert-unsplash-image:insert-in-frontmatter": [
-    {
-      "modifiers": [
-        "Mod",
-        "Shift"
-      ],
-      "key": "'"
-    }
-  ],
   "obsidian-prozen:zenmode": [
     {
       "modifiers": [
@@ -106,6 +97,15 @@
         "Shift"
       ],
       "key": "Z"
+    }
+  ],
+  "obsidian-shellcommands:shell-command-2uscjchafr": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "D"
     }
   ]
 }
