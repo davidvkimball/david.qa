@@ -107,5 +107,13 @@
       ],
       "key": "D"
     }
+  ],
+  "astro-composer:standardize-properties": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "S"
+    }
   ]
 }
