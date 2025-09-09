@@ -12,5 +12,6 @@
   "obsidian-style-settings",
   "obsidian-prozen",
   "obsidian-shellcommands",
-  "astro-composer"
+  "astro-composer",
+  "property-over-filename"
 ]
