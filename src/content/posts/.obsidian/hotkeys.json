@@ -108,7 +108,8 @@
       "key": "D"
     }
   ],
-  "astro-composer:standardize-properties": [
+  "editor:save-file": [],
+  "astro-composer:convert-wikilinks-astro": [
     {
       "modifiers": [
         "Mod"
