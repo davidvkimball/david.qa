@@ -6,11 +6,11 @@
   "insert-unsplash-image",
   "mdx-as-md-obsidian",
   "obsidian-minimal-settings",
-  "obsidian-paste-image-rename",
   "obsidian-hider",
   "obsidian-style-settings",
   "obsidian-prozen",
   "obsidian-shellcommands",
-  "property-over-filename",
-  "astro-composer"
+  "astro-composer",
+  "obsidian-paste-image-rename",
+  "property-over-filename"
 ]
