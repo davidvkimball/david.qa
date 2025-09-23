@@ -1,7 +1,6 @@
 [
   "new-tab-default-page",
   "disable-tabs",
-  "obsidian-git",
   "homepage",
   "insert-unsplash-image",
   "mdx-as-md-obsidian",
@@ -9,8 +8,9 @@
   "obsidian-hider",
   "obsidian-style-settings",
   "obsidian-prozen",
-  "obsidian-shellcommands",
   "astro-composer",
   "obsidian-paste-image-rename",
-  "property-over-filename"
+  "property-over-filename",
+  "obsidian-shellcommands",
+  "obsidian-git"
 ]
