@@ -1,16 +1,19 @@
 {
   "enableUnderscorePrefix": true,
-  "defaultTemplate": "---\ntitle: \"{{title}}\"\ndate: {{date}}\n---",
+  "defaultTemplate": "---\ntitle: \"{{title}}\"\ndate: {{date}}\n---\n",
   "linkBasePath": "",
   "postsFolder": "",
   "automatePostCreation": true,
   "autoInsertProperties": true,
   "creationMode": "file",
-  "indexFileName": "index",
+  "indexFileName": "",
   "dateFormat": "YYYY-MM-DD",
   "excludedDirectories": "",
   "onlyAutomateInPostsFolder": false,
-  "enableAutoRename": true,
-  "enableAutoInsertFrontmatter": true,
-  "draftStyle": "filename"
+  "enablePages": false,
+  "pagesFolder": "pages",
+  "pageTemplate": "---\ntitle: \"{{title}}\"\ndescription: \"\"\n---\n",
+  "enableCopyHeadingLink": true,
+  "copyHeadingLinkFormat": "astro",
+  "customContentTypes": []
 }
