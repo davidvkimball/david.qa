@@ -1,7 +1,6 @@
 filters:
   and:
     - file.ext == "md"
-    - file.folder != "_templates"
 formulas:
   Draft: file.name.startsWith("_")
 properties:
@@ -11,7 +10,21 @@ properties:
     displayName: Date
 views:
   - type: cards
-    name: Posts
+    name: All Posts
+    order:
+      - title
+      - date
+      - formula.Draft
+    sort:
+      - property: date
+        direction: DESC
+    cardSize: 260
+    imageAspectRatio: 0.4
+  - type: cards
+    name: Drafts
+    filters:
+      and:
+        - formula.Draft == true
     order:
       - title
       - date
