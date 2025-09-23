@@ -1,6 +1,6 @@
 {
   "propertyKey": "title",
-  "enableForLinking": true,
+  "enableForLinking": false,
   "enableForQuickSwitcher": true,
   "includeFilenameInSearch": true,
   "includeAliasesInSearch": true,
