@@ -8,3 +8,4 @@ What are our rights as human beings?
 
 These are *negative rights*: entitlements to be free from outside actor interference.
 
+[encouragement](/encouragement/)

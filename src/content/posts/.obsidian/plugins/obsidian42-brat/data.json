@@ -1,9 +1,14 @@
 {
   "pluginList": [
+    "davidvkimball/obsidian-astro-composer",
     "davidvkimball/obsidian-disable-tabs",
     "davidvkimball/obsidian-property-over-filename"
   ],
   "pluginSubListFrozenVersion": [
+    {
+      "repo": "davidvkimball/obsidian-astro-composer",
+      "version": "latest"
+    },
     {
       "repo": "davidvkimball/obsidian-disable-tabs",
       "version": "latest"
