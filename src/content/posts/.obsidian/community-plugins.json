@@ -11,7 +11,7 @@
   "obsidian-shellcommands",
   "obsidian-git",
   "obsidian42-brat",
-  "astro-composer",
   "property-over-filename",
-  "disable-tabs"
+  "disable-tabs",
+  "astro-composer"
 ]

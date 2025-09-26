@@ -9,5 +9,7 @@
   "trashOption": "system",
   "alwaysUpdateLinks": true,
   "useMarkdownLinks": true,
-  "mobileQuickRibbonItem": "command-palette:Open command palette"
+  "mobileQuickRibbonItem": "command-palette:Open command palette",
+  "newFileLocation": "root",
+  "newFileFolderPath": "posts"
 }
