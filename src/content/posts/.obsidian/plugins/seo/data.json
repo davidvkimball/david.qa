@@ -1,16 +1,23 @@
 {
   "scanDirectories": "",
-  "keywordProperty": "",
+  "keywordProperty": "title",
   "descriptionProperty": "",
   "titleProperty": "title",
   "useFilenameAsTitle": false,
   "slugProperty": "",
   "useFilenameAsSlug": true,
-  "checkContentLength": true,
-  "checkImageNaming": true,
-  "checkDuplicateContent": true,
-  "checkReadingLevel": true,
-  "showNotices": true,
+  "parentFolderSlugFilename": "",
+  "checkTitleLength": false,
+  "checkHeadingOrder": false,
+  "checkAltText": false,
+  "checkImageNaming": false,
+  "checkBrokenLinks": false,
+  "checkNakedLinks": false,
+  "checkContentLength": false,
+  "checkDuplicateContent": false,
+  "checkReadingLevel": false,
+  "checkPotentiallyBrokenContent": false,
+  "useNoteTitles": true,
   "publishMode": true,
   "defaultSort": "issues-desc",
   "minContentLength": 300,
@@ -20,6 +27,7 @@
   "cachedGlobalResults": [
     {
       "file": "_formatting-reference.md",
+      "displayName": "Formatting Reference",
       "checks": {
         "titleLength": [
           {
@@ -89,6 +97,14 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": false,
+            "message": "Found 1 embedded media file(s) that may not work on web publishing",
+            "suggestion": "Verify these media files will be accessible on your published site:<br><br>• ./_assets/hikari.jpg",
+            "severity": "warning"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -102,14 +118,6 @@
             "message": "Good reading level: 10.0 (College Prep)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": false,
-            "message": "Found 1 embedded image(s) that may not work on web",
-            "suggestion": "Ensure images are properly linked and accessible:<br><br>• ./_assets/hikari.jpg",
-            "severity": "warning"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -118,112 +126,38 @@
     },
     {
       "file": "_astro-theme-guide.md",
+      "displayName": "Astro Theme Guide",
       "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 17 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
+        "titleLength": [],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [
           {
             "passed": true,
-            "message": "Slug format looks good",
+            "message": "No slug found",
             "severity": "info"
           }
         ],
         "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "Heading structure is correct",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 152 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No duplicate content found across vault",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": false,
-            "message": "Potentially broken link: _formatting-reference",
-            "suggestion": "Wikilinks may not work on the web - consider converting to standard markdown links",
-            "severity": "warning"
-          },
-          {
-            "passed": false,
-            "message": "Potentially broken link: _mdx-example.mdx",
-            "suggestion": "Wikilinks may not work on the web - consider converting to standard markdown links",
-            "severity": "warning"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 9.0 (High School)",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": false,
-            "message": "Found 2 wikilink(s) that may not render on web",
-            "suggestion": "Consider converting to markdown links for web publishing:<br><br>• _formatting-reference|Formatting Reference<br>• _mdx-example.mdx|MDX Example",
-            "severity": "warning"
-          }
-        ]
+        "headingOrder": [],
+        "contentLength": [],
+        "duplicateContent": [],
+        "altText": [],
+        "imageNaming": [],
+        "brokenLinks": [],
+        "nakedLinks": [],
+        "readingLevel": [],
+        "potentiallyBrokenLinks": [],
+        "potentiallyBrokenEmbeds": []
       },
-      "overallScore": 59.03846153846154,
+      "overallScore": 100,
       "issuesCount": 0,
-      "warningsCount": 5
+      "warningsCount": 0
     },
     {
       "file": "work.md",
+      "displayName": "Work",
       "checks": {
         "titleLength": [
           {
@@ -291,8 +225,15 @@
           {
             "passed": false,
             "message": "Potentially broken link: /ambition",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
             "severity": "warning"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
           }
         ],
         "nakedLinks": [
@@ -308,13 +249,6 @@
             "message": "Good reading level: 7.0 (Middle School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 73.5,
@@ -323,6 +257,7 @@
     },
     {
       "file": "window.md",
+      "displayName": "Window",
       "checks": {
         "titleLength": [
           {
@@ -393,6 +328,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -406,13 +348,6 @@
             "message": "Good reading level: 5.0 (Elementary)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -421,6 +356,7 @@
     },
     {
       "file": "why.md",
+      "displayName": "Why",
       "checks": {
         "titleLength": [
           {
@@ -491,6 +427,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -504,13 +447,6 @@
             "message": "Good reading level: 8.0 (High School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -519,6 +455,7 @@
     },
     {
       "file": "who.md",
+      "displayName": "Who",
       "checks": {
         "titleLength": [
           {
@@ -589,6 +526,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -602,13 +546,6 @@
             "message": "Good reading level: 10.0 (College Prep)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -617,6 +554,7 @@
     },
     {
       "file": "when.md",
+      "displayName": "When",
       "checks": {
         "titleLength": [
           {
@@ -687,6 +625,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -700,13 +645,6 @@
             "message": "Good reading level: 7.0 (Middle School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -715,6 +653,7 @@
     },
     {
       "file": "truth.md",
+      "displayName": "Truth",
       "checks": {
         "titleLength": [
           {
@@ -785,6 +724,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -796,13 +742,6 @@
           {
             "passed": true,
             "message": "Good reading level: 6.0 (Middle School)",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
             "severity": "info"
           }
         ]
@@ -813,18 +752,25 @@
     },
     {
       "file": "time.md",
+      "displayName": "Time",
       "checks": {
-        "titleLength": [
+        "titleLength": [],
+        "metaDescription": [],
+        "keywordInTitle": [
+          {
+            "passed": true,
+            "message": "Target keyword \"\"Time\"\" found in title",
+            "severity": "info"
+          }
+        ],
+        "keywordInSlug": [
           {
             "passed": false,
-            "message": "Title too short: 6 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "message": "Keyword \"\"Time\"\" not found in slug",
+            "suggestion": "Consider including your target keyword in the slug for better SEO. Current slug: \"time\"",
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
         "slugFormat": [
           {
             "passed": true,
@@ -832,191 +778,32 @@
             "severity": "info"
           }
         ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
+        "keywordDensity": [
           {
             "passed": false,
-            "message": "Content too short: 20 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "message": "Target keyword \"\"Time\"\" not found in content",
+            "suggestion": "Include your target keyword naturally in the content",
             "severity": "warning"
           }
         ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": false,
-            "message": "Potentially broken link: /sleep/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
-            "severity": "warning"
-          },
-          {
-            "passed": false,
-            "message": "Potentially broken link: /work/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
-            "severity": "warning"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 5.0 (Elementary)",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
-        ]
+        "headingOrder": [],
+        "contentLength": [],
+        "duplicateContent": [],
+        "altText": [],
+        "imageNaming": [],
+        "brokenLinks": [],
+        "nakedLinks": [],
+        "readingLevel": [],
+        "potentiallyBrokenLinks": [],
+        "potentiallyBrokenEmbeds": []
       },
-      "overallScore": 67.23076923076923,
+      "overallScore": 49,
       "issuesCount": 0,
-      "warningsCount": 4
-    },
-    {
-      "file": "sleep.md",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 5 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 40 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No duplicate content found across vault",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": false,
-            "message": "Potentially broken link: /time/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
-            "severity": "warning"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 6.0 (Middle School)",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 73.5,
-      "issuesCount": 0,
-      "warningsCount": 3
+      "warningsCount": 2
     },
     {
       "file": "speed.md",
+      "displayName": "Speed",
       "checks": {
         "titleLength": [
           {
@@ -1087,6 +874,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -1100,13 +894,6 @@
             "message": "Good reading level: 9.0 (High School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -1114,7 +901,108 @@
       "warningsCount": 2
     },
     {
+      "file": "sleep.md",
+      "displayName": "Sleep",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 5 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 40 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content found across vault",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: /time/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
+            "severity": "warning"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 6.0 (Middle School)",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 73.5,
+      "issuesCount": 0,
+      "warningsCount": 3
+    },
+    {
       "file": "sanity.md",
+      "displayName": "Sanity",
       "checks": {
         "titleLength": [
           {
@@ -1185,6 +1073,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -1198,13 +1093,6 @@
             "message": "Good reading level: 6.0 (Middle School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -1213,15 +1101,9 @@
     },
     {
       "file": "rights.md",
+      "displayName": "Rights",
       "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 6 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
+        "titleLength": [],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
@@ -1233,97 +1115,42 @@
           }
         ],
         "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
+        "headingOrder": [],
         "contentLength": [
           {
-            "passed": false,
-            "message": "Content too short: 24 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "Content length check disabled",
             "severity": "info"
           }
         ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
+        "duplicateContent": [],
+        "altText": [],
         "imageNaming": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "Image naming check disabled",
             "severity": "info"
           }
         ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": false,
-            "message": "Potentially broken link: /life/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
-            "severity": "warning"
-          },
-          {
-            "passed": false,
-            "message": "Potentially broken link: /liberty/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
-            "severity": "warning"
-          },
-          {
-            "passed": false,
-            "message": "Potentially broken link: /truth/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
-            "severity": "warning"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
+        "brokenLinks": [],
+        "nakedLinks": [],
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 8.0 (High School)",
+            "message": "Reading level check disabled",
             "severity": "info"
           }
         ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
-        ]
+        "potentiallyBrokenLinks": [],
+        "potentiallyBrokenEmbeds": []
       },
-      "overallScore": 61.78571428571429,
+      "overallScore": 100,
       "issuesCount": 0,
-      "warningsCount": 5
+      "warningsCount": 0
     },
     {
       "file": "promises.md",
+      "displayName": "Promises",
       "checks": {
         "titleLength": [
           {
@@ -1394,6 +1221,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -1407,13 +1241,6 @@
             "message": "Not enough content for reading level analysis",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -1422,6 +1249,7 @@
     },
     {
       "file": "peace.md",
+      "displayName": "Peace",
       "checks": {
         "titleLength": [
           {
@@ -1492,6 +1320,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -1505,13 +1340,6 @@
             "message": "Good reading level: 8.0 (High School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -1520,6 +1348,7 @@
     },
     {
       "file": "patience.md",
+      "displayName": "Patience",
       "checks": {
         "titleLength": [
           {
@@ -1590,6 +1419,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -1603,13 +1439,6 @@
             "message": "Not enough content for reading level analysis",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -1618,13 +1447,13 @@
     },
     {
       "file": "modularity.md",
+      "displayName": "Modularity",
       "checks": {
         "titleLength": [
           {
-            "passed": false,
-            "message": "Title too short: 10 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
+            "passed": true,
+            "message": "Title length check disabled",
+            "severity": "info"
           }
         ],
         "metaDescription": [],
@@ -1641,7 +1470,7 @@
         "headingOrder": [
           {
             "passed": true,
-            "message": "No heading structure issues found",
+            "message": "Heading order check disabled",
             "severity": "info"
           }
         ],
@@ -1663,14 +1492,14 @@
         "altText": [
           {
             "passed": true,
-            "message": "No images in this post",
+            "message": "Alt text check disabled",
             "severity": "info"
           }
         ],
         "imageNaming": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "Image naming check disabled",
             "severity": "info"
           }
         ],
@@ -1679,26 +1508,6 @@
             "passed": true,
             "message": "No broken links found",
             "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": false,
-            "message": "Potentially broken link: /focus/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
-            "severity": "warning"
-          },
-          {
-            "passed": false,
-            "message": "Potentially broken link: /constraints/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
-            "severity": "warning"
-          },
-          {
-            "passed": false,
-            "message": "Potentially broken link: /friction/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
-            "severity": "warning"
           }
         ],
         "nakedLinks": [
@@ -1715,20 +1524,28 @@
             "severity": "info"
           }
         ],
-        "notices": [
+        "potentiallyBrokenLinks": [
           {
             "passed": true,
-            "message": "No web compatibility issues found",
+            "message": "Potentially broken links check disabled",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [
+          {
+            "passed": true,
+            "message": "Potentially broken embeds check disabled",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 61.78571428571429,
+      "overallScore": 91.16666666666667,
       "issuesCount": 0,
-      "warningsCount": 5
+      "warningsCount": 1
     },
     {
       "file": "mercy.md",
+      "displayName": "Mercy",
       "checks": {
         "titleLength": [
           {
@@ -1799,6 +1616,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -1812,13 +1636,6 @@
             "message": "Not enough content for reading level analysis",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -1827,6 +1644,7 @@
     },
     {
       "file": "masculinity.md",
+      "displayName": "Masculinity",
       "checks": {
         "titleLength": [
           {
@@ -1897,6 +1715,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -1910,13 +1735,6 @@
             "message": "Not enough content for reading level analysis",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -1925,6 +1743,7 @@
     },
     {
       "file": "love.md",
+      "displayName": "Love",
       "checks": {
         "titleLength": [
           {
@@ -1992,8 +1811,15 @@
           {
             "passed": false,
             "message": "Potentially broken link: /forgiveness/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
             "severity": "warning"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
           }
         ],
         "nakedLinks": [
@@ -2009,13 +1835,6 @@
             "message": "Good reading level: 5.0 (Elementary)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 73.5,
@@ -2024,6 +1843,7 @@
     },
     {
       "file": "life.md",
+      "displayName": "Life",
       "checks": {
         "titleLength": [
           {
@@ -2094,6 +1914,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -2107,13 +1934,6 @@
             "message": "Good reading level: 10.0 (College Prep)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -2122,6 +1942,7 @@
     },
     {
       "file": "liberty.md",
+      "displayName": "Liberty",
       "checks": {
         "titleLength": [
           {
@@ -2192,6 +2013,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -2205,13 +2033,6 @@
             "message": "Good reading level: 8.0 (High School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -2220,6 +2041,7 @@
     },
     {
       "file": "kindness.md",
+      "displayName": "Kindness",
       "checks": {
         "titleLength": [
           {
@@ -2290,6 +2112,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -2303,13 +2132,6 @@
             "message": "Good reading level: 6.0 (Middle School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -2318,6 +2140,7 @@
     },
     {
       "file": "journey.md",
+      "displayName": "Journey",
       "checks": {
         "titleLength": [
           {
@@ -2388,6 +2211,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -2401,13 +2231,6 @@
             "message": "Not enough content for reading level analysis",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -2416,6 +2239,7 @@
     },
     {
       "file": "instincts.md",
+      "displayName": "Instincts",
       "checks": {
         "titleLength": [
           {
@@ -2486,6 +2310,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -2499,13 +2330,6 @@
             "message": "Good reading level: 7.0 (Middle School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -2514,6 +2338,7 @@
     },
     {
       "file": "imitation.md",
+      "displayName": "Imitation",
       "checks": {
         "titleLength": [
           {
@@ -2584,6 +2409,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -2597,13 +2429,6 @@
             "message": "Good reading level: 9.0 (High School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -2612,6 +2437,7 @@
     },
     {
       "file": "hyperfixation.md",
+      "displayName": "Hyperfixation",
       "checks": {
         "titleLength": [
           {
@@ -2679,8 +2505,15 @@
           {
             "passed": false,
             "message": "Potentially broken link: /constraints/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
             "severity": "warning"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
           }
         ],
         "nakedLinks": [
@@ -2696,13 +2529,6 @@
             "message": "Good reading level: 7.0 (Middle School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 73.5,
@@ -2711,6 +2537,7 @@
     },
     {
       "file": "how.md",
+      "displayName": "How",
       "checks": {
         "titleLength": [
           {
@@ -2769,16 +2596,22 @@
         ],
         "brokenLinks": [
           {
-            "passed": false,
-            "message": "Broken internal link: github.com/the3ash/astro-chiri",
-            "suggestion": "Check the link path or create the target file",
-            "severity": "error"
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
           }
         ],
         "potentiallyBrokenLinks": [
           {
             "passed": true,
             "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
             "severity": "info"
           }
         ],
@@ -2792,24 +2625,18 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 10.0 (College Prep)",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
+            "message": "Good reading level: 9.0 (High School)",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 74,
-      "issuesCount": 1,
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
       "warningsCount": 2
     },
     {
       "file": "hope.md",
+      "displayName": "Hope",
       "checks": {
         "titleLength": [
           {
@@ -2877,8 +2704,15 @@
           {
             "passed": false,
             "message": "Potentially broken link: /faith",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
             "severity": "warning"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
           }
         ],
         "nakedLinks": [
@@ -2894,13 +2728,6 @@
             "message": "Not enough content for reading level analysis",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 73.5,
@@ -2909,6 +2736,7 @@
     },
     {
       "file": "grief.md",
+      "displayName": "Grief",
       "checks": {
         "titleLength": [
           {
@@ -2979,6 +2807,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -2992,13 +2827,6 @@
             "message": "Good reading level: 5.0 (Elementary)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -3007,6 +2835,7 @@
     },
     {
       "file": "grace.md",
+      "displayName": "Grace",
       "checks": {
         "titleLength": [
           {
@@ -3077,6 +2906,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -3090,13 +2926,6 @@
             "message": "Not enough content for reading level analysis",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -3105,6 +2934,7 @@
     },
     {
       "file": "futurism.md",
+      "displayName": "Futurism",
       "checks": {
         "titleLength": [
           {
@@ -3175,6 +3005,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -3188,13 +3025,6 @@
             "message": "Not enough content for reading level analysis",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -3203,6 +3033,7 @@
     },
     {
       "file": "friction.md",
+      "displayName": "Friction",
       "checks": {
         "titleLength": [
           {
@@ -3273,6 +3104,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -3286,13 +3124,6 @@
             "message": "Good reading level: 6.0 (Middle School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -3301,6 +3132,7 @@
     },
     {
       "file": "fragility.md",
+      "displayName": "Fragility",
       "checks": {
         "titleLength": [
           {
@@ -3371,6 +3203,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -3384,13 +3223,6 @@
             "message": "Good reading level: 7.0 (Middle School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -3399,8 +3231,16 @@
     },
     {
       "file": "forgiveness.md",
+      "displayName": "Forgiveness",
       "checks": {
-        "titleLength": [],
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 11 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
@@ -3422,7 +3262,7 @@
         "contentLength": [
           {
             "passed": false,
-            "message": "Content too short: 38 words",
+            "message": "Content too short: 32 words",
             "suggestion": "Aim for at least 300 words for better SEO",
             "severity": "warning"
           }
@@ -3462,6 +3302,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -3472,24 +3319,18 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 10.0 (College Prep)",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
+            "message": "Good reading level: 9.0 (High School)",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 90.4090909090909,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 1
+      "warningsCount": 2
     },
     {
       "file": "food.md",
+      "displayName": "Food",
       "checks": {
         "titleLength": [
           {
@@ -3560,6 +3401,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -3573,13 +3421,6 @@
             "message": "Good reading level: 6.0 (Middle School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -3588,6 +3429,7 @@
     },
     {
       "file": "focus.md",
+      "displayName": "Focus",
       "checks": {
         "titleLength": [
           {
@@ -3655,8 +3497,15 @@
           {
             "passed": false,
             "message": "Potentially broken link: /friction/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
             "severity": "warning"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
           }
         ],
         "nakedLinks": [
@@ -3672,13 +3521,6 @@
             "message": "Good reading level: 10.0 (College Prep)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 73.5,
@@ -3687,6 +3529,7 @@
     },
     {
       "file": "finiteness.md",
+      "displayName": "Finiteness",
       "checks": {
         "titleLength": [
           {
@@ -3757,6 +3600,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -3770,13 +3620,6 @@
             "message": "Good reading level: 10.0 (College Prep)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -3785,6 +3628,7 @@
     },
     {
       "file": "faith.md",
+      "displayName": "Faith",
       "checks": {
         "titleLength": [
           {
@@ -3855,6 +3699,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -3868,13 +3719,6 @@
             "message": "Not enough content for reading level analysis",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -3883,6 +3727,7 @@
     },
     {
       "file": "essentials.md",
+      "displayName": "Essentials",
       "checks": {
         "titleLength": [
           {
@@ -3913,7 +3758,7 @@
         "contentLength": [
           {
             "passed": false,
-            "message": "Content too short: 24 words",
+            "message": "Content too short: 25 words",
             "suggestion": "Aim for at least 300 words for better SEO",
             "severity": "warning"
           }
@@ -3928,7 +3773,7 @@
         "altText": [
           {
             "passed": true,
-            "message": "No images in this post",
+            "message": "All images have alt text",
             "severity": "info"
           }
         ],
@@ -3948,22 +3793,16 @@
         ],
         "potentiallyBrokenLinks": [
           {
-            "passed": false,
-            "message": "Potentially broken link: /food/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
-            "severity": "warning"
-          },
+            "passed": true,
+            "message": "Potentially broken links check disabled",
+            "severity": "info"
+          }
+        ],
+        "notices": [
           {
-            "passed": false,
-            "message": "Potentially broken link: /sleep/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
-            "severity": "warning"
-          },
-          {
-            "passed": false,
-            "message": "Potentially broken link: /fragility/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
-            "severity": "warning"
+            "passed": true,
+            "message": "Potentially broken embeds check disabled",
+            "severity": "info"
           }
         ],
         "nakedLinks": [
@@ -3979,21 +3818,15 @@
             "message": "Good reading level: 9.0 (High School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
-      "overallScore": 61.78571428571429,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 5
+      "warningsCount": 2
     },
     {
       "file": "encouragement.md",
+      "displayName": "Encouragement",
       "checks": {
         "titleLength": [
           {
@@ -4061,8 +3894,15 @@
           {
             "passed": false,
             "message": "Potentially broken link: /love/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
             "severity": "warning"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
           }
         ],
         "nakedLinks": [
@@ -4078,13 +3918,6 @@
             "message": "Not enough content for reading level analysis",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 73.5,
@@ -4093,6 +3926,7 @@
     },
     {
       "file": "dust.md",
+      "displayName": "Dust",
       "checks": {
         "titleLength": [
           {
@@ -4160,8 +3994,15 @@
           {
             "passed": false,
             "message": "Potentially broken link: /fragility",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
             "severity": "warning"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
           }
         ],
         "nakedLinks": [
@@ -4177,13 +4018,6 @@
             "message": "Good reading level: 6.0 (Middle School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 73.5,
@@ -4192,6 +4026,7 @@
     },
     {
       "file": "creating.md",
+      "displayName": "Creating",
       "checks": {
         "titleLength": [
           {
@@ -4262,6 +4097,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -4275,13 +4117,6 @@
             "message": "Good reading level: 8.0 (High School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -4290,6 +4125,7 @@
     },
     {
       "file": "constraints.md",
+      "displayName": "Constraints",
       "checks": {
         "titleLength": [
           {
@@ -4360,6 +4196,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -4373,13 +4216,6 @@
             "message": "Good reading level: 8.0 (High School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -4388,6 +4224,7 @@
     },
     {
       "file": "change.md",
+      "displayName": "Change",
       "checks": {
         "titleLength": [
           {
@@ -4455,8 +4292,15 @@
           {
             "passed": false,
             "message": "Potentially broken link: /life/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
             "severity": "warning"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
           }
         ],
         "nakedLinks": [
@@ -4472,13 +4316,6 @@
             "message": "Not enough content for reading level analysis",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 73.5,
@@ -4487,6 +4324,7 @@
     },
     {
       "file": "ambition.md",
+      "displayName": "Ambition",
       "checks": {
         "titleLength": [
           {
@@ -4557,6 +4395,13 @@
             "severity": "info"
           }
         ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No embedded media compatibility issues found",
+            "severity": "info"
+          }
+        ],
         "nakedLinks": [
           {
             "passed": true,
@@ -4570,13 +4415,6 @@
             "message": "Good reading level: 8.0 (High School)",
             "severity": "info"
           }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No web compatibility issues found",
-            "severity": "info"
-          }
         ]
       },
       "overallScore": 82.33333333333333,
@@ -4584,7 +4422,8 @@
       "warningsCount": 2
     }
   ],
-  "lastScanTimestamp": 1759552480942,
+  "lastScanTimestamp": 1759557503024,
+  "showNotices": true,
   "resolvedBlocks": {
     "_formatting-reference.md": [
       "titleLength",
