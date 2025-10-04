@@ -1,0 +1,4598 @@
+{
+  "scanDirectories": "",
+  "keywordProperty": "",
+  "descriptionProperty": "",
+  "titleProperty": "title",
+  "useFilenameAsTitle": false,
+  "slugProperty": "",
+  "useFilenameAsSlug": true,
+  "checkContentLength": true,
+  "checkImageNaming": true,
+  "checkDuplicateContent": true,
+  "checkReadingLevel": true,
+  "showNotices": true,
+  "publishMode": true,
+  "defaultSort": "issues-desc",
+  "minContentLength": 300,
+  "keywordDensityMin": 1,
+  "keywordDensityMax": 2,
+  "duplicateThreshold": 80,
+  "cachedGlobalResults": [
+    {
+      "file": "_formatting-reference.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 20 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "Heading structure is correct",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": true,
+            "message": "Good content length: 332 words",
+            "severity": "info"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content found across vault",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "All images have alt text",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 10.0 (College Prep)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": false,
+            "message": "Found 1 embedded image(s) that may not work on web",
+            "suggestion": "Ensure images are properly linked and accessible:<br><br>• ./_assets/hikari.jpg",
+            "severity": "warning"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "_astro-theme-guide.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 17 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "Heading structure is correct",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 152 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content found across vault",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: _formatting-reference",
+            "suggestion": "Wikilinks may not work on the web - consider converting to standard markdown links",
+            "severity": "warning"
+          },
+          {
+            "passed": false,
+            "message": "Potentially broken link: _mdx-example.mdx",
+            "suggestion": "Wikilinks may not work on the web - consider converting to standard markdown links",
+            "severity": "warning"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 9.0 (High School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": false,
+            "message": "Found 2 wikilink(s) that may not render on web",
+            "suggestion": "Consider converting to markdown links for web publishing:<br><br>• _formatting-reference|Formatting Reference<br>• _mdx-example.mdx|MDX Example",
+            "severity": "warning"
+          }
+        ]
+      },
+      "overallScore": 59.03846153846154,
+      "issuesCount": 0,
+      "warningsCount": 5
+    },
+    {
+      "file": "work.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 4 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 30 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: /ambition",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 7.0 (Middle School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 73.5,
+      "issuesCount": 0,
+      "warningsCount": 3
+    },
+    {
+      "file": "window.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 8 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 28 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 5.0 (Elementary)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "why.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 3 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 30 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content found across vault",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 8.0 (High School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "who.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 3 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 21 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 10.0 (College Prep)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "when.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 4 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 23 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 7.0 (Middle School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "truth.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 7 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 24 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 6.0 (Middle School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "time.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 6 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 20 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: /sleep/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          },
+          {
+            "passed": false,
+            "message": "Potentially broken link: /work/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 5.0 (Elementary)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 67.23076923076923,
+      "issuesCount": 0,
+      "warningsCount": 4
+    },
+    {
+      "file": "sleep.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 5 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 40 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content found across vault",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: /time/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 6.0 (Middle School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 73.5,
+      "issuesCount": 0,
+      "warningsCount": 3
+    },
+    {
+      "file": "speed.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 7 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 10 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 9.0 (High School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "sanity.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 8 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 24 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 6.0 (Middle School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "rights.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 6 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 24 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: /life/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          },
+          {
+            "passed": false,
+            "message": "Potentially broken link: /liberty/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          },
+          {
+            "passed": false,
+            "message": "Potentially broken link: /truth/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 8.0 (High School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 61.78571428571429,
+      "issuesCount": 0,
+      "warningsCount": 5
+    },
+    {
+      "file": "promises.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 10 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 5 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Not enough content for reading level analysis",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "peace.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 5 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 10 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 8.0 (High School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "patience.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 10 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 7 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Not enough content for reading level analysis",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "modularity.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 10 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 64 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content found across vault",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: /focus/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          },
+          {
+            "passed": false,
+            "message": "Potentially broken link: /constraints/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          },
+          {
+            "passed": false,
+            "message": "Potentially broken link: /friction/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 9.0 (High School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 61.78571428571429,
+      "issuesCount": 0,
+      "warningsCount": 5
+    },
+    {
+      "file": "mercy.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 5 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 8 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Not enough content for reading level analysis",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "masculinity.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 13 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 8 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Not enough content for reading level analysis",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "love.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 4 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 40 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content found across vault",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: /forgiveness/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 5.0 (Elementary)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 73.5,
+      "issuesCount": 0,
+      "warningsCount": 3
+    },
+    {
+      "file": "life.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 4 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 23 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 10.0 (College Prep)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "liberty.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 7 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 18 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 8.0 (High School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "kindness.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 10 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 17 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 6.0 (Middle School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "journey.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 7 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 9 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Not enough content for reading level analysis",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "instincts.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 9 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 35 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 7.0 (Middle School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "imitation.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 9 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 36 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content found across vault",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 9.0 (High School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "hyperfixation.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 13 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 51 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content found across vault",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: /constraints/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 7.0 (Middle School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 73.5,
+      "issuesCount": 0,
+      "warningsCount": 3
+    },
+    {
+      "file": "how.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 3 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 42 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content found across vault",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": false,
+            "message": "Broken internal link: github.com/the3ash/astro-chiri",
+            "suggestion": "Check the link path or create the target file",
+            "severity": "error"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 10.0 (College Prep)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 74,
+      "issuesCount": 1,
+      "warningsCount": 2
+    },
+    {
+      "file": "hope.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 6 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 8 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: /faith",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Not enough content for reading level analysis",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 73.5,
+      "issuesCount": 0,
+      "warningsCount": 3
+    },
+    {
+      "file": "grief.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 7 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 12 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 5.0 (Elementary)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "grace.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 7 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 8 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Not enough content for reading level analysis",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "futurism.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 8 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 4 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Not enough content for reading level analysis",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "friction.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 8 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 38 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content found across vault",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 6.0 (Middle School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "fragility.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 9 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 39 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 7.0 (Middle School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "forgiveness.md",
+      "checks": {
+        "titleLength": [],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 38 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content found across vault",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 10.0 (College Prep)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 90.4090909090909,
+      "issuesCount": 0,
+      "warningsCount": 1
+    },
+    {
+      "file": "food.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 4 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 12 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 6.0 (Middle School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "focus.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 7 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 29 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: /friction/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 10.0 (College Prep)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 73.5,
+      "issuesCount": 0,
+      "warningsCount": 3
+    },
+    {
+      "file": "finiteness.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 10 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 12 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 10.0 (College Prep)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "faith.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 5 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 8 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Not enough content for reading level analysis",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "essentials.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 12 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 24 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: /food/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          },
+          {
+            "passed": false,
+            "message": "Potentially broken link: /sleep/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          },
+          {
+            "passed": false,
+            "message": "Potentially broken link: /fragility/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 9.0 (High School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 61.78571428571429,
+      "issuesCount": 0,
+      "warningsCount": 5
+    },
+    {
+      "file": "encouragement.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 13 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 5 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: /love/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Not enough content for reading level analysis",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 73.5,
+      "issuesCount": 0,
+      "warningsCount": 3
+    },
+    {
+      "file": "dust.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 4 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 12 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: /fragility",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 6.0 (Middle School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 73.5,
+      "issuesCount": 0,
+      "warningsCount": 3
+    },
+    {
+      "file": "creating.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 8 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 25 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 8.0 (High School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "constraints.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 11 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 18 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 8.0 (High School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    },
+    {
+      "file": "change.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 6 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 5 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": false,
+            "message": "Potentially broken link: /life/",
+            "suggestion": "Relative path that may be resolved by your site generator. Verify the target page will resolve on your published site.",
+            "severity": "warning"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Not enough content for reading level analysis",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 73.5,
+      "issuesCount": 0,
+      "warningsCount": 3
+    },
+    {
+      "file": "ambition.md",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 10 characters",
+            "suggestion": "Aim for 30-60 characters.",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [
+          {
+            "passed": true,
+            "message": "Slug format looks good",
+            "severity": "info"
+          }
+        ],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 25 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No substantial content to check",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageNaming": [
+          {
+            "passed": true,
+            "message": "All images have good filenames",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 8.0 (High School)",
+            "severity": "info"
+          }
+        ],
+        "notices": [
+          {
+            "passed": true,
+            "message": "No web compatibility issues found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2
+    }
+  ],
+  "lastScanTimestamp": 1759552480942,
+  "resolvedBlocks": {
+    "_formatting-reference.md": [
+      "titleLength",
+      "notices"
+    ],
+    "how.md": [
+      "contentLength",
+      "titleLength"
+    ]
+  }
+}

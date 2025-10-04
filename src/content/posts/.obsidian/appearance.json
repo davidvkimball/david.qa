@@ -4,8 +4,8 @@
   "showRibbon": false,
   "enabledCssSnippets": [
     "hide-tabs-icon-mobile",
-    "custom-draggable-top-area-windows",
-    "hide-longpress-flair-mobile"
+    "hide-longpress-flair-mobile",
+    "custom-draggable-top-area-windows"
   ],
   "baseFontSize": 16
 }
