@@ -6,9 +6,3 @@
 .is-mobile [data-tooltip="Sync status"] {
   display: none !important;
 }
-
-/* If it's an SVG or inner element */
-.is-mobile .sync-status-icon svg,
-.is-mobile .sync-indicator svg {
-  display: none !important;
-}
