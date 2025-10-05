@@ -27,6 +27,7 @@ pnpm-debug.log*
 # Netlify build output
 .netlify/
 
-# Obsidian workspace file
+# Obsidian files
 **/.obsidian/workspace.json
 **/.obsidian/workspace-mobile.json
+**/.obsidian/.trash/*
