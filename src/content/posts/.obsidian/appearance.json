@@ -5,7 +5,8 @@
   "enabledCssSnippets": [
     "hide-tabs-icon-mobile",
     "hide-longpress-flair-mobile",
-    "custom-draggable-top-area-windows"
+    "custom-draggable-top-area-windows",
+    "hide-sync-icon-mobile"
   ],
   "baseFontSize": 16
 }

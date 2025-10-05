@@ -1,5 +1,6 @@
 {
   "scanDirectories": "",
+  "ignoreUnderscoreFiles": true,
   "keywordProperty": "",
   "descriptionProperty": "",
   "titleProperty": "title",
@@ -31,102 +32,8 @@
   "duplicateThreshold": 80,
   "cachedGlobalResults": [
     {
-      "file": "_formatting-reference.md",
-      "displayName": "_formatting-reference",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 20 characters",
-            "suggestion": "Aim for 30-60 characters",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "Heading structure is correct",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": true,
-            "message": "Good content length: 332 words",
-            "severity": "info"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No duplicate content detected",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "All images have alt text",
-            "severity": "info"
-          }
-        ],
-        "imageFileNames": [
-          {
-            "passed": true,
-            "message": "All images have good file names",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken internal links found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 5.5 (Very easy to read)",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenEmbeds": [],
-        "externalBrokenLinks": [
-          {
-            "passed": true,
-            "message": "Found 2 external link(s), all appear to resolve and are working",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 90.4090909090909,
-      "issuesCount": 0,
-      "warningsCount": 1,
-      "noticesCount": 0
-    },
-    {
       "file": "window.md",
-      "displayName": "window",
+      "displayName": "Window",
       "checks": {
         "titleLength": [
           {
@@ -221,7 +128,7 @@
     },
     {
       "file": "work.md",
-      "displayName": "work",
+      "displayName": "Work",
       "checks": {
         "titleLength": [
           {
@@ -316,7 +223,7 @@
     },
     {
       "file": "who.md",
-      "displayName": "who",
+      "displayName": "Who",
       "checks": {
         "titleLength": [
           {
@@ -410,109 +317,8 @@
       "noticesCount": 0
     },
     {
-      "file": "_astro-theme-guide.md",
-      "displayName": "_astro-theme-guide",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 17 characters",
-            "suggestion": "Aim for 30-60 characters",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "Heading structure is correct",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 152 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No duplicate content detected",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageFileNames": [
-          {
-            "passed": true,
-            "message": "All images have good file names",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": false,
-            "message": "Broken internal link: MDX Example",
-            "suggestion": "Check if the file \"_mdx-example.mdx.md\" exists or update the link",
-            "severity": "error",
-            "position": {
-              "line": 10,
-              "searchText": "[[_mdx-example.mdx|MDX Example]]",
-              "context": "\n- [[_formatting-reference|Formatting Reference]]: see markdown, embedded, and other formatting examples \n- [[_mdx-example.mdx|MDX Example]]: mdx file example\n\n---"
-            }
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 7.8 (Easy to read)",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenEmbeds": [],
-        "externalBrokenLinks": [
-          {
-            "passed": true,
-            "message": "Found 2 external link(s), all appear to resolve and are working",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 71.72727272727273,
-      "issuesCount": 1,
-      "warningsCount": 2,
-      "noticesCount": 0
-    },
-    {
       "file": "why.md",
-      "displayName": "why",
+      "displayName": "Why",
       "checks": {
         "titleLength": [
           {
@@ -607,7 +413,7 @@
     },
     {
       "file": "when.md",
-      "displayName": "when",
+      "displayName": "When",
       "checks": {
         "titleLength": [
           {
@@ -702,7 +508,7 @@
     },
     {
       "file": "truth.md",
-      "displayName": "truth",
+      "displayName": "Truth",
       "checks": {
         "titleLength": [
           {
@@ -797,7 +603,7 @@
     },
     {
       "file": "time.md",
-      "displayName": "time",
+      "displayName": "Time",
       "checks": {
         "titleLength": [
           {
@@ -892,7 +698,7 @@
     },
     {
       "file": "speed.md",
-      "displayName": "speed",
+      "displayName": "Speed",
       "checks": {
         "titleLength": [
           {
@@ -987,7 +793,7 @@
     },
     {
       "file": "sleep.md",
-      "displayName": "sleep",
+      "displayName": "Sleep",
       "checks": {
         "titleLength": [
           {
@@ -1082,7 +888,7 @@
     },
     {
       "file": "sanity.md",
-      "displayName": "sanity",
+      "displayName": "Sanity",
       "checks": {
         "titleLength": [
           {
@@ -1177,7 +983,7 @@
     },
     {
       "file": "rights.md",
-      "displayName": "rights",
+      "displayName": "Rights",
       "checks": {
         "titleLength": [
           {
@@ -1272,7 +1078,7 @@
     },
     {
       "file": "peace.md",
-      "displayName": "peace",
+      "displayName": "Peace",
       "checks": {
         "titleLength": [
           {
@@ -1367,7 +1173,7 @@
     },
     {
       "file": "modularity.md",
-      "displayName": "modularity",
+      "displayName": "Modularity",
       "checks": {
         "titleLength": [
           {
@@ -1462,7 +1268,7 @@
     },
     {
       "file": "promises.md",
-      "displayName": "promises",
+      "displayName": "Promises",
       "checks": {
         "titleLength": [
           {
@@ -1557,7 +1363,7 @@
     },
     {
       "file": "patience.md",
-      "displayName": "patience",
+      "displayName": "Patience",
       "checks": {
         "titleLength": [
           {
@@ -1652,7 +1458,7 @@
     },
     {
       "file": "masculinity.md",
-      "displayName": "masculinity",
+      "displayName": "Masculinity",
       "checks": {
         "titleLength": [
           {
@@ -1747,7 +1553,7 @@
     },
     {
       "file": "life.md",
-      "displayName": "life",
+      "displayName": "Life",
       "checks": {
         "titleLength": [
           {
@@ -1842,7 +1648,7 @@
     },
     {
       "file": "mercy.md",
-      "displayName": "mercy",
+      "displayName": "Mercy",
       "checks": {
         "titleLength": [
           {
@@ -1937,7 +1743,7 @@
     },
     {
       "file": "kindness.md",
-      "displayName": "kindness",
+      "displayName": "Kindness",
       "checks": {
         "titleLength": [
           {
@@ -2032,7 +1838,7 @@
     },
     {
       "file": "love.md",
-      "displayName": "love",
+      "displayName": "Love",
       "checks": {
         "titleLength": [
           {
@@ -2127,7 +1933,7 @@
     },
     {
       "file": "instincts.md",
-      "displayName": "instincts",
+      "displayName": "Instincts",
       "checks": {
         "titleLength": [
           {
@@ -2222,7 +2028,7 @@
     },
     {
       "file": "liberty.md",
-      "displayName": "liberty",
+      "displayName": "Liberty",
       "checks": {
         "titleLength": [
           {
@@ -2317,7 +2123,7 @@
     },
     {
       "file": "imitation.md",
-      "displayName": "imitation",
+      "displayName": "Imitation",
       "checks": {
         "titleLength": [
           {
@@ -2412,7 +2218,7 @@
     },
     {
       "file": "journey.md",
-      "displayName": "journey",
+      "displayName": "Journey",
       "checks": {
         "titleLength": [
           {
@@ -2507,7 +2313,7 @@
     },
     {
       "file": "hyperfixation.md",
-      "displayName": "hyperfixation",
+      "displayName": "Hyperfixation",
       "checks": {
         "titleLength": [
           {
@@ -2602,7 +2408,7 @@
     },
     {
       "file": "how.md",
-      "displayName": "how",
+      "displayName": "How",
       "checks": {
         "titleLength": [
           {
@@ -2698,7 +2504,7 @@
     },
     {
       "file": "grief.md",
-      "displayName": "grief",
+      "displayName": "Grief",
       "checks": {
         "titleLength": [
           {
@@ -2793,7 +2599,7 @@
     },
     {
       "file": "grace.md",
-      "displayName": "grace",
+      "displayName": "Grace",
       "checks": {
         "titleLength": [
           {
@@ -2888,7 +2694,7 @@
     },
     {
       "file": "hope.md",
-      "displayName": "hope",
+      "displayName": "Hope",
       "checks": {
         "titleLength": [
           {
@@ -2983,7 +2789,7 @@
     },
     {
       "file": "futurism.md",
-      "displayName": "futurism",
+      "displayName": "Futurism",
       "checks": {
         "titleLength": [
           {
@@ -3078,7 +2884,7 @@
     },
     {
       "file": "friction.md",
-      "displayName": "friction",
+      "displayName": "Friction",
       "checks": {
         "titleLength": [
           {
@@ -3173,7 +2979,7 @@
     },
     {
       "file": "focus.md",
-      "displayName": "focus",
+      "displayName": "Focus",
       "checks": {
         "titleLength": [
           {
@@ -3268,7 +3074,7 @@
     },
     {
       "file": "fragility.md",
-      "displayName": "fragility",
+      "displayName": "Fragility",
       "checks": {
         "titleLength": [
           {
@@ -3363,7 +3169,7 @@
     },
     {
       "file": "forgiveness.md",
-      "displayName": "forgiveness",
+      "displayName": "Forgiveness",
       "checks": {
         "titleLength": [
           {
@@ -3458,7 +3264,7 @@
     },
     {
       "file": "food.md",
-      "displayName": "food",
+      "displayName": "Food",
       "checks": {
         "titleLength": [
           {
@@ -3553,7 +3359,7 @@
     },
     {
       "file": "essentials.md",
-      "displayName": "essentials",
+      "displayName": "Essentials",
       "checks": {
         "titleLength": [
           {
@@ -3648,7 +3454,7 @@
     },
     {
       "file": "encouragement.md",
-      "displayName": "encouragement",
+      "displayName": "Encouragement",
       "checks": {
         "titleLength": [
           {
@@ -3743,7 +3549,7 @@
     },
     {
       "file": "finiteness.md",
-      "displayName": "finiteness",
+      "displayName": "Finiteness",
       "checks": {
         "titleLength": [
           {
@@ -3838,7 +3644,7 @@
     },
     {
       "file": "faith.md",
-      "displayName": "faith",
+      "displayName": "Faith",
       "checks": {
         "titleLength": [
           {
@@ -3933,7 +3739,7 @@
     },
     {
       "file": "change.md",
-      "displayName": "change",
+      "displayName": "Change",
       "checks": {
         "titleLength": [
           {
@@ -4028,7 +3834,7 @@
     },
     {
       "file": "dust.md",
-      "displayName": "dust",
+      "displayName": "Dust",
       "checks": {
         "titleLength": [
           {
@@ -4123,7 +3929,7 @@
     },
     {
       "file": "creating.md",
-      "displayName": "creating",
+      "displayName": "Creating",
       "checks": {
         "titleLength": [
           {
@@ -4218,7 +4024,7 @@
     },
     {
       "file": "constraints.md",
-      "displayName": "constraints",
+      "displayName": "Constraints",
       "checks": {
         "titleLength": [
           {
@@ -4313,7 +4119,7 @@
     },
     {
       "file": "ambition.md",
-      "displayName": "ambition",
+      "displayName": "Ambition",
       "checks": {
         "titleLength": [
           {
@@ -4407,7 +4213,7 @@
       "noticesCount": 0
     }
   ],
-  "lastScanTimestamp": 1759643448046,
+  "lastScanTimestamp": 1759645665537,
   "checkPotentiallyBrokenContent": true,
   "showNotices": true,
   "resolvedBlocks": {
