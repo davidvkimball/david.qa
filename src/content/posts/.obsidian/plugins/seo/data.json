@@ -1,23 +1,28 @@
 {
   "scanDirectories": "",
-  "keywordProperty": "title",
+  "keywordProperty": "",
   "descriptionProperty": "",
   "titleProperty": "title",
   "useFilenameAsTitle": false,
   "slugProperty": "",
   "useFilenameAsSlug": true,
   "parentFolderSlugFilename": "",
-  "checkTitleLength": false,
-  "checkHeadingOrder": false,
-  "checkAltText": false,
-  "checkImageNaming": false,
-  "checkBrokenLinks": false,
-  "checkNakedLinks": false,
-  "checkContentLength": false,
-  "checkDuplicateContent": false,
-  "checkReadingLevel": false,
-  "checkPotentiallyBrokenContent": false,
+  "checkTitleLength": true,
+  "checkHeadingOrder": true,
+  "checkAltText": true,
+  "checkImageNaming": true,
+  "checkBrokenLinks": true,
+  "checkExternalLinks": true,
+  "enableExternalLinkButton": true,
+  "enableExternalLinkVaultCheck": true,
+  "checkNakedLinks": true,
+  "checkContentLength": true,
+  "checkDuplicateContent": true,
+  "checkReadingLevel": true,
+  "checkPotentiallyBrokenLinks": true,
+  "checkPotentiallyBrokenEmbeds": true,
   "useNoteTitles": true,
+  "skipH1Check": true,
   "publishMode": true,
   "defaultSort": "issues-desc",
   "minContentLength": 300,
@@ -27,26 +32,20 @@
   "cachedGlobalResults": [
     {
       "file": "_formatting-reference.md",
-      "displayName": "Formatting Reference",
+      "displayName": "_formatting-reference",
       "checks": {
         "titleLength": [
           {
             "passed": false,
             "message": "Title too short: 20 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -65,7 +64,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No duplicate content found across vault",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -76,17 +75,31 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 5.5 (Very easy to read)",
             "severity": "info"
           }
         ],
@@ -97,186 +110,36 @@
             "severity": "info"
           }
         ],
-        "notices": [
-          {
-            "passed": false,
-            "message": "Found 1 embedded media file(s) that may not work on web publishing",
-            "suggestion": "Verify these media files will be accessible on your published site:<br><br>• ./_assets/hikari.jpg",
-            "severity": "warning"
-          }
-        ],
-        "nakedLinks": [
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
           {
             "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 10.0 (College Prep)",
+            "message": "Found 2 external link(s), all appear to resolve and are working",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 90.4090909090909,
       "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "_astro-theme-guide.md",
-      "displayName": "Astro Theme Guide",
-      "checks": {
-        "titleLength": [],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "No slug found",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [],
-        "contentLength": [],
-        "duplicateContent": [],
-        "altText": [],
-        "imageNaming": [],
-        "brokenLinks": [],
-        "nakedLinks": [],
-        "readingLevel": [],
-        "potentiallyBrokenLinks": [],
-        "potentiallyBrokenEmbeds": []
-      },
-      "overallScore": 100,
-      "issuesCount": 0,
-      "warningsCount": 0
-    },
-    {
-      "file": "work.md",
-      "displayName": "Work",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 4 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 30 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": false,
-            "message": "Potentially broken link: /ambition",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
-            "severity": "warning"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 7.0 (Middle School)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 73.5,
-      "issuesCount": 0,
-      "warningsCount": 3
+      "warningsCount": 1,
+      "noticesCount": 0
     },
     {
       "file": "window.md",
-      "displayName": "Window",
+      "displayName": "window",
       "checks": {
         "titleLength": [
           {
             "passed": false,
             "message": "Title too short: 8 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -296,7 +159,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -307,31 +170,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -345,37 +194,47 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 5.0 (Elementary)",
+            "message": "Good reading level: 1.1 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
-      "file": "why.md",
-      "displayName": "Why",
+      "file": "work.md",
+      "displayName": "work",
       "checks": {
         "titleLength": [
           {
             "passed": false,
-            "message": "Title too short: 3 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "message": "Title too short: 4 characters",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -395,7 +254,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No duplicate content found across vault",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -406,31 +265,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -444,37 +289,47 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 8.0 (High School)",
+            "message": "Good reading level: 6.6 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
       "file": "who.md",
-      "displayName": "Who",
+      "displayName": "who",
       "checks": {
         "titleLength": [
           {
             "passed": false,
             "message": "Title too short: 3 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -494,7 +349,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -505,31 +360,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -543,37 +384,243 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 10.0 (College Prep)",
+            "message": "Good reading level: 11.9 (Moderately easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "Found 1 external link(s), all appear to resolve and are working",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
-      "file": "when.md",
-      "displayName": "When",
+      "file": "_astro-theme-guide.md",
+      "displayName": "_astro-theme-guide",
       "checks": {
         "titleLength": [
           {
             "passed": false,
-            "message": "Title too short: 4 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "message": "Title too short: 17 characters",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
           {
             "passed": true,
-            "message": "Slug format looks good",
+            "message": "Heading structure is correct",
             "severity": "info"
           }
         ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 152 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": false,
+            "message": "Broken internal link: MDX Example",
+            "suggestion": "Check if the file \"_mdx-example.mdx.md\" exists or update the link",
+            "severity": "error",
+            "position": {
+              "line": 10,
+              "searchText": "[[_mdx-example.mdx|MDX Example]]",
+              "context": "\n- [[_formatting-reference|Formatting Reference]]: see markdown, embedded, and other formatting examples \n- [[_mdx-example.mdx|MDX Example]]: mdx file example\n\n---"
+            }
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 7.8 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "Found 2 external link(s), all appear to resolve and are working",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 71.72727272727273,
+      "issuesCount": 1,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "why.md",
+      "displayName": "why",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 3 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 30 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 7.8 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "Found 1 external link(s), all appear to resolve and are working",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "when.md",
+      "displayName": "when",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 4 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -593,7 +640,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -604,31 +651,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -642,37 +675,47 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 7.0 (Middle School)",
+            "message": "Good reading level: 4.8 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
       "file": "truth.md",
-      "displayName": "Truth",
+      "displayName": "truth",
       "checks": {
         "titleLength": [
           {
             "passed": false,
             "message": "Title too short: 7 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -692,7 +735,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -703,31 +746,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -741,88 +770,142 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 6.0 (Middle School)",
+            "message": "Good reading level: 3.8 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
       "file": "time.md",
-      "displayName": "Time",
-      "checks": {
-        "titleLength": [],
-        "metaDescription": [],
-        "keywordInTitle": [
-          {
-            "passed": true,
-            "message": "Target keyword \"\"Time\"\" found in title",
-            "severity": "info"
-          }
-        ],
-        "keywordInSlug": [
-          {
-            "passed": false,
-            "message": "Keyword \"\"Time\"\" not found in slug",
-            "suggestion": "Consider including your target keyword in the slug for better SEO. Current slug: \"time\"",
-            "severity": "warning"
-          }
-        ],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [
-          {
-            "passed": false,
-            "message": "Target keyword \"\"Time\"\" not found in content",
-            "suggestion": "Include your target keyword naturally in the content",
-            "severity": "warning"
-          }
-        ],
-        "headingOrder": [],
-        "contentLength": [],
-        "duplicateContent": [],
-        "altText": [],
-        "imageNaming": [],
-        "brokenLinks": [],
-        "nakedLinks": [],
-        "readingLevel": [],
-        "potentiallyBrokenLinks": [],
-        "potentiallyBrokenEmbeds": []
-      },
-      "overallScore": 49,
-      "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "speed.md",
-      "displayName": "Speed",
+      "displayName": "time",
       "checks": {
         "titleLength": [
           {
             "passed": false,
-            "message": "Title too short: 7 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "message": "Title too short: 6 characters",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
           {
             "passed": true,
-            "message": "Slug format looks good",
+            "message": "No heading structure issues found",
             "severity": "info"
           }
         ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 20 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 2.4 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "speed.md",
+      "displayName": "speed",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 7 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -842,7 +925,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -853,31 +936,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -891,37 +960,47 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 9.0 (High School)",
+            "message": "Good reading level: 8.4 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
       "file": "sleep.md",
-      "displayName": "Sleep",
+      "displayName": "sleep",
       "checks": {
         "titleLength": [
           {
             "passed": false,
             "message": "Title too short: 5 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -941,7 +1020,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No duplicate content found across vault",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -952,32 +1031,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": false,
-            "message": "Potentially broken link: /time/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
-            "severity": "warning"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -991,37 +1055,47 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 6.0 (Middle School)",
+            "message": "Good reading level: 2.2 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 73.5,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 3
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
       "file": "sanity.md",
-      "displayName": "Sanity",
+      "displayName": "sanity",
       "checks": {
         "titleLength": [
           {
             "passed": false,
             "message": "Title too short: 8 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -1041,7 +1115,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -1052,31 +1126,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -1090,86 +1150,47 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 6.0 (Middle School)",
+            "message": "Good reading level: 2.8 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
       "file": "rights.md",
-      "displayName": "Rights",
-      "checks": {
-        "titleLength": [],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [],
-        "contentLength": [
-          {
-            "passed": true,
-            "message": "Content length check disabled",
-            "severity": "info"
-          }
-        ],
-        "duplicateContent": [],
-        "altText": [],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "Image naming check disabled",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [],
-        "nakedLinks": [],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Reading level check disabled",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [],
-        "potentiallyBrokenEmbeds": []
-      },
-      "overallScore": 100,
-      "issuesCount": 0,
-      "warningsCount": 0
-    },
-    {
-      "file": "promises.md",
-      "displayName": "Promises",
+      "displayName": "rights",
       "checks": {
         "titleLength": [
           {
             "passed": false,
-            "message": "Title too short: 10 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "message": "Title too short: 6 characters",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -1181,7 +1202,7 @@
         "contentLength": [
           {
             "passed": false,
-            "message": "Content too short: 5 words",
+            "message": "Content too short: 24 words",
             "suggestion": "Aim for at least 300 words for better SEO",
             "severity": "warning"
           }
@@ -1189,7 +1210,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -1200,31 +1221,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -1238,37 +1245,47 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Not enough content for reading level analysis",
+            "message": "Good reading level: 10.6 (Moderately easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
       "file": "peace.md",
-      "displayName": "Peace",
+      "displayName": "peace",
       "checks": {
         "titleLength": [
           {
             "passed": false,
             "message": "Title too short: 5 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -1288,7 +1305,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -1299,31 +1316,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -1337,37 +1340,237 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 8.0 (High School)",
+            "message": "Good reading level: 6.0 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
-      "file": "patience.md",
-      "displayName": "Patience",
+      "file": "modularity.md",
+      "displayName": "modularity",
       "checks": {
         "titleLength": [
           {
             "passed": false,
             "message": "Title too short: 10 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
           {
             "passed": true,
-            "message": "Slug format looks good",
+            "message": "No heading structure issues found",
             "severity": "info"
           }
         ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 64 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 9.4 (Moderately easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "promises.md",
+      "displayName": "promises",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 10 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 5 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 2.9 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "patience.md",
+      "displayName": "patience",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 10 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -1387,7 +1590,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -1398,17 +1601,31 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: -1.1 (Very easy to read)",
             "severity": "info"
           }
         ],
@@ -1419,251 +1636,36 @@
             "severity": "info"
           }
         ],
-        "notices": [
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
           {
             "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Not enough content for reading level analysis",
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "modularity.md",
-      "displayName": "Modularity",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": true,
-            "message": "Title length check disabled",
-            "severity": "info"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "Heading order check disabled",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 64 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No duplicate content found across vault",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "Alt text check disabled",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "Image naming check disabled",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 9.0 (High School)",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "Potentially broken links check disabled",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenEmbeds": [
-          {
-            "passed": true,
-            "message": "Potentially broken embeds check disabled",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 91.16666666666667,
-      "issuesCount": 0,
-      "warningsCount": 1
-    },
-    {
-      "file": "mercy.md",
-      "displayName": "Mercy",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 5 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 8 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Not enough content for reading level analysis",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 82.33333333333333,
-      "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
       "file": "masculinity.md",
-      "displayName": "Masculinity",
+      "displayName": "masculinity",
       "checks": {
         "titleLength": [
           {
             "passed": false,
             "message": "Title too short: 13 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -1683,7 +1685,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -1694,17 +1696,31 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 6.6 (Easy to read)",
             "severity": "info"
           }
         ],
@@ -1715,154 +1731,36 @@
             "severity": "info"
           }
         ],
-        "notices": [
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
           {
             "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Not enough content for reading level analysis",
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "love.md",
-      "displayName": "Love",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 4 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 40 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No duplicate content found across vault",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": false,
-            "message": "Potentially broken link: /forgiveness/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
-            "severity": "warning"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 5.0 (Elementary)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 73.5,
-      "issuesCount": 0,
-      "warningsCount": 3
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
       "file": "life.md",
-      "displayName": "Life",
+      "displayName": "life",
       "checks": {
         "titleLength": [
           {
             "passed": false,
             "message": "Title too short: 4 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -1882,7 +1780,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -1893,31 +1791,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -1931,37 +1815,47 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 10.0 (College Prep)",
+            "message": "Good reading level: 6.9 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
-      "file": "liberty.md",
-      "displayName": "Liberty",
+      "file": "mercy.md",
+      "displayName": "mercy",
       "checks": {
         "titleLength": [
           {
             "passed": false,
-            "message": "Title too short: 7 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "message": "Title too short: 5 characters",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -1973,7 +1867,7 @@
         "contentLength": [
           {
             "passed": false,
-            "message": "Content too short: 18 words",
+            "message": "Content too short: 8 words",
             "suggestion": "Aim for at least 300 words for better SEO",
             "severity": "warning"
           }
@@ -1981,7 +1875,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -1992,31 +1886,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -2030,37 +1910,47 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 8.0 (High School)",
+            "message": "Good reading level: 6.7 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
       "file": "kindness.md",
-      "displayName": "Kindness",
+      "displayName": "kindness",
       "checks": {
         "titleLength": [
           {
             "passed": false,
             "message": "Title too short: 10 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -2080,7 +1970,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -2091,31 +1981,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -2129,37 +2005,47 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 6.0 (Middle School)",
+            "message": "Good reading level: 2.3 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
-      "file": "journey.md",
-      "displayName": "Journey",
+      "file": "love.md",
+      "displayName": "love",
       "checks": {
         "titleLength": [
           {
             "passed": false,
-            "message": "Title too short: 7 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "message": "Title too short: 4 characters",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -2171,7 +2057,7 @@
         "contentLength": [
           {
             "passed": false,
-            "message": "Content too short: 9 words",
+            "message": "Content too short: 40 words",
             "suggestion": "Aim for at least 300 words for better SEO",
             "severity": "warning"
           }
@@ -2179,7 +2065,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -2190,31 +2076,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -2228,37 +2100,47 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Not enough content for reading level analysis",
+            "message": "Good reading level: 3.5 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
       "file": "instincts.md",
-      "displayName": "Instincts",
+      "displayName": "instincts",
       "checks": {
         "titleLength": [
           {
             "passed": false,
             "message": "Title too short: 9 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -2278,7 +2160,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -2289,17 +2171,31 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 5.5 (Very easy to read)",
             "severity": "info"
           }
         ],
@@ -2310,1841 +2206,36 @@
             "severity": "info"
           }
         ],
-        "notices": [
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
           {
             "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 7.0 (Middle School)",
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
-      "file": "imitation.md",
-      "displayName": "Imitation",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 9 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 36 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No duplicate content found across vault",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 9.0 (High School)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 82.33333333333333,
-      "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "hyperfixation.md",
-      "displayName": "Hyperfixation",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 13 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 51 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No duplicate content found across vault",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": false,
-            "message": "Potentially broken link: /constraints/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
-            "severity": "warning"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 7.0 (Middle School)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 73.5,
-      "issuesCount": 0,
-      "warningsCount": 3
-    },
-    {
-      "file": "how.md",
-      "displayName": "How",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 3 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 42 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No duplicate content found across vault",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 9.0 (High School)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 82.33333333333333,
-      "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "hope.md",
-      "displayName": "Hope",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 6 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 8 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": false,
-            "message": "Potentially broken link: /faith",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
-            "severity": "warning"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Not enough content for reading level analysis",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 73.5,
-      "issuesCount": 0,
-      "warningsCount": 3
-    },
-    {
-      "file": "grief.md",
-      "displayName": "Grief",
+      "file": "liberty.md",
+      "displayName": "liberty",
       "checks": {
         "titleLength": [
           {
             "passed": false,
             "message": "Title too short: 7 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 12 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 5.0 (Elementary)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 82.33333333333333,
-      "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "grace.md",
-      "displayName": "Grace",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 7 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 8 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Not enough content for reading level analysis",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 82.33333333333333,
-      "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "futurism.md",
-      "displayName": "Futurism",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 8 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 4 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Not enough content for reading level analysis",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 82.33333333333333,
-      "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "friction.md",
-      "displayName": "Friction",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 8 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 38 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No duplicate content found across vault",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 6.0 (Middle School)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 82.33333333333333,
-      "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "fragility.md",
-      "displayName": "Fragility",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 9 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 39 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 7.0 (Middle School)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 82.33333333333333,
-      "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "forgiveness.md",
-      "displayName": "Forgiveness",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 11 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 32 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No duplicate content found across vault",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 9.0 (High School)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 82.33333333333333,
-      "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "food.md",
-      "displayName": "Food",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 4 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 12 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 6.0 (Middle School)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 82.33333333333333,
-      "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "focus.md",
-      "displayName": "Focus",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 7 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 29 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": false,
-            "message": "Potentially broken link: /friction/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
-            "severity": "warning"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 10.0 (College Prep)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 73.5,
-      "issuesCount": 0,
-      "warningsCount": 3
-    },
-    {
-      "file": "finiteness.md",
-      "displayName": "Finiteness",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 10 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 12 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 10.0 (College Prep)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 82.33333333333333,
-      "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "faith.md",
-      "displayName": "Faith",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 5 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 8 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Not enough content for reading level analysis",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 82.33333333333333,
-      "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "essentials.md",
-      "displayName": "Essentials",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 12 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 25 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "All images have alt text",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "Potentially broken links check disabled",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "Potentially broken embeds check disabled",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 9.0 (High School)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 82.33333333333333,
-      "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "encouragement.md",
-      "displayName": "Encouragement",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 13 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 5 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": false,
-            "message": "Potentially broken link: /love/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
-            "severity": "warning"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Not enough content for reading level analysis",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 73.5,
-      "issuesCount": 0,
-      "warningsCount": 3
-    },
-    {
-      "file": "dust.md",
-      "displayName": "Dust",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 4 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 12 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": false,
-            "message": "Potentially broken link: /fragility",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
-            "severity": "warning"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 6.0 (Middle School)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 73.5,
-      "issuesCount": 0,
-      "warningsCount": 3
-    },
-    {
-      "file": "creating.md",
-      "displayName": "Creating",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 8 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 25 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
-            "severity": "warning"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No substantial content to check",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageNaming": [
-          {
-            "passed": true,
-            "message": "All images have good filenames",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 8.0 (High School)",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 82.33333333333333,
-      "issuesCount": 0,
-      "warningsCount": 2
-    },
-    {
-      "file": "constraints.md",
-      "displayName": "Constraints",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 11 characters",
-            "suggestion": "Aim for 30-60 characters.",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -4164,7 +2255,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -4175,31 +2266,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -4213,37 +2290,47 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 8.0 (High School)",
+            "message": "Good reading level: 6.9 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
-      "file": "change.md",
-      "displayName": "Change",
+      "file": "imitation.md",
+      "displayName": "imitation",
       "checks": {
         "titleLength": [
           {
             "passed": false,
-            "message": "Title too short: 6 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "message": "Title too short: 9 characters",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
-          {
-            "passed": true,
-            "message": "Slug format looks good",
-            "severity": "info"
-          }
-        ],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -4255,7 +2342,7 @@
         "contentLength": [
           {
             "passed": false,
-            "message": "Content too short: 5 words",
+            "message": "Content too short: 36 words",
             "suggestion": "Aim for at least 300 words for better SEO",
             "severity": "warning"
           }
@@ -4263,7 +2350,7 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
@@ -4274,32 +2361,17 @@
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": false,
-            "message": "Potentially broken link: /life/",
-            "suggestion": "Relative path that may be resolved by your site generator. Verify the target will resolve on your published site.",
-            "severity": "warning"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -4313,37 +2385,1188 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Not enough content for reading level analysis",
+            "message": "Good reading level: 6.9 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 73.5,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 3
+      "warningsCount": 2,
+      "noticesCount": 0
     },
     {
-      "file": "ambition.md",
-      "displayName": "Ambition",
+      "file": "journey.md",
+      "displayName": "journey",
       "checks": {
         "titleLength": [
           {
             "passed": false,
-            "message": "Title too short: 10 characters",
-            "suggestion": "Aim for 30-60 characters.",
+            "message": "Title too short: 7 characters",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
         "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
-        "slugFormat": [
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
           {
             "passed": true,
-            "message": "Slug format looks good",
+            "message": "No heading structure issues found",
             "severity": "info"
           }
         ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 9 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 8.9 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "hyperfixation.md",
+      "displayName": "hyperfixation",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 13 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 51 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 4.6 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "how.md",
+      "displayName": "how",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 3 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 42 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": false,
+            "message": "Reading level too high: 13.9 (Moderately difficult to read)",
+            "suggestion": "Consider simplifying sentence structure and using shorter words",
+            "severity": "warning"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "Found 5 external link(s), all appear to resolve and are working",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 71.22727272727273,
+      "issuesCount": 0,
+      "warningsCount": 3,
+      "noticesCount": 0
+    },
+    {
+      "file": "grief.md",
+      "displayName": "grief",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 7 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 12 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: -0.5 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "grace.md",
+      "displayName": "grace",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 7 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 8 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 5.2 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "hope.md",
+      "displayName": "hope",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 6 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 8 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 5.2 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "futurism.md",
+      "displayName": "futurism",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 8 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 4 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 0.7 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "friction.md",
+      "displayName": "friction",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 8 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 38 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 5.5 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "Found 1 external link(s), all appear to resolve and are working",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "focus.md",
+      "displayName": "focus",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 7 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 29 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 10.7 (Moderately easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "Found 1 external link(s), all appear to resolve and are working",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "fragility.md",
+      "displayName": "fragility",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 9 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 39 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 6.4 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "forgiveness.md",
+      "displayName": "forgiveness",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 11 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 32 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 7.2 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "food.md",
+      "displayName": "food",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 4 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 12 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 3.8 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "essentials.md",
+      "displayName": "essentials",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 12 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
         "keywordDensity": [],
         "headingOrder": [
           {
@@ -4363,42 +3586,28 @@
         "duplicateContent": [
           {
             "passed": true,
-            "message": "No substantial content to check",
+            "message": "No duplicate content detected",
             "severity": "info"
           }
         ],
         "altText": [
           {
             "passed": true,
-            "message": "No images in this post",
+            "message": "All images have alt text",
             "severity": "info"
           }
         ],
-        "imageNaming": [
+        "imageFileNames": [
           {
             "passed": true,
-            "message": "All images have good filenames",
+            "message": "All images have good file names",
             "severity": "info"
           }
         ],
         "brokenLinks": [
           {
             "passed": true,
-            "message": "No broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "notices": [
-          {
-            "passed": true,
-            "message": "No embedded media compatibility issues found",
+            "message": "No broken internal links found",
             "severity": "info"
           }
         ],
@@ -4412,17 +3621,794 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 8.0 (High School)",
+            "message": "Good reading level: 10.2 (Moderately easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "Found 1 external link(s), all appear to resolve and are working",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 82.33333333333333,
+      "overallScore": 80.81818181818181,
       "issuesCount": 0,
-      "warningsCount": 2
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "encouragement.md",
+      "displayName": "encouragement",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 13 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 5 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 9.0 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "finiteness.md",
+      "displayName": "finiteness",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 10 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 12 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 5.6 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "faith.md",
+      "displayName": "faith",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 5 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 8 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 3.8 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "change.md",
+      "displayName": "change",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 6 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 5 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 7.6 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "dust.md",
+      "displayName": "dust",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 4 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 12 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 9.4 (Moderately easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "creating.md",
+      "displayName": "creating",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 8 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 25 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 6.5 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "constraints.md",
+      "displayName": "constraints",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 11 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 18 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 6.9 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "ambition.md",
+      "displayName": "ambition",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 10 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 25 words",
+            "suggestion": "Aim for at least 300 words for better SEO",
+            "severity": "warning"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 6.1 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 80.81818181818181,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
     }
   ],
-  "lastScanTimestamp": 1759557503024,
+  "lastScanTimestamp": 1759643448046,
+  "checkPotentiallyBrokenContent": true,
   "showNotices": true,
   "resolvedBlocks": {
     "_formatting-reference.md": [
