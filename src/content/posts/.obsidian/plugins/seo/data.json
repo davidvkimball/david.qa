@@ -1,8 +1,8 @@
 {
   "scanDirectories": "",
-  "ignoreUnderscoreFiles": true,
+  "ignoreUnderscoreFiles": false,
   "keywordProperty": "",
-  "descriptionProperty": "",
+  "descriptionProperty": "date",
   "titleProperty": "title",
   "useFilenameAsTitle": false,
   "slugProperty": "",
@@ -32,18 +32,25 @@
   "duplicateThreshold": 80,
   "cachedGlobalResults": [
     {
-      "file": "stewardship.md",
-      "displayName": "Stewardship",
+      "file": "_how-2.md",
+      "displayName": "How",
       "checks": {
         "titleLength": [
           {
             "passed": false,
-            "message": "No title found",
-            "suggestion": "Add a title in frontmatter or as H1 heading",
+            "message": "Title too short: 3 characters",
+            "suggestion": "Aim for 30-60 characters",
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -58,9 +65,272 @@
         "contentLength": [
           {
             "passed": false,
-            "message": "Content too short: 20 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "message": "Content too short: 8 words",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": false,
+            "message": "Duplicate title \"How\" found in 2 files",
+            "suggestion": "This title is also used in: <a href=\"#\" data-file-path=\"how.md\" class=\"seo-file-link\">How</a>",
+            "severity": "error",
+            "position": {
+              "line": 1,
+              "searchText": "title",
+              "context": "title: \"How\""
+            }
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": false,
+            "message": "Duplicate description \"2025-09-12\" found in 2 files",
+            "suggestion": "This description is also used in: <a href=\"#\" data-file-path=\"faith.md\" class=\"seo-file-link\">Faith</a>",
+            "severity": "error",
+            "position": {
+              "line": 1,
+              "searchText": "date",
+              "context": "description: \"2025-09-12\""
+            }
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": false,
+            "message": "Duplicate content detected in paragraph 1",
+            "suggestion": "Similarity: 100.0% with: <a href=\"#\" data-file-path=\"hope.md\" class=\"seo-file-link\">Hope</a> (100.0%)",
+            "severity": "error",
+            "position": {
+              "line": 5,
+              "searchText": "Hope is [faith](/faith) of something better to com...",
+              "context": "Paragraph 1 content"
+            }
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 5.2 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 40,
+      "issuesCount": 3,
+      "warningsCount": 3,
+      "noticesCount": 0
+    },
+    {
+      "file": "_formatting-reference.md",
+      "displayName": "Formatting Reference",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 20 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "Heading structure is correct",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": true,
+            "message": "Good content length: 332 words",
+            "severity": "info"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Formatting Reference\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-07-01\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "All images have alt text",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 5.5 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "Found 2 external link(s), all appear to resolve and are working",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 84.71428571428571,
+      "issuesCount": 0,
+      "warningsCount": 2,
+      "noticesCount": 0
+    },
+    {
+      "file": "_big-test.md",
+      "displayName": "Big Test",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 10 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 12 words",
+            "suggestion": "Aim for at least 300 words",
+            "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Big Test\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-10-06\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -101,7 +371,7 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 1.3 (Very easy to read)",
+            "message": "Good reading level: -0.5 (Very easy to read)",
             "severity": "info"
           }
         ],
@@ -121,9 +391,125 @@
           }
         ]
       },
-      "overallScore": 44,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
+      "noticesCount": 0
+    },
+    {
+      "file": "_astro-theme-guide.md",
+      "displayName": "Astro Theme Guide",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 17 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "No date found in frontmatter",
+            "suggestion": "Add date to frontmatter",
+            "severity": "warning"
+          }
+        ],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "Heading structure is correct",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 152 words",
+            "suggestion": "Aim for at least 300 words",
+            "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Astro Theme Guide\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": false,
+            "message": "Broken internal link: MDX Example",
+            "suggestion": "Check if the file \"_mdx-example.mdx.md\" exists or update the link",
+            "severity": "error",
+            "position": {
+              "line": 10,
+              "searchText": "[[_mdx-example.mdx|MDX Example]]",
+              "context": "\n- [[_formatting-reference|Formatting Reference]]: see markdown, embedded, and other formatting examples \n- [[_mdx-example.mdx|MDX Example]]: mdx file example\n\n---"
+            }
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 7.8 (Easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "Found 2 external link(s), all appear to resolve and are working",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 67.73076923076923,
+      "issuesCount": 1,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -138,7 +524,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -154,8 +547,22 @@
           {
             "passed": false,
             "message": "Content too short: 30 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Work\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-06\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -216,9 +623,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -233,7 +640,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -249,8 +663,22 @@
           {
             "passed": false,
             "message": "Content too short: 28 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Window\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-27\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -311,9 +739,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -328,7 +756,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -344,8 +779,22 @@
           {
             "passed": false,
             "message": "Content too short: 30 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Why\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-14\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -406,9 +855,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -423,7 +872,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -439,8 +895,22 @@
           {
             "passed": false,
             "message": "Content too short: 21 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Who\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-16\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -501,9 +971,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -518,7 +988,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -534,8 +1011,22 @@
           {
             "passed": false,
             "message": "Content too short: 23 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"When\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-17\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -596,9 +1087,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -613,7 +1104,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -629,8 +1127,22 @@
           {
             "passed": false,
             "message": "Content too short: 24 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Truth\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-19\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -691,9 +1203,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -708,7 +1220,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -724,8 +1243,22 @@
           {
             "passed": false,
             "message": "Content too short: 20 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Time\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-30\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -786,9 +1319,125 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
+      "noticesCount": 0
+    },
+    {
+      "file": "stewardship.md",
+      "displayName": "Stewardship",
+      "checks": {
+        "titleLength": [
+          {
+            "passed": false,
+            "message": "Title too short: 13 characters",
+            "suggestion": "Aim for 30-60 characters",
+            "severity": "warning"
+          }
+        ],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
+        "keywordInTitle": [],
+        "keywordInSlug": [],
+        "slugFormat": [],
+        "keywordDensity": [],
+        "headingOrder": [
+          {
+            "passed": true,
+            "message": "No heading structure issues found",
+            "severity": "info"
+          }
+        ],
+        "contentLength": [
+          {
+            "passed": false,
+            "message": "Content too short: 14 words",
+            "suggestion": "Aim for at least 300 words",
+            "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Stewardship\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-10-05\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateContent": [
+          {
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
+          }
+        ],
+        "altText": [
+          {
+            "passed": true,
+            "message": "No images in this post",
+            "severity": "info"
+          }
+        ],
+        "imageFileNames": [
+          {
+            "passed": true,
+            "message": "All images have good file names",
+            "severity": "info"
+          }
+        ],
+        "brokenLinks": [
+          {
+            "passed": true,
+            "message": "No broken internal links found",
+            "severity": "info"
+          }
+        ],
+        "nakedLinks": [
+          {
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
+          }
+        ],
+        "readingLevel": [
+          {
+            "passed": true,
+            "message": "Good reading level: 1.5 (Very easy to read)",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No potentially broken links found",
+            "severity": "info"
+          }
+        ],
+        "potentiallyBrokenEmbeds": [],
+        "externalBrokenLinks": [
+          {
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
+          }
+        ]
+      },
+      "overallScore": 77.07142857142857,
+      "issuesCount": 0,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -803,7 +1452,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -819,8 +1475,22 @@
           {
             "passed": false,
             "message": "Content too short: 10 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Speed\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-26\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -881,9 +1551,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -898,7 +1568,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -914,8 +1591,22 @@
           {
             "passed": false,
             "message": "Content too short: 40 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Sleep\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-24\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -976,9 +1667,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -993,7 +1684,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1009,8 +1707,22 @@
           {
             "passed": false,
             "message": "Content too short: 24 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Sanity\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-08\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -1071,9 +1783,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -1088,7 +1800,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1104,8 +1823,22 @@
           {
             "passed": false,
             "message": "Content too short: 24 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Rights\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-25\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -1166,9 +1899,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -1183,7 +1916,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1199,8 +1939,22 @@
           {
             "passed": false,
             "message": "Content too short: 5 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Promises\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-01\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -1261,9 +2015,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -1278,7 +2032,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1294,8 +2055,22 @@
           {
             "passed": false,
             "message": "Content too short: 10 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Peace\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-20\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -1356,9 +2131,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -1373,7 +2148,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1389,8 +2171,22 @@
           {
             "passed": false,
             "message": "Content too short: 7 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Patience\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-29\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -1451,9 +2247,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -1468,7 +2264,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1484,8 +2287,22 @@
           {
             "passed": false,
             "message": "Content too short: 64 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Modularity\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-31\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -1546,9 +2363,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -1563,7 +2380,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1579,8 +2403,22 @@
           {
             "passed": false,
             "message": "Content too short: 8 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Mercy\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-16\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -1641,9 +2479,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -1658,7 +2496,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1674,8 +2519,22 @@
           {
             "passed": false,
             "message": "Content too short: 8 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Masculinity\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-10\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -1736,9 +2595,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -1753,7 +2612,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1769,8 +2635,22 @@
           {
             "passed": false,
             "message": "Content too short: 40 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Love\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-14\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -1831,9 +2711,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -1848,7 +2728,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1864,8 +2751,22 @@
           {
             "passed": false,
             "message": "Content too short: 23 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Life\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-17\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -1926,9 +2827,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -1943,7 +2844,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1959,8 +2867,22 @@
           {
             "passed": false,
             "message": "Content too short: 18 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Liberty\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-18\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -2021,9 +2943,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -2038,7 +2960,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2054,8 +2983,22 @@
           {
             "passed": false,
             "message": "Content too short: 17 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Kindness\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-04\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -2116,9 +3059,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -2133,7 +3076,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2149,8 +3099,22 @@
           {
             "passed": false,
             "message": "Content too short: 9 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Journey\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-07\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -2211,9 +3175,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -2228,7 +3192,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2244,8 +3215,22 @@
           {
             "passed": false,
             "message": "Content too short: 35 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Instincts\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-25\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -2306,9 +3291,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -2323,7 +3308,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2339,8 +3331,22 @@
           {
             "passed": false,
             "message": "Content too short: 36 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Imitation\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-22\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -2401,9 +3407,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -2418,7 +3424,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2434,8 +3447,22 @@
           {
             "passed": false,
             "message": "Content too short: 51 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Hyperfixation\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-23\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -2496,9 +3523,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -2513,7 +3540,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2529,8 +3563,28 @@
           {
             "passed": false,
             "message": "Content too short: 42 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": false,
+            "message": "Duplicate title \"How\" found in 2 files",
+            "suggestion": "This title is also used in: <a href=\"#\" data-file-path=\"_how-2.md\" class=\"seo-file-link\">How</a>",
+            "severity": "error",
+            "position": {
+              "line": 1,
+              "searchText": "title",
+              "context": "title: \"How\""
+            }
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-15\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -2592,9 +3646,9 @@
           }
         ]
       },
-      "overallScore": 71.22727272727273,
-      "issuesCount": 0,
-      "warningsCount": 3,
+      "overallScore": 40,
+      "issuesCount": 1,
+      "warningsCount": 4,
       "noticesCount": 0
     },
     {
@@ -2609,7 +3663,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2625,15 +3686,35 @@
           {
             "passed": false,
             "message": "Content too short: 8 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Hope\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-13\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
           {
-            "passed": true,
-            "message": "No duplicate content detected",
-            "severity": "info"
+            "passed": false,
+            "message": "Duplicate content detected in paragraph 1",
+            "suggestion": "Similarity: 100.0% with: <a href=\"#\" data-file-path=\"_how-2.md\" class=\"seo-file-link\">How</a> (100.0%)",
+            "severity": "error",
+            "position": {
+              "line": 5,
+              "searchText": "Hope is [faith](/faith) of something better to com...",
+              "context": "Paragraph 1 content"
+            }
           }
         ],
         "altText": [
@@ -2687,9 +3768,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
-      "issuesCount": 0,
-      "warningsCount": 2,
+      "overallScore": 69.92857142857143,
+      "issuesCount": 1,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -2704,7 +3785,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2720,8 +3808,22 @@
           {
             "passed": false,
             "message": "Content too short: 12 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Grief\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-11\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -2782,9 +3884,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -2799,7 +3901,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2815,8 +3924,22 @@
           {
             "passed": false,
             "message": "Content too short: 8 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Grace\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-15\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -2877,9 +4000,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -2894,7 +4017,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2910,8 +4040,22 @@
           {
             "passed": false,
             "message": "Content too short: 4 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Futurism\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-24\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -2972,9 +4116,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -2989,7 +4133,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3005,8 +4156,22 @@
           {
             "passed": false,
             "message": "Content too short: 38 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Friction\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-19\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -3067,9 +4232,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -3084,7 +4249,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3100,8 +4272,22 @@
           {
             "passed": false,
             "message": "Content too short: 39 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Fragility\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-18\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -3162,9 +4348,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -3179,7 +4365,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3195,8 +4388,22 @@
           {
             "passed": false,
             "message": "Content too short: 32 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Forgiveness\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-03\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -3257,9 +4464,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -3274,7 +4481,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3290,8 +4504,22 @@
           {
             "passed": false,
             "message": "Content too short: 12 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Food\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-28\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -3352,9 +4580,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -3369,7 +4597,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3385,8 +4620,22 @@
           {
             "passed": false,
             "message": "Content too short: 29 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Focus\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-21\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -3447,9 +4696,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -3464,7 +4713,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3480,8 +4736,22 @@
           {
             "passed": false,
             "message": "Content too short: 12 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Finiteness\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-21\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -3542,9 +4812,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -3559,7 +4829,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3574,9 +4851,29 @@
         "contentLength": [
           {
             "passed": false,
-            "message": "Content too short: 9 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "message": "Content too short: 8 words",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Faith\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": false,
+            "message": "Duplicate description \"2025-09-12\" found in 2 files",
+            "suggestion": "This description is also used in: <a href=\"#\" data-file-path=\"_how-2.md\" class=\"seo-file-link\">How</a>",
+            "severity": "error",
+            "position": {
+              "line": 1,
+              "searchText": "date",
+              "context": "description: \"2025-09-12\""
+            }
           }
         ],
         "duplicateContent": [
@@ -3609,21 +4906,15 @@
         ],
         "nakedLinks": [
           {
-            "passed": false,
-            "message": "Naked link found: https://oeifjsoier/sofi.foesim",
-            "suggestion": "Convert to markdown link format: [link text](url)",
-            "severity": "warning",
-            "position": {
-              "line": 7,
-              "searchText": "https://oeifjsoier/sofi.foesim",
-              "context": "Faith is belief in light of the evidence.\n\nhttps://oeifjsoier/sofi.foesim"
-            }
+            "passed": true,
+            "message": "No naked links found",
+            "severity": "info"
           }
         ],
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 7.9 (Easy to read)",
+            "message": "Good reading level: 3.8 (Very easy to read)",
             "severity": "info"
           }
         ],
@@ -3637,19 +4928,13 @@
         "potentiallyBrokenEmbeds": [],
         "externalBrokenLinks": [
           {
-            "passed": false,
-            "message": "External link unreachable: https://oeifjsoier/sofi.foesim",
-            "suggestion": "This link could not be reached. Check if the URL is correct or if the server is down.",
-            "severity": "error",
-            "position": {
-              "line": 7,
-              "searchText": "https://oeifjsoier/sofi.foesim",
-              "context": "Faith is belief in light of the evidence.\n\nhttps://oeifjsoier/sofi.foesim"
-            }
+            "passed": true,
+            "message": "No external links found",
+            "severity": "info"
           }
         ]
       },
-      "overallScore": 62.13636363636363,
+      "overallScore": 69.92857142857143,
       "issuesCount": 1,
       "warningsCount": 3,
       "noticesCount": 0
@@ -3666,7 +4951,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3682,8 +4974,22 @@
           {
             "passed": false,
             "message": "Content too short: 25 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Essentials\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-05\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -3744,9 +5050,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -3761,7 +5067,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3777,8 +5090,22 @@
           {
             "passed": false,
             "message": "Content too short: 5 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Encouragement\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-22\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -3839,9 +5166,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -3856,7 +5183,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3872,8 +5206,22 @@
           {
             "passed": false,
             "message": "Content too short: 12 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Dust\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-09\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -3934,9 +5282,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -3951,7 +5299,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3967,8 +5322,22 @@
           {
             "passed": false,
             "message": "Content too short: 25 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Creating\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-26\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -4029,9 +5398,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -4046,7 +5415,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -4062,8 +5438,22 @@
           {
             "passed": false,
             "message": "Content too short: 18 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Constraints\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-08-20\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -4124,9 +5514,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -4141,7 +5531,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -4157,8 +5554,22 @@
           {
             "passed": false,
             "message": "Content too short: 5 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Change\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-23\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -4219,9 +5630,9 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -4236,7 +5647,14 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [],
+        "metaDescription": [
+          {
+            "passed": false,
+            "message": "Description too short: 10 characters",
+            "suggestion": "Aim for 120-160 characters",
+            "severity": "warning"
+          }
+        ],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -4252,8 +5670,22 @@
           {
             "passed": false,
             "message": "Content too short: 25 words",
-            "suggestion": "Aim for at least 300 words for better SEO",
+            "suggestion": "Aim for at least 300 words",
             "severity": "warning"
+          }
+        ],
+        "duplicateTitles": [
+          {
+            "passed": true,
+            "message": "Unique title: \"Ambition\"",
+            "severity": "info"
+          }
+        ],
+        "duplicateDescriptions": [
+          {
+            "passed": true,
+            "message": "Unique description: \"2025-09-02\"",
+            "severity": "info"
           }
         ],
         "duplicateContent": [
@@ -4314,11 +5746,13 @@
           }
         ]
       },
-      "overallScore": 80.81818181818181,
+      "overallScore": 77.07142857142857,
       "issuesCount": 0,
-      "warningsCount": 2,
+      "warningsCount": 3,
       "noticesCount": 0
     }
   ],
-  "lastScanTimestamp": 1759729051967
+  "lastScanTimestamp": 1759785720917,
+  "checkDuplicateTitles": false,
+  "checkDuplicateDescriptions": false
 }

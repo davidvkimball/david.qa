@@ -6,7 +6,8 @@
     "hide-tabs-icon-mobile",
     "hide-longpress-flair-mobile",
     "custom-draggable-top-area-windows",
-    "hide-sync-icon-mobile"
+    "hide-sync-icon-mobile",
+    "swap-new-tab-icon-with-home-mobile"
   ],
   "baseFontSize": 16
 }
