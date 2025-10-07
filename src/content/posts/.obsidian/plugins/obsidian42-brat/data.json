@@ -1,20 +1,20 @@
 {
   "pluginList": [
+    "davidvkimball/obsidian-property-over-file-name",
     "davidvkimball/obsidian-astro-composer",
-    "davidvkimball/obsidian-disable-tabs",
-    "davidvkimball/obsidian-property-over-filename"
+    "davidvkimball/obsidian-disable-tabs"
   ],
   "pluginSubListFrozenVersion": [
+    {
+      "repo": "davidvkimball/obsidian-property-over-file-name",
+      "version": "latest"
+    },
     {
       "repo": "davidvkimball/obsidian-astro-composer",
       "version": "latest"
     },
     {
       "repo": "davidvkimball/obsidian-disable-tabs",
-      "version": "latest"
-    },
-    {
-      "repo": "davidvkimball/obsidian-property-over-filename",
       "version": "latest"
     }
   ],

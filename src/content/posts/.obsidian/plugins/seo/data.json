@@ -1,8 +1,8 @@
 {
   "scanDirectories": "",
-  "ignoreUnderscoreFiles": false,
+  "ignoreUnderscoreFiles": true,
   "keywordProperty": "",
-  "descriptionProperty": "date",
+  "descriptionProperty": "",
   "titleProperty": "title",
   "useFilenameAsTitle": false,
   "slugProperty": "",
@@ -32,487 +32,6 @@
   "duplicateThreshold": 80,
   "cachedGlobalResults": [
     {
-      "file": "_how-2.md",
-      "displayName": "How",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 3 characters",
-            "suggestion": "Aim for 30-60 characters",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 8 words",
-            "suggestion": "Aim for at least 300 words",
-            "severity": "warning"
-          }
-        ],
-        "duplicateTitles": [
-          {
-            "passed": false,
-            "message": "Duplicate title \"How\" found in 2 files",
-            "suggestion": "This title is also used in: <a href=\"#\" data-file-path=\"how.md\" class=\"seo-file-link\">How</a>",
-            "severity": "error",
-            "position": {
-              "line": 1,
-              "searchText": "title",
-              "context": "title: \"How\""
-            }
-          }
-        ],
-        "duplicateDescriptions": [
-          {
-            "passed": false,
-            "message": "Duplicate description \"2025-09-12\" found in 2 files",
-            "suggestion": "This description is also used in: <a href=\"#\" data-file-path=\"faith.md\" class=\"seo-file-link\">Faith</a>",
-            "severity": "error",
-            "position": {
-              "line": 1,
-              "searchText": "date",
-              "context": "description: \"2025-09-12\""
-            }
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": false,
-            "message": "Duplicate content detected in paragraph 1",
-            "suggestion": "Similarity: 100.0% with: <a href=\"#\" data-file-path=\"hope.md\" class=\"seo-file-link\">Hope</a> (100.0%)",
-            "severity": "error",
-            "position": {
-              "line": 5,
-              "searchText": "Hope is [faith](/faith) of something better to com...",
-              "context": "Paragraph 1 content"
-            }
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageFileNames": [
-          {
-            "passed": true,
-            "message": "All images have good file names",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken internal links found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 5.2 (Very easy to read)",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenEmbeds": [],
-        "externalBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No external links found",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 40,
-      "issuesCount": 3,
-      "warningsCount": 3,
-      "noticesCount": 0
-    },
-    {
-      "file": "_formatting-reference.md",
-      "displayName": "Formatting Reference",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 20 characters",
-            "suggestion": "Aim for 30-60 characters",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "Heading structure is correct",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": true,
-            "message": "Good content length: 332 words",
-            "severity": "info"
-          }
-        ],
-        "duplicateTitles": [
-          {
-            "passed": true,
-            "message": "Unique title: \"Formatting Reference\"",
-            "severity": "info"
-          }
-        ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-07-01\"",
-            "severity": "info"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No duplicate content detected",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "All images have alt text",
-            "severity": "info"
-          }
-        ],
-        "imageFileNames": [
-          {
-            "passed": true,
-            "message": "All images have good file names",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken internal links found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 5.5 (Very easy to read)",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenEmbeds": [],
-        "externalBrokenLinks": [
-          {
-            "passed": true,
-            "message": "Found 2 external link(s), all appear to resolve and are working",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 84.71428571428571,
-      "issuesCount": 0,
-      "warningsCount": 2,
-      "noticesCount": 0
-    },
-    {
-      "file": "_big-test.md",
-      "displayName": "Big Test",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 10 characters",
-            "suggestion": "Aim for 30-60 characters",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "No heading structure issues found",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 12 words",
-            "suggestion": "Aim for at least 300 words",
-            "severity": "warning"
-          }
-        ],
-        "duplicateTitles": [
-          {
-            "passed": true,
-            "message": "Unique title: \"Big Test\"",
-            "severity": "info"
-          }
-        ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-10-06\"",
-            "severity": "info"
-          }
-        ],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No duplicate content detected",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageFileNames": [
-          {
-            "passed": true,
-            "message": "All images have good file names",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": true,
-            "message": "No broken internal links found",
-            "severity": "info"
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: -0.5 (Very easy to read)",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenEmbeds": [],
-        "externalBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No external links found",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 77.07142857142857,
-      "issuesCount": 0,
-      "warningsCount": 3,
-      "noticesCount": 0
-    },
-    {
-      "file": "_astro-theme-guide.md",
-      "displayName": "Astro Theme Guide",
-      "checks": {
-        "titleLength": [
-          {
-            "passed": false,
-            "message": "Title too short: 17 characters",
-            "suggestion": "Aim for 30-60 characters",
-            "severity": "warning"
-          }
-        ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "No date found in frontmatter",
-            "suggestion": "Add date to frontmatter",
-            "severity": "warning"
-          }
-        ],
-        "keywordInTitle": [],
-        "keywordInSlug": [],
-        "slugFormat": [],
-        "keywordDensity": [],
-        "headingOrder": [
-          {
-            "passed": true,
-            "message": "Heading structure is correct",
-            "severity": "info"
-          }
-        ],
-        "contentLength": [
-          {
-            "passed": false,
-            "message": "Content too short: 152 words",
-            "suggestion": "Aim for at least 300 words",
-            "severity": "warning"
-          }
-        ],
-        "duplicateTitles": [
-          {
-            "passed": true,
-            "message": "Unique title: \"Astro Theme Guide\"",
-            "severity": "info"
-          }
-        ],
-        "duplicateDescriptions": [],
-        "duplicateContent": [
-          {
-            "passed": true,
-            "message": "No duplicate content detected",
-            "severity": "info"
-          }
-        ],
-        "altText": [
-          {
-            "passed": true,
-            "message": "No images in this post",
-            "severity": "info"
-          }
-        ],
-        "imageFileNames": [
-          {
-            "passed": true,
-            "message": "All images have good file names",
-            "severity": "info"
-          }
-        ],
-        "brokenLinks": [
-          {
-            "passed": false,
-            "message": "Broken internal link: MDX Example",
-            "suggestion": "Check if the file \"_mdx-example.mdx.md\" exists or update the link",
-            "severity": "error",
-            "position": {
-              "line": 10,
-              "searchText": "[[_mdx-example.mdx|MDX Example]]",
-              "context": "\n- [[_formatting-reference|Formatting Reference]]: see markdown, embedded, and other formatting examples \n- [[_mdx-example.mdx|MDX Example]]: mdx file example\n\n---"
-            }
-          }
-        ],
-        "nakedLinks": [
-          {
-            "passed": true,
-            "message": "No naked links found",
-            "severity": "info"
-          }
-        ],
-        "readingLevel": [
-          {
-            "passed": true,
-            "message": "Good reading level: 7.8 (Easy to read)",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenLinks": [
-          {
-            "passed": true,
-            "message": "No potentially broken links found",
-            "severity": "info"
-          }
-        ],
-        "potentiallyBrokenEmbeds": [],
-        "externalBrokenLinks": [
-          {
-            "passed": true,
-            "message": "Found 2 external link(s), all appear to resolve and are working",
-            "severity": "info"
-          }
-        ]
-      },
-      "overallScore": 67.73076923076923,
-      "issuesCount": 1,
-      "warningsCount": 3,
-      "noticesCount": 0
-    },
-    {
       "file": "work.md",
       "displayName": "Work",
       "checks": {
@@ -524,14 +43,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -558,13 +70,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-06\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -623,9 +129,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -640,14 +146,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -674,13 +173,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-27\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -739,9 +232,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -756,14 +249,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -790,13 +276,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-14\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -855,9 +335,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -872,14 +352,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -906,13 +379,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-16\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -971,9 +438,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -988,14 +455,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1022,13 +482,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-17\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -1087,9 +541,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -1104,14 +558,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1138,13 +585,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-19\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -1203,9 +644,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -1220,14 +661,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1254,13 +688,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-30\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -1319,9 +747,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -1336,14 +764,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1370,13 +791,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-10-05\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -1435,9 +850,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -1452,14 +867,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1486,13 +894,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-26\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -1551,9 +953,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -1568,14 +970,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1602,13 +997,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-24\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -1667,9 +1056,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -1684,14 +1073,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1718,13 +1100,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-08\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -1783,9 +1159,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -1800,14 +1176,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1834,13 +1203,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-25\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -1899,9 +1262,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -1916,14 +1279,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -1950,13 +1306,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-01\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -2015,9 +1365,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -2032,14 +1382,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2066,13 +1409,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-20\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -2131,9 +1468,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -2148,14 +1485,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2182,13 +1512,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-29\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -2247,9 +1571,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -2264,14 +1588,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2298,13 +1615,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-31\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -2363,9 +1674,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -2380,14 +1691,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2414,13 +1718,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-16\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -2479,9 +1777,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -2496,14 +1794,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2530,13 +1821,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-10\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -2595,9 +1880,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -2612,14 +1897,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2646,13 +1924,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-14\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -2711,9 +1983,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -2728,14 +2000,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2762,13 +2027,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-17\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -2827,9 +2086,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -2844,14 +2103,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2878,13 +2130,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-18\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -2943,9 +2189,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -2960,14 +2206,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -2994,13 +2233,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-04\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -3059,9 +2292,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -3076,14 +2309,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3110,13 +2336,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-07\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -3175,9 +2395,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -3192,14 +2412,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3226,13 +2439,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-25\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -3291,9 +2498,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -3308,14 +2515,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3342,13 +2542,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-22\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -3407,9 +2601,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -3424,14 +2618,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3458,13 +2645,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-23\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -3523,9 +2704,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -3540,14 +2721,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3569,24 +2743,12 @@
         ],
         "duplicateTitles": [
           {
-            "passed": false,
-            "message": "Duplicate title \"How\" found in 2 files",
-            "suggestion": "This title is also used in: <a href=\"#\" data-file-path=\"_how-2.md\" class=\"seo-file-link\">How</a>",
-            "severity": "error",
-            "position": {
-              "line": 1,
-              "searchText": "title",
-              "context": "title: \"How\""
-            }
-          }
-        ],
-        "duplicateDescriptions": [
-          {
             "passed": true,
-            "message": "Unique description: \"2025-08-15\"",
+            "message": "Unique title: \"How\"",
             "severity": "info"
           }
         ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -3646,9 +2808,9 @@
           }
         ]
       },
-      "overallScore": 40,
-      "issuesCount": 1,
-      "warningsCount": 4,
+      "overallScore": 73.5,
+      "issuesCount": 0,
+      "warningsCount": 3,
       "noticesCount": 0
     },
     {
@@ -3663,14 +2825,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3697,24 +2852,12 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-13\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
-            "passed": false,
-            "message": "Duplicate content detected in paragraph 1",
-            "suggestion": "Similarity: 100.0% with: <a href=\"#\" data-file-path=\"_how-2.md\" class=\"seo-file-link\">How</a> (100.0%)",
-            "severity": "error",
-            "position": {
-              "line": 5,
-              "searchText": "Hope is [faith](/faith) of something better to com...",
-              "context": "Paragraph 1 content"
-            }
+            "passed": true,
+            "message": "No duplicate content detected",
+            "severity": "info"
           }
         ],
         "altText": [
@@ -3768,9 +2911,9 @@
           }
         ]
       },
-      "overallScore": 69.92857142857143,
-      "issuesCount": 1,
-      "warningsCount": 3,
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -3785,14 +2928,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3819,13 +2955,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-11\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -3884,9 +3014,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -3901,14 +3031,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -3935,13 +3058,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-15\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -4000,9 +3117,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -4017,14 +3134,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -4051,13 +3161,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-24\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -4116,9 +3220,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -4133,14 +3237,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -4167,13 +3264,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-19\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -4232,9 +3323,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -4249,14 +3340,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -4283,13 +3367,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-18\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -4348,9 +3426,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -4365,14 +3443,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -4399,13 +3470,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-03\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -4464,9 +3529,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -4481,14 +3546,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -4515,13 +3573,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-28\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -4580,9 +3632,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -4597,14 +3649,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -4631,13 +3676,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-21\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -4696,9 +3735,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -4713,14 +3752,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -4747,13 +3779,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-21\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -4812,9 +3838,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -4829,14 +3855,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -4863,19 +3882,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": false,
-            "message": "Duplicate description \"2025-09-12\" found in 2 files",
-            "suggestion": "This description is also used in: <a href=\"#\" data-file-path=\"_how-2.md\" class=\"seo-file-link\">How</a>",
-            "severity": "error",
-            "position": {
-              "line": 1,
-              "searchText": "date",
-              "context": "description: \"2025-09-12\""
-            }
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -4934,9 +3941,9 @@
           }
         ]
       },
-      "overallScore": 69.92857142857143,
-      "issuesCount": 1,
-      "warningsCount": 3,
+      "overallScore": 82.33333333333333,
+      "issuesCount": 0,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -4951,14 +3958,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -4973,7 +3973,7 @@
         "contentLength": [
           {
             "passed": false,
-            "message": "Content too short: 25 words",
+            "message": "Content too short: 24 words",
             "suggestion": "Aim for at least 300 words",
             "severity": "warning"
           }
@@ -4985,13 +3985,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-05\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -5002,7 +3996,7 @@
         "altText": [
           {
             "passed": true,
-            "message": "All images have alt text",
+            "message": "No images in this post",
             "severity": "info"
           }
         ],
@@ -5030,7 +4024,7 @@
         "readingLevel": [
           {
             "passed": true,
-            "message": "Good reading level: 10.2 (Moderately easy to read)",
+            "message": "Good reading level: 8.4 (Easy to read)",
             "severity": "info"
           }
         ],
@@ -5045,14 +4039,14 @@
         "externalBrokenLinks": [
           {
             "passed": true,
-            "message": "Found 1 external link(s), all appear to resolve and are working",
+            "message": "No external links found",
             "severity": "info"
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -5067,14 +4061,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -5101,13 +4088,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-22\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -5166,9 +4147,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -5183,14 +4164,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -5217,13 +4191,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-09\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -5282,9 +4250,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -5299,14 +4267,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -5333,13 +4294,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-26\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -5398,9 +4353,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -5415,14 +4370,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -5449,13 +4397,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-08-20\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -5514,9 +4456,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -5531,14 +4473,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -5565,13 +4500,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-23\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -5630,9 +4559,9 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     },
     {
@@ -5647,14 +4576,7 @@
             "severity": "warning"
           }
         ],
-        "metaDescription": [
-          {
-            "passed": false,
-            "message": "Description too short: 10 characters",
-            "suggestion": "Aim for 120-160 characters",
-            "severity": "warning"
-          }
-        ],
+        "metaDescription": [],
         "keywordInTitle": [],
         "keywordInSlug": [],
         "slugFormat": [],
@@ -5681,13 +4603,7 @@
             "severity": "info"
           }
         ],
-        "duplicateDescriptions": [
-          {
-            "passed": true,
-            "message": "Unique description: \"2025-09-02\"",
-            "severity": "info"
-          }
-        ],
+        "duplicateDescriptions": [],
         "duplicateContent": [
           {
             "passed": true,
@@ -5746,13 +4662,13 @@
           }
         ]
       },
-      "overallScore": 77.07142857142857,
+      "overallScore": 82.33333333333333,
       "issuesCount": 0,
-      "warningsCount": 3,
+      "warningsCount": 2,
       "noticesCount": 0
     }
   ],
-  "lastScanTimestamp": 1759785720917,
+  "lastScanTimestamp": 1759788743217,
   "checkDuplicateTitles": false,
   "checkDuplicateDescriptions": false
 }

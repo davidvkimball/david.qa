@@ -11,7 +11,7 @@
   "obsidian42-brat",
   "disable-tabs",
   "astro-composer",
-  "property-over-filename",
   "obsidian-prozen",
-  "seo"
+  "seo",
+  "property-over-file-name"
 ]
