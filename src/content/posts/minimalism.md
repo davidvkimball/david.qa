@@ -4,4 +4,4 @@ date: 2025-10-07
 ---
 Doing more with less.
 
-More [focus](focus.md), less [friction](friction.md).
+More [focus](/focus/), less [friction](/friction/).
