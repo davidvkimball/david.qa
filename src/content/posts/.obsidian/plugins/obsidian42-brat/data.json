@@ -1,10 +1,15 @@
 {
   "pluginList": [
+    "greetclammy/dynamic-views",
     "davidvkimball/obsidian-property-over-file-name",
     "davidvkimball/obsidian-astro-composer",
     "davidvkimball/obsidian-disable-tabs"
   ],
   "pluginSubListFrozenVersion": [
+    {
+      "repo": "greetclammy/dynamic-views",
+      "version": "latest"
+    },
     {
       "repo": "davidvkimball/obsidian-property-over-file-name",
       "version": "latest"

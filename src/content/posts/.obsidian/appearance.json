@@ -9,5 +9,6 @@
     "hide-sync-icon-mobile",
     "swap-new-tab-icon-with-home-mobile"
   ],
-  "baseFontSize": 16
+  "baseFontSize": 16,
+  "accentColor": ""
 }

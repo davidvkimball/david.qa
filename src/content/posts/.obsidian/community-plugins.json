@@ -2,7 +2,6 @@
   "new-tab-default-page",
   "homepage",
   "insert-unsplash-image",
-  "mdx-as-md-obsidian",
   "obsidian-minimal-settings",
   "obsidian-hider",
   "obsidian-style-settings",
@@ -13,5 +12,7 @@
   "astro-composer",
   "obsidian-prozen",
   "seo",
-  "property-over-file-name"
+  "property-over-file-name",
+  "mdx-as-md-obsidian",
+  "dynamic-views"
 ]

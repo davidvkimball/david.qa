@@ -20,6 +20,8 @@ views:
         direction: DESC
     cardSize: 260
     imageAspectRatio: 0.4
+    columnSize:
+      note.title: 187
   - type: cards
     name: Drafts
     filters:
@@ -34,3 +36,8 @@ views:
         direction: DESC
     cardSize: 260
     imageAspectRatio: 0.4
+  - type: dynamic-views-grid
+    name: Dynamic View
+    sort:
+      - property: date
+        direction: DESC
