@@ -1,11 +1,16 @@
 {
   "pluginList": [
+    "davidvkimball/obsidian-bases-cms",
     "greetclammy/dynamic-views",
     "davidvkimball/obsidian-property-over-file-name",
     "davidvkimball/obsidian-astro-composer",
     "davidvkimball/obsidian-disable-tabs"
   ],
   "pluginSubListFrozenVersion": [
+    {
+      "repo": "davidvkimball/obsidian-bases-cms",
+      "version": "latest"
+    },
     {
       "repo": "greetclammy/dynamic-views",
       "version": "latest"
