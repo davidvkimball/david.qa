@@ -9,6 +9,11 @@ properties:
   note.date:
     displayName: Date
 views:
+  - type: bases-cms
+    name: Bases CMS
+    showDraftStatus: true
+    draftStatusUseFilenamePrefix: true
+    titleProperty: note.title
   - type: cards
     name: All Posts
     order:
@@ -42,8 +47,3 @@ views:
       - property: date
         direction: DESC
     titleProperty: title
-  - type: bases-cms
-    name: Bases CMS
-    showDraftStatus: true
-    draftStatusUseFilenamePrefix: true
-    titleProperty: note.title
