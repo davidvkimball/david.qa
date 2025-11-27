@@ -37,11 +37,13 @@ __export(style_settings_exports, {
   getMinGridColumns: () => getMinGridColumns,
   getMinMasonryColumns: () => getMinMasonryColumns,
   getTagStyle: () => getTagStyle,
+  getZoomSensitivity: () => getZoomSensitivity,
   hasCardBackground: () => hasCardBackground,
   shouldHideEmptyProperties: () => shouldHideEmptyProperties,
   shouldHideMissingProperties: () => shouldHideMissingProperties,
   shouldShowOlderDateOnly: () => shouldShowOlderDateOnly,
   shouldShowRecentTimeOnly: () => shouldShowRecentTimeOnly,
+  showTagHashPrefix: () => showTagHashPrefix,
   showTimestampIcon: () => showTimestampIcon
 });
 function getCSSVariable(name, defaultValue) {
@@ -77,6 +79,9 @@ function getTagStyle() {
     return "theme";
   return "plain";
 }
+function showTagHashPrefix() {
+  return hasBodyClass("dynamic-views-show-tag-hash");
+}
 function getCardSpacing() {
   return getCSSVariableAsNumber("--dynamic-views-card-spacing", 12);
 }
@@ -87,14 +92,18 @@ function shouldShowOlderDateOnly() {
   return hasBodyClass("dynamic-views-timestamp-older-date-only");
 }
 function getListSeparator() {
-  let value = getComputedStyle(document.body).getPropertyValue("--dynamic-views-list-separator");
+  let value = getComputedStyle(document.body).getPropertyValue(
+    "--dynamic-views-list-separator"
+  );
   if (value.startsWith('"') && value.endsWith('"') || value.startsWith("'") && value.endsWith("'")) {
     value = value.slice(1, -1);
   }
   return value || ", ";
 }
 function getEmptyValueMarker() {
-  let value = getComputedStyle(document.body).getPropertyValue("--dynamic-views-empty-value-marker");
+  let value = getComputedStyle(document.body).getPropertyValue(
+    "--dynamic-views-empty-value-marker"
+  );
   if (value.startsWith('"') && value.endsWith('"') || value.startsWith("'") && value.endsWith("'")) {
     value = value.slice(1, -1);
   }
@@ -106,26 +115,280 @@ function shouldHideMissingProperties() {
 function shouldHideEmptyProperties() {
   return hasBodyClass("dynamic-views-hide-empty-properties");
 }
+function getZoomSensitivity() {
+  return getCSSVariableAsNumber("--dynamic-views-zoom-sensitivity", 0.15);
+}
 function applyCustomColors(cardEl, theme, cache) {
   var _a, _b, _c, _d, _e;
   if ((_a = cache.titleColor) == null ? void 0 : _a[theme]) {
-    cardEl.style.setProperty("--dynamic-views-title-color", cache.titleColor[theme]);
+    cardEl.style.setProperty(
+      "--dynamic-views-title-color",
+      cache.titleColor[theme]
+    );
   }
   if ((_b = cache.snippetColor) == null ? void 0 : _b[theme]) {
-    cardEl.style.setProperty("--dynamic-views-snippet-color", cache.snippetColor[theme]);
+    cardEl.style.setProperty(
+      "--dynamic-views-snippet-color",
+      cache.snippetColor[theme]
+    );
   }
   if ((_c = cache.tagsColor) == null ? void 0 : _c[theme]) {
-    cardEl.style.setProperty("--dynamic-views-tags-color", cache.tagsColor[theme]);
+    cardEl.style.setProperty(
+      "--dynamic-views-tags-color",
+      cache.tagsColor[theme]
+    );
   }
   if ((_d = cache.timestampColor) == null ? void 0 : _d[theme]) {
-    cardEl.style.setProperty("--dynamic-views-timestamp-color", cache.timestampColor[theme]);
+    cardEl.style.setProperty(
+      "--dynamic-views-timestamp-color",
+      cache.timestampColor[theme]
+    );
   }
   if ((_e = cache.metadataColor) == null ? void 0 : _e[theme]) {
-    cardEl.style.setProperty("--dynamic-views-metadata-color", cache.metadataColor[theme]);
+    cardEl.style.setProperty(
+      "--dynamic-views-metadata-color",
+      cache.metadataColor[theme]
+    );
   }
 }
 var init_style_settings = __esm({
   "src/utils/style-settings.ts"() {
+  }
+});
+
+// src/utils/property.ts
+var property_exports = {};
+__export(property_exports, {
+  getAllBasesImagePropertyValues: () => getAllBasesImagePropertyValues,
+  getAllDatacoreImagePropertyValues: () => getAllDatacoreImagePropertyValues,
+  getAllVaultProperties: () => getAllVaultProperties,
+  getFirstBasesDatePropertyValue: () => getFirstBasesDatePropertyValue,
+  getFirstBasesPropertyValue: () => getFirstBasesPropertyValue,
+  getFirstDatacoreDatePropertyValue: () => getFirstDatacoreDatePropertyValue,
+  getFirstDatacorePropertyValue: () => getFirstDatacorePropertyValue,
+  getPropertyLabel: () => getPropertyLabel,
+  isValidUri: () => isValidUri
+});
+function getFirstBasesPropertyValue(app, entry, propertyString) {
+  if (!propertyString || !propertyString.trim())
+    return null;
+  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
+  for (const prop of properties) {
+    let value = entry.getValue(prop);
+    if (value && typeof value === "object" && "icon" in value && !("data" in value)) {
+      value = entry.getValue(`formula.${prop}`);
+    }
+    if (value && typeof value === "object" && "data" in value) {
+      return value;
+    }
+  }
+  return null;
+}
+function getFirstDatacorePropertyValue(page, propertyString) {
+  if (!propertyString || !propertyString.trim())
+    return null;
+  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
+  for (const prop of properties) {
+    const value = page.value(prop);
+    if (value !== null && value !== void 0) {
+      return value;
+    }
+  }
+  return null;
+}
+function getFirstBasesDatePropertyValue(app, entry, propertyString) {
+  if (!propertyString || !propertyString.trim())
+    return null;
+  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
+  for (const prop of properties) {
+    let value = entry.getValue(prop);
+    if (value && typeof value === "object" && "icon" in value && !("data" in value) && !("date" in value)) {
+      value = entry.getValue(`formula.${prop}`);
+    }
+    if (value && typeof value === "object" && "date" in value && value.date instanceof Date) {
+      return value;
+    }
+  }
+  return null;
+}
+function getFirstDatacoreDatePropertyValue(page, propertyString) {
+  if (!propertyString || !propertyString.trim())
+    return null;
+  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
+  for (const prop of properties) {
+    const value = page.value(prop);
+    if (value && typeof value === "object" && "toMillis" in value) {
+      return value;
+    }
+  }
+  return null;
+}
+function getAllBasesImagePropertyValues(app, entry, propertyString) {
+  if (!propertyString || !propertyString.trim())
+    return [];
+  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
+  const allImages = [];
+  for (const prop of properties) {
+    let value = entry.getValue(prop);
+    if (value && typeof value === "object" && "icon" in value && !("data" in value)) {
+      value = entry.getValue(`formula.${prop}`);
+    }
+    if (!value || !(typeof value === "object" && "data" in value))
+      continue;
+    const data = value.data;
+    if (data == null || data === "")
+      continue;
+    if (Array.isArray(data)) {
+      for (const item of data) {
+        if (typeof item === "string" || typeof item === "number") {
+          const str = String(item);
+          if (str.trim())
+            allImages.push(str);
+        }
+      }
+    } else if (typeof data === "string" || typeof data === "number") {
+      const str = String(data);
+      if (str.trim())
+        allImages.push(str);
+    }
+  }
+  return allImages;
+}
+function getAllDatacoreImagePropertyValues(page, propertyString) {
+  if (!propertyString || !propertyString.trim())
+    return [];
+  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
+  const allImages = [];
+  for (const prop of properties) {
+    const value = page.value(prop);
+    if (value === null || value === void 0)
+      continue;
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        if (typeof item === "object" && item !== null && "path" in item) {
+          const pathValue = item.path;
+          if (typeof pathValue === "string" || typeof pathValue === "number") {
+            const str = String(pathValue).trim();
+            if (str)
+              allImages.push(str);
+          }
+        } else if (typeof item === "string" || typeof item === "number") {
+          const str = String(item).trim();
+          if (str)
+            allImages.push(str);
+        }
+      }
+    } else {
+      if (typeof value === "object" && value !== null && "path" in value) {
+        const pathValue = value.path;
+        if (typeof pathValue === "string" || typeof pathValue === "number") {
+          const str = String(pathValue).trim();
+          if (str)
+            allImages.push(str);
+        }
+      } else if (typeof value === "string" || typeof value === "number") {
+        const str = String(value).trim();
+        if (str)
+          allImages.push(str);
+      }
+    }
+  }
+  return allImages;
+}
+function getPropertyLabel(propertyName) {
+  if (!propertyName || propertyName === "")
+    return "";
+  const mappedLabel = PROPERTY_LABEL_MAP[propertyName.toLowerCase()];
+  if (mappedLabel)
+    return mappedLabel;
+  if (propertyName.startsWith("note.")) {
+    return propertyName.slice(5);
+  }
+  return propertyName;
+}
+function getAllVaultProperties(app) {
+  const properties = /* @__PURE__ */ new Set();
+  properties.add("file.path");
+  properties.add("file.tags");
+  properties.add("file.mtime");
+  properties.add("file.ctime");
+  properties.add("file path");
+  properties.add("file tags");
+  properties.add("created time");
+  properties.add("modified time");
+  const metadataCache = app.metadataCache;
+  if (typeof metadataCache.getAllPropertyInfos === "function") {
+    const allPropertyInfos = metadataCache.getAllPropertyInfos();
+    if (allPropertyInfos) {
+      for (const [propertyName] of Object.entries(allPropertyInfos)) {
+        properties.add(propertyName);
+      }
+    }
+  }
+  return Array.from(properties).sort((a, b) => {
+    const aBasesFormat = a.startsWith("file.");
+    const bBasesFormat = b.startsWith("file.");
+    const aHumanFormat = (a.startsWith("file ") || a.includes(" time")) && !aBasesFormat;
+    const bHumanFormat = (b.startsWith("file ") || b.includes(" time")) && !bBasesFormat;
+    if (aBasesFormat && !bBasesFormat)
+      return -1;
+    if (!aBasesFormat && bBasesFormat)
+      return 1;
+    if (aHumanFormat && !bHumanFormat)
+      return -1;
+    if (!aHumanFormat && bHumanFormat)
+      return 1;
+    return a.localeCompare(b);
+  });
+}
+function isValidUri(value) {
+  if (!value || typeof value !== "string")
+    return false;
+  const trimmed = value.trim();
+  if (trimmed.length < 5 || trimmed.length > 2048)
+    return false;
+  if (!trimmed.includes("://"))
+    return false;
+  const uriPattern = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\/.+$/;
+  return uriPattern.test(trimmed);
+}
+var PROPERTY_LABEL_MAP;
+var init_property = __esm({
+  "src/utils/property.ts"() {
+    PROPERTY_LABEL_MAP = {
+      "file.file": "file",
+      file: "file",
+      "file.name": "file name",
+      "file name": "file name",
+      "file.basename": "file base name",
+      "file base name": "file base name",
+      "file.ext": "file extension",
+      "file.extension": "file extension",
+      "file extension": "file extension",
+      "file.backlinks": "file backlinks",
+      "file backlinks": "file backlinks",
+      "file.ctime": "created time",
+      "created time": "created time",
+      "file.embeds": "file embeds",
+      "file embeds": "file embeds",
+      "file.fullname": "file full name",
+      "file full name": "file full name",
+      "file.links": "file links",
+      "file links": "file links",
+      "file.path": "file path",
+      path: "file path",
+      "file path": "file path",
+      "file.size": "file size",
+      "file size": "file size",
+      "file.tags": "file tags",
+      "file tags": "file tags",
+      tags: "tags",
+      "note.tags": "tags",
+      "file.mtime": "modified time",
+      "modified time": "modified time",
+      "file.folder": "folder",
+      folder: "folder"
+    };
   }
 });
 
@@ -4064,21 +4327,45 @@ __export(main_exports, {
   default: () => DynamicViewsPlugin
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian11 = require("obsidian");
+var import_obsidian13 = require("obsidian");
 
 // src/constants.ts
 var DEFAULT_VIEW_SETTINGS = {
   titleProperty: "",
   descriptionProperty: "",
   imageProperty: "",
+  urlProperty: "",
   propertyDisplay1: "file.tags",
   propertyDisplay2: "",
   propertyDisplay3: "file.path",
   propertyDisplay4: "file.mtime",
+  propertyDisplay5: "",
+  propertyDisplay6: "",
+  propertyDisplay7: "",
+  propertyDisplay8: "",
+  propertyDisplay9: "",
+  propertyDisplay10: "",
+  propertyDisplay11: "",
+  propertyDisplay12: "",
+  propertyDisplay13: "",
+  propertyDisplay14: "",
   propertyLayout12SideBySide: false,
   propertyLayout34SideBySide: true,
+  propertyLayout56SideBySide: false,
+  propertyLayout78SideBySide: false,
+  propertyLayout910SideBySide: false,
+  propertyLayout1112SideBySide: false,
+  propertyLayout1314SideBySide: false,
+  propertyGroup1Position: "bottom",
+  propertyGroup2Position: "bottom",
+  propertyGroup3Position: "bottom",
+  propertyGroup4Position: "bottom",
+  propertyGroup5Position: "bottom",
+  propertyGroup6Position: "bottom",
+  propertyGroup7Position: "bottom",
   propertyLabels: "hide",
   showTitle: true,
+  subtitleProperty: "",
   showTextPreview: true,
   fallbackToContent: true,
   fallbackToEmbeds: "always",
@@ -4093,8 +4380,10 @@ var DEFAULT_SETTINGS = {
   titleProperty: "",
   descriptionProperty: "",
   imageProperty: "",
+  urlProperty: "",
   omitFirstLine: false,
   showTitle: true,
+  subtitleProperty: "",
   showTextPreview: true,
   fallbackToContent: true,
   fallbackToEmbeds: "always",
@@ -4102,8 +4391,30 @@ var DEFAULT_SETTINGS = {
   propertyDisplay2: "",
   propertyDisplay3: "file.path",
   propertyDisplay4: "file.mtime",
+  propertyDisplay5: "",
+  propertyDisplay6: "",
+  propertyDisplay7: "",
+  propertyDisplay8: "",
+  propertyDisplay9: "",
+  propertyDisplay10: "",
+  propertyDisplay11: "",
+  propertyDisplay12: "",
+  propertyDisplay13: "",
+  propertyDisplay14: "",
   propertyLayout12SideBySide: false,
   propertyLayout34SideBySide: true,
+  propertyLayout56SideBySide: false,
+  propertyLayout78SideBySide: false,
+  propertyLayout910SideBySide: false,
+  propertyLayout1112SideBySide: false,
+  propertyLayout1314SideBySide: false,
+  propertyGroup1Position: "bottom",
+  propertyGroup2Position: "bottom",
+  propertyGroup3Position: "bottom",
+  propertyGroup4Position: "bottom",
+  propertyGroup5Position: "bottom",
+  propertyGroup6Position: "bottom",
+  propertyGroup7Position: "bottom",
   propertyLabels: "hide",
   imageFormat: "thumbnail-right",
   coverFitMode: "crop",
@@ -4117,7 +4428,6 @@ var DEFAULT_SETTINGS = {
   openRandomInNewPane: true,
   showShuffleInRibbon: true,
   showRandomInRibbon: true,
-  expandImagesOnClick: "hold",
   smartTimestamp: true,
   createdTimeProperty: "",
   modifiedTimeProperty: "",
@@ -4165,8 +4475,14 @@ var PersistenceManager = class {
     const loadedData = await this.plugin.loadData();
     if (loadedData) {
       this.data = {
-        globalSettings: { ...DEFAULT_SETTINGS, ...loadedData.globalSettings || {} },
-        defaultViewSettings: { ...DEFAULT_VIEW_SETTINGS, ...loadedData.defaultViewSettings || {} },
+        globalSettings: {
+          ...DEFAULT_SETTINGS,
+          ...loadedData.globalSettings || {}
+        },
+        defaultViewSettings: {
+          ...DEFAULT_VIEW_SETTINGS,
+          ...loadedData.defaultViewSettings || {}
+        },
         queryStates: loadedData.queryStates || {},
         viewSettings: loadedData.viewSettings || {}
       };
@@ -4188,7 +4504,10 @@ var PersistenceManager = class {
   }
   async setDefaultViewSettings(settings) {
     const sanitized = sanitizeObject(settings);
-    this.data.defaultViewSettings = { ...this.data.defaultViewSettings, ...sanitized };
+    this.data.defaultViewSettings = {
+      ...this.data.defaultViewSettings,
+      ...sanitized
+    };
     await this.save();
   }
   getUIState(ctime) {
@@ -4202,7 +4521,9 @@ var PersistenceManager = class {
     for (const [k, v] of Object.entries(state)) {
       const key2 = k;
       if (k === "searchQuery" && typeof v === "string") {
-        sanitized[key2] = sanitizeString(v.slice(0, 500));
+        sanitized[key2] = sanitizeString(
+          v.slice(0, 500)
+        );
       } else if (typeof v === "string") {
         sanitized[key2] = sanitizeString(v);
       } else {
@@ -4234,191 +4555,130 @@ var PersistenceManager = class {
 };
 
 // src/components/view.tsx
-var import_obsidian4 = require("obsidian");
+var import_obsidian6 = require("obsidian");
 
 // src/shared/card-renderer.tsx
-var import_obsidian = require("obsidian");
+var import_obsidian3 = require("obsidian");
 init_style_settings();
+init_property();
 
-// src/utils/property.ts
-function getFirstBasesPropertyValue(app, entry, propertyString) {
-  if (!propertyString || !propertyString.trim())
-    return null;
-  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
-  for (const prop of properties) {
-    let value = entry.getValue(prop);
-    if (value && typeof value === "object" && "icon" in value && !("data" in value)) {
-      value = entry.getValue(`formula.${prop}`);
-    }
-    if (value && typeof value === "object" && "data" in value) {
-      return value;
-    }
-  }
-  return null;
+// src/utils/link-parser.ts
+function isWebUrl(url) {
+  return /^https?:\/\//i.test(url);
 }
-function getFirstDatacorePropertyValue(page, propertyString) {
-  if (!propertyString || !propertyString.trim())
-    return null;
-  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
-  for (const prop of properties) {
-    const value = page.value(prop);
-    if (value !== null && value !== void 0) {
-      return value;
-    }
-  }
-  return null;
+function hasUriScheme(url) {
+  return /^[a-z][a-z0-9+.-]*:\/\//i.test(url);
 }
-function getAllBasesImagePropertyValues(app, entry, propertyString) {
-  if (!propertyString || !propertyString.trim())
-    return [];
-  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
-  const allImages = [];
-  for (const prop of properties) {
-    let value = entry.getValue(prop);
-    if (value && typeof value === "object" && "icon" in value && !("data" in value)) {
-      value = entry.getValue(`formula.${prop}`);
+function normalizePath(path) {
+  if (path.startsWith("<") && path.endsWith(">")) {
+    path = path.slice(1, -1);
+  }
+  try {
+    return decodeURIComponent(path);
+  } catch (e) {
+    return path;
+  }
+}
+function stripTrailingPunctuation(url) {
+  const match = url.match(/^(.+?)([.,;:!?]+)$/);
+  if (match) {
+    return [match[1], match[2]];
+  }
+  return [url, ""];
+}
+function findLinksInText(text) {
+  const segments = [];
+  const linkPattern = /!\[\[([^\]|]+)(?:\|([^\]]+))?\]\]|\[\[([^\]|]+)(?:\|([^\]]+))?\]\]|!\[([^\]]*)\]\((?:<([^>]+)>|([^)]+))\)|\[([^\]]+)\]\((?:<([^>]+)>|([^)]+))\)|<([a-z][a-z0-9+.-]*:\/\/[^>]+)>|([a-z][a-z0-9+.-]*:\/\/[^\s<>[\]()]+)/gi;
+  let lastIndex = 0;
+  let match;
+  while ((match = linkPattern.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      segments.push({
+        type: "text",
+        content: text.slice(lastIndex, match.index)
+      });
     }
-    if (!value || !(typeof value === "object" && "data" in value))
-      continue;
-    const data = value.data;
-    if (data == null || data === "")
-      continue;
-    if (Array.isArray(data)) {
-      for (const item of data) {
-        if (typeof item === "string" || typeof item === "number") {
-          const str = String(item);
-          if (str.trim())
-            allImages.push(str);
-        }
+    const rawMatch = match[0];
+    let parsed = null;
+    let actualRaw = rawMatch;
+    if (match[1] !== void 0) {
+      parsed = {
+        type: "internal",
+        url: match[1],
+        caption: match[2] || match[1],
+        isEmbed: true,
+        isWebUrl: false
+      };
+    } else if (match[3] !== void 0) {
+      parsed = {
+        type: "internal",
+        url: match[3],
+        caption: match[4] || match[3],
+        isEmbed: false,
+        isWebUrl: false
+      };
+    } else if (match[5] !== void 0 || match[6] !== void 0 || match[7] !== void 0) {
+      const caption = match[5] || "";
+      const path = normalizePath(match[6] || match[7]);
+      const external = hasUriScheme(path);
+      parsed = {
+        type: external ? "external" : "internal",
+        url: path,
+        caption: caption || path,
+        isEmbed: true,
+        isWebUrl: isWebUrl(path)
+      };
+    } else if (match[8] !== void 0) {
+      const caption = match[8];
+      const path = normalizePath(match[9] || match[10]);
+      const external = hasUriScheme(path);
+      parsed = {
+        type: external ? "external" : "internal",
+        url: path,
+        caption,
+        isEmbed: false,
+        isWebUrl: isWebUrl(path)
+      };
+    } else if (match[11] !== void 0) {
+      const url = match[11];
+      parsed = {
+        type: "external",
+        url,
+        caption: url,
+        isEmbed: false,
+        isWebUrl: isWebUrl(url)
+      };
+    } else if (match[12] !== void 0) {
+      const [cleanUrl, trailing] = stripTrailingPunctuation(match[12]);
+      parsed = {
+        type: "external",
+        url: cleanUrl,
+        caption: cleanUrl,
+        isEmbed: false,
+        isWebUrl: isWebUrl(cleanUrl)
+      };
+      actualRaw = cleanUrl;
+      if (trailing) {
+        segments.push({ type: "link", link: parsed, raw: actualRaw });
+        segments.push({ type: "text", content: trailing });
+        lastIndex = match.index + rawMatch.length;
+        continue;
       }
-    } else if (typeof data === "string" || typeof data === "number") {
-      const str = String(data);
-      if (str.trim())
-        allImages.push(str);
     }
-  }
-  return allImages;
-}
-function getAllDatacoreImagePropertyValues(page, propertyString) {
-  if (!propertyString || !propertyString.trim())
-    return [];
-  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
-  const allImages = [];
-  for (const prop of properties) {
-    const value = page.value(prop);
-    if (value === null || value === void 0)
-      continue;
-    if (Array.isArray(value)) {
-      for (const item of value) {
-        if (typeof item === "object" && item !== null && "path" in item) {
-          const pathValue = item.path;
-          if (typeof pathValue === "string" || typeof pathValue === "number") {
-            const str = String(pathValue).trim();
-            if (str)
-              allImages.push(str);
-          }
-        } else if (typeof item === "string" || typeof item === "number") {
-          const str = String(item).trim();
-          if (str)
-            allImages.push(str);
-        }
-      }
+    if (parsed) {
+      segments.push({ type: "link", link: parsed, raw: actualRaw });
     } else {
-      if (typeof value === "object" && value !== null && "path" in value) {
-        const pathValue = value.path;
-        if (typeof pathValue === "string" || typeof pathValue === "number") {
-          const str = String(pathValue).trim();
-          if (str)
-            allImages.push(str);
-        }
-      } else if (typeof value === "string" || typeof value === "number") {
-        const str = String(value).trim();
-        if (str)
-          allImages.push(str);
-      }
+      segments.push({ type: "text", content: rawMatch });
     }
+    lastIndex = match.index + rawMatch.length;
   }
-  return allImages;
-}
-function getPropertyLabel(propertyName) {
-  if (!propertyName || propertyName === "")
-    return "";
-  const labelMap = {
-    "file.file": "file",
-    "file": "file",
-    "file.name": "file name",
-    "file name": "file name",
-    "file.basename": "file base name",
-    "file base name": "file base name",
-    "file.ext": "file extension",
-    "file.extension": "file extension",
-    "file extension": "file extension",
-    "file.backlinks": "file backlinks",
-    "file backlinks": "file backlinks",
-    "file.ctime": "created time",
-    "created time": "created time",
-    "file.embeds": "file embeds",
-    "file embeds": "file embeds",
-    "file.fullname": "file full name",
-    "file full name": "file full name",
-    "file.links": "file links",
-    "file links": "file links",
-    "file.path": "file path",
-    "path": "file path",
-    "file path": "file path",
-    "file.size": "file size",
-    "file size": "file size",
-    "file.tags": "file tags",
-    "file tags": "file tags",
-    "tags": "tags",
-    "note.tags": "tags",
-    "file.mtime": "modified time",
-    "modified time": "modified time",
-    "file.folder": "folder",
-    "folder": "folder"
-  };
-  const mappedLabel = labelMap[propertyName.toLowerCase()];
-  if (mappedLabel)
-    return mappedLabel;
-  if (propertyName.startsWith("note.")) {
-    return propertyName.slice(5);
+  if (lastIndex < text.length) {
+    segments.push({ type: "text", content: text.slice(lastIndex) });
   }
-  return propertyName;
-}
-function getAllVaultProperties(app) {
-  const properties = /* @__PURE__ */ new Set();
-  properties.add("file.path");
-  properties.add("file.tags");
-  properties.add("file.mtime");
-  properties.add("file.ctime");
-  properties.add("file path");
-  properties.add("file tags");
-  properties.add("created time");
-  properties.add("modified time");
-  const metadataCache = app.metadataCache;
-  if (typeof metadataCache.getAllPropertyInfos === "function") {
-    const allPropertyInfos = metadataCache.getAllPropertyInfos();
-    if (allPropertyInfos) {
-      for (const [propertyName] of Object.entries(allPropertyInfos)) {
-        properties.add(propertyName);
-      }
-    }
+  if (segments.length === 0) {
+    segments.push({ type: "text", content: text });
   }
-  return Array.from(properties).sort((a, b) => {
-    const aBasesFormat = a.startsWith("file.");
-    const bBasesFormat = b.startsWith("file.");
-    const aHumanFormat = (a.startsWith("file ") || a.includes(" time")) && !aBasesFormat;
-    const bHumanFormat = (b.startsWith("file ") || b.includes(" time")) && !bBasesFormat;
-    if (aBasesFormat && !bBasesFormat)
-      return -1;
-    if (!aBasesFormat && bBasesFormat)
-      return 1;
-    if (aHumanFormat && !bHumanFormat)
-      return -1;
-    if (!aHumanFormat && bHumanFormat)
-      return 1;
-    return a.localeCompare(b);
-  });
+  return segments;
 }
 
 // src/utils/image-color.ts
@@ -4478,7 +4738,9 @@ function handleImageLoad(imgEl, imageEmbedContainer, cardEl, onLayoutUpdate) {
   if (imgEl.naturalWidth > 0 && imgEl.naturalHeight > 0) {
     const imgAspect = imgEl.naturalHeight / imgEl.naturalWidth;
     const containerMaxAspect = parseFloat(
-      getComputedStyle(document.body).getPropertyValue("--dynamic-views-image-aspect-ratio") || String(IMAGE_ASPECT_RATIO)
+      getComputedStyle(document.body).getPropertyValue(
+        "--dynamic-views-image-aspect-ratio"
+      ) || String(IMAGE_ASPECT_RATIO)
     );
     if (imgAspect < containerMaxAspect) {
       cardEl.style.setProperty("--actual-aspect-ratio", imgAspect.toString());
@@ -4494,11 +4756,933 @@ function setupImageLoadHandler(imgEl, imageEmbedContainer, cardEl, onLayoutUpdat
   });
 }
 
-// src/shared/card-renderer.tsx
-function renderPropertyContent(propertyName, card, resolvedValue, timeIcon, settings, app) {
-  return renderProperty(propertyName, null, resolvedValue || "", settings, card, app, timeIcon);
+// src/shared/image-zoom-handler.ts
+var import_obsidian2 = require("obsidian");
+
+// node_modules/@panzoom/panzoom/dist/panzoom.es.js
+var __assign = function() {
+  __assign = Object.assign || function __assign2(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+      for (var p in s)
+        if (Object.prototype.hasOwnProperty.call(s, p))
+          t[p] = s[p];
+    }
+    return t;
+  };
+  return __assign.apply(this, arguments);
+};
+if (typeof window !== "undefined") {
+  if (window.NodeList && !NodeList.prototype.forEach) {
+    NodeList.prototype.forEach = Array.prototype.forEach;
+  }
+  if (typeof window.CustomEvent !== "function") {
+    window.CustomEvent = function CustomEvent2(event, params) {
+      params = params || { bubbles: false, cancelable: false, detail: null };
+      var evt = document.createEvent("CustomEvent");
+      evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+      return evt;
+    };
+  }
 }
-function CoverCarousel({ imageArray, updateLayoutRef }) {
+var isIE = typeof document !== "undefined" && !!document.documentMode;
+var divStyle;
+function createStyle() {
+  if (divStyle) {
+    return divStyle;
+  }
+  return divStyle = document.createElement("div").style;
+}
+var prefixes = ["webkit", "moz", "ms"];
+var prefixCache = {};
+function getPrefixedName(name) {
+  if (prefixCache[name]) {
+    return prefixCache[name];
+  }
+  var divStyle2 = createStyle();
+  if (name in divStyle2) {
+    return prefixCache[name] = name;
+  }
+  var capName = name[0].toUpperCase() + name.slice(1);
+  var i = prefixes.length;
+  while (i--) {
+    var prefixedName = "".concat(prefixes[i]).concat(capName);
+    if (prefixedName in divStyle2) {
+      return prefixCache[name] = prefixedName;
+    }
+  }
+}
+function getCSSNum(name, style) {
+  return parseFloat(style[getPrefixedName(name)]) || 0;
+}
+function getBoxStyle(elem, name, style) {
+  if (style === void 0) {
+    style = window.getComputedStyle(elem);
+  }
+  var suffix = name === "border" ? "Width" : "";
+  return {
+    left: getCSSNum("".concat(name, "Left").concat(suffix), style),
+    right: getCSSNum("".concat(name, "Right").concat(suffix), style),
+    top: getCSSNum("".concat(name, "Top").concat(suffix), style),
+    bottom: getCSSNum("".concat(name, "Bottom").concat(suffix), style)
+  };
+}
+function setStyle(elem, name, value) {
+  elem.style[getPrefixedName(name)] = value;
+}
+function setTransition(elem, options) {
+  var transform = getPrefixedName("transform");
+  setStyle(elem, "transition", "".concat(transform, " ").concat(options.duration, "ms ").concat(options.easing));
+}
+function setTransform(elem, _a, _options) {
+  var x = _a.x, y = _a.y, scale = _a.scale, isSVG = _a.isSVG;
+  setStyle(elem, "transform", "scale(".concat(scale, ") translate(").concat(x, "px, ").concat(y, "px)"));
+  if (isSVG && isIE) {
+    var matrixValue = window.getComputedStyle(elem).getPropertyValue("transform");
+    elem.setAttribute("transform", matrixValue);
+  }
+}
+function getDimensions(elem) {
+  var parent = elem.parentNode;
+  var style = window.getComputedStyle(elem);
+  var parentStyle = window.getComputedStyle(parent);
+  var rectElem = elem.getBoundingClientRect();
+  var rectParent = parent.getBoundingClientRect();
+  return {
+    elem: {
+      style,
+      width: rectElem.width,
+      height: rectElem.height,
+      top: rectElem.top,
+      bottom: rectElem.bottom,
+      left: rectElem.left,
+      right: rectElem.right,
+      margin: getBoxStyle(elem, "margin", style),
+      border: getBoxStyle(elem, "border", style)
+    },
+    parent: {
+      style: parentStyle,
+      width: rectParent.width,
+      height: rectParent.height,
+      top: rectParent.top,
+      bottom: rectParent.bottom,
+      left: rectParent.left,
+      right: rectParent.right,
+      padding: getBoxStyle(parent, "padding", parentStyle),
+      border: getBoxStyle(parent, "border", parentStyle)
+    }
+  };
+}
+var events = {
+  down: "mousedown",
+  move: "mousemove",
+  up: "mouseup mouseleave"
+};
+if (typeof window !== "undefined") {
+  if (typeof window.PointerEvent === "function") {
+    events = {
+      down: "pointerdown",
+      move: "pointermove",
+      up: "pointerup pointerleave pointercancel"
+    };
+  } else if (typeof window.TouchEvent === "function") {
+    events = {
+      down: "touchstart",
+      move: "touchmove",
+      up: "touchend touchcancel"
+    };
+  }
+}
+function onPointer(event, elem, handler, eventOpts) {
+  events[event].split(" ").forEach(function(name) {
+    elem.addEventListener(name, handler, eventOpts);
+  });
+}
+function destroyPointer(event, elem, handler) {
+  events[event].split(" ").forEach(function(name) {
+    elem.removeEventListener(name, handler);
+  });
+}
+function findEventIndex(pointers, event) {
+  var i = pointers.length;
+  while (i--) {
+    if (pointers[i].pointerId === event.pointerId) {
+      return i;
+    }
+  }
+  return -1;
+}
+function addPointer(pointers, event) {
+  var i;
+  if (event.touches) {
+    i = 0;
+    for (var _i = 0, _a = event.touches; _i < _a.length; _i++) {
+      var touch = _a[_i];
+      touch.pointerId = i++;
+      addPointer(pointers, touch);
+    }
+    return;
+  }
+  i = findEventIndex(pointers, event);
+  if (i > -1) {
+    pointers.splice(i, 1);
+  }
+  pointers.push(event);
+}
+function removePointer(pointers, event) {
+  if (event.touches) {
+    while (pointers.length) {
+      pointers.pop();
+    }
+    return;
+  }
+  var i = findEventIndex(pointers, event);
+  if (i > -1) {
+    pointers.splice(i, 1);
+  }
+}
+function getMiddle(pointers) {
+  pointers = pointers.slice(0);
+  var event1 = pointers.pop();
+  var event2;
+  while (event2 = pointers.pop()) {
+    event1 = {
+      clientX: (event2.clientX - event1.clientX) / 2 + event1.clientX,
+      clientY: (event2.clientY - event1.clientY) / 2 + event1.clientY
+    };
+  }
+  return event1;
+}
+function getDistance(pointers) {
+  if (pointers.length < 2) {
+    return 0;
+  }
+  var event1 = pointers[0];
+  var event2 = pointers[1];
+  return Math.sqrt(Math.pow(Math.abs(event2.clientX - event1.clientX), 2) + Math.pow(Math.abs(event2.clientY - event1.clientY), 2));
+}
+function isAttached(node) {
+  var currentNode = node;
+  while (currentNode && currentNode.parentNode) {
+    if (currentNode.parentNode === document)
+      return true;
+    currentNode = currentNode.parentNode instanceof ShadowRoot ? currentNode.parentNode.host : currentNode.parentNode;
+  }
+  return false;
+}
+function getClass(elem) {
+  return (elem.getAttribute("class") || "").trim();
+}
+function hasClass(elem, className) {
+  return elem.nodeType === 1 && " ".concat(getClass(elem), " ").indexOf(" ".concat(className, " ")) > -1;
+}
+function isExcluded(elem, options) {
+  for (var cur = elem; cur != null; cur = cur.parentNode) {
+    if (hasClass(cur, options.excludeClass) || options.exclude.indexOf(cur) > -1) {
+      return true;
+    }
+  }
+  return false;
+}
+var rsvg = /^http:[\w\.\/]+svg$/;
+function isSVGElement(elem) {
+  return rsvg.test(elem.namespaceURI) && elem.nodeName.toLowerCase() !== "svg";
+}
+function shallowClone(obj) {
+  var clone = {};
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      clone[key] = obj[key];
+    }
+  }
+  return clone;
+}
+var defaultOptions = {
+  animate: false,
+  canvas: false,
+  cursor: "move",
+  disablePan: false,
+  disableZoom: false,
+  disableXAxis: false,
+  disableYAxis: false,
+  duration: 200,
+  easing: "ease-in-out",
+  exclude: [],
+  excludeClass: "panzoom-exclude",
+  handleStartEvent: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  },
+  maxScale: 4,
+  minScale: 0.125,
+  overflow: "hidden",
+  panOnlyWhenZoomed: false,
+  pinchAndPan: false,
+  relative: false,
+  setTransform,
+  startX: 0,
+  startY: 0,
+  startScale: 1,
+  step: 0.3,
+  touchAction: "none"
+};
+function Panzoom(elem, options) {
+  if (!elem) {
+    throw new Error("Panzoom requires an element as an argument");
+  }
+  if (elem.nodeType !== 1) {
+    throw new Error("Panzoom requires an element with a nodeType of 1");
+  }
+  if (!isAttached(elem)) {
+    throw new Error("Panzoom should be called on elements that have been attached to the DOM");
+  }
+  options = __assign(__assign({}, defaultOptions), options);
+  var isSVG = isSVGElement(elem);
+  var parent = elem.parentNode;
+  parent.style.overflow = options.overflow;
+  parent.style.userSelect = "none";
+  parent.style.touchAction = options.touchAction;
+  (options.canvas ? parent : elem).style.cursor = options.cursor;
+  elem.style.userSelect = "none";
+  elem.style.touchAction = options.touchAction;
+  setStyle(elem, "transformOrigin", typeof options.origin === "string" ? options.origin : isSVG ? "0 0" : "50% 50%");
+  function resetStyle() {
+    parent.style.overflow = "";
+    parent.style.userSelect = "";
+    parent.style.touchAction = "";
+    parent.style.cursor = "";
+    elem.style.cursor = "";
+    elem.style.userSelect = "";
+    elem.style.touchAction = "";
+    setStyle(elem, "transformOrigin", "");
+  }
+  function setOptions(opts) {
+    if (opts === void 0) {
+      opts = {};
+    }
+    for (var key in opts) {
+      if (opts.hasOwnProperty(key)) {
+        options[key] = opts[key];
+      }
+    }
+    if (opts.hasOwnProperty("cursor") || opts.hasOwnProperty("canvas")) {
+      parent.style.cursor = elem.style.cursor = "";
+      (options.canvas ? parent : elem).style.cursor = options.cursor;
+    }
+    if (opts.hasOwnProperty("overflow")) {
+      parent.style.overflow = opts.overflow;
+    }
+    if (opts.hasOwnProperty("touchAction")) {
+      parent.style.touchAction = opts.touchAction;
+      elem.style.touchAction = opts.touchAction;
+    }
+  }
+  var x = 0;
+  var y = 0;
+  var scale = 1;
+  var isPanning = false;
+  zoom(options.startScale, { animate: false, force: true });
+  setTimeout(function() {
+    pan(options.startX, options.startY, { animate: false, force: true });
+  });
+  function trigger(eventName, detail, opts) {
+    if (opts.silent) {
+      return;
+    }
+    var event = new CustomEvent(eventName, { detail });
+    elem.dispatchEvent(event);
+  }
+  function setTransformWithEvent(eventName, opts, originalEvent) {
+    var value = { x, y, scale, isSVG, originalEvent };
+    requestAnimationFrame(function() {
+      if (typeof opts.animate === "boolean") {
+        if (opts.animate) {
+          setTransition(elem, opts);
+        } else {
+          setStyle(elem, "transition", "none");
+        }
+      }
+      opts.setTransform(elem, value, opts);
+      trigger(eventName, value, opts);
+      trigger("panzoomchange", value, opts);
+    });
+    return value;
+  }
+  function constrainXY(toX, toY, toScale, panOptions) {
+    var opts = __assign(__assign({}, options), panOptions);
+    var result = { x, y, opts };
+    if (!opts.force && (opts.disablePan || opts.panOnlyWhenZoomed && scale === opts.startScale)) {
+      return result;
+    }
+    toX = parseFloat(toX);
+    toY = parseFloat(toY);
+    if (!opts.disableXAxis) {
+      result.x = (opts.relative ? x : 0) + toX;
+    }
+    if (!opts.disableYAxis) {
+      result.y = (opts.relative ? y : 0) + toY;
+    }
+    if (opts.contain) {
+      var dims = getDimensions(elem);
+      var realWidth = dims.elem.width / scale;
+      var realHeight = dims.elem.height / scale;
+      var scaledWidth = realWidth * toScale;
+      var scaledHeight = realHeight * toScale;
+      var diffHorizontal = (scaledWidth - realWidth) / 2;
+      var diffVertical = (scaledHeight - realHeight) / 2;
+      if (opts.contain === "inside") {
+        var minX = (-dims.elem.margin.left - dims.parent.padding.left + diffHorizontal) / toScale;
+        var maxX = (dims.parent.width - scaledWidth - dims.parent.padding.left - dims.elem.margin.left - dims.parent.border.left - dims.parent.border.right + diffHorizontal) / toScale;
+        result.x = Math.max(Math.min(result.x, maxX), minX);
+        var minY = (-dims.elem.margin.top - dims.parent.padding.top + diffVertical) / toScale;
+        var maxY = (dims.parent.height - scaledHeight - dims.parent.padding.top - dims.elem.margin.top - dims.parent.border.top - dims.parent.border.bottom + diffVertical) / toScale;
+        result.y = Math.max(Math.min(result.y, maxY), minY);
+      } else if (opts.contain === "outside") {
+        var minX = (-(scaledWidth - dims.parent.width) - dims.parent.padding.left - dims.parent.border.left - dims.parent.border.right + diffHorizontal) / toScale;
+        var maxX = (diffHorizontal - dims.parent.padding.left) / toScale;
+        result.x = Math.max(Math.min(result.x, maxX), minX);
+        var minY = (-(scaledHeight - dims.parent.height) - dims.parent.padding.top - dims.parent.border.top - dims.parent.border.bottom + diffVertical) / toScale;
+        var maxY = (diffVertical - dims.parent.padding.top) / toScale;
+        result.y = Math.max(Math.min(result.y, maxY), minY);
+      }
+    }
+    if (opts.roundPixels) {
+      result.x = Math.round(result.x);
+      result.y = Math.round(result.y);
+    }
+    return result;
+  }
+  function constrainScale(toScale, zoomOptions) {
+    var opts = __assign(__assign({}, options), zoomOptions);
+    var result = { scale, opts };
+    if (!opts.force && opts.disableZoom) {
+      return result;
+    }
+    var minScale = options.minScale;
+    var maxScale = options.maxScale;
+    if (opts.contain) {
+      var dims = getDimensions(elem);
+      var elemWidth = dims.elem.width / scale;
+      var elemHeight = dims.elem.height / scale;
+      if (elemWidth > 1 && elemHeight > 1) {
+        var parentWidth = dims.parent.width - dims.parent.border.left - dims.parent.border.right;
+        var parentHeight = dims.parent.height - dims.parent.border.top - dims.parent.border.bottom;
+        var elemScaledWidth = parentWidth / elemWidth;
+        var elemScaledHeight = parentHeight / elemHeight;
+        if (options.contain === "inside") {
+          maxScale = Math.min(maxScale, elemScaledWidth, elemScaledHeight);
+        } else if (options.contain === "outside") {
+          minScale = Math.max(minScale, elemScaledWidth, elemScaledHeight);
+        }
+      }
+    }
+    result.scale = Math.min(Math.max(toScale, minScale), maxScale);
+    return result;
+  }
+  function pan(toX, toY, panOptions, originalEvent) {
+    var result = constrainXY(toX, toY, scale, panOptions);
+    if (x !== result.x || y !== result.y) {
+      x = result.x;
+      y = result.y;
+      return setTransformWithEvent("panzoompan", result.opts, originalEvent);
+    }
+    return { x, y, scale, isSVG, originalEvent };
+  }
+  function zoom(toScale, zoomOptions, originalEvent) {
+    var result = constrainScale(toScale, zoomOptions);
+    var opts = result.opts;
+    if (!opts.force && opts.disableZoom) {
+      return;
+    }
+    toScale = result.scale;
+    var toX = x;
+    var toY = y;
+    if (opts.focal) {
+      var focal = opts.focal;
+      toX = (focal.x / toScale - focal.x / scale + x * toScale) / toScale;
+      toY = (focal.y / toScale - focal.y / scale + y * toScale) / toScale;
+    }
+    var panResult = constrainXY(toX, toY, toScale, { relative: false, force: true });
+    x = panResult.x;
+    y = panResult.y;
+    scale = toScale;
+    return setTransformWithEvent("panzoomzoom", opts, originalEvent);
+  }
+  function zoomInOut(isIn, zoomOptions) {
+    var opts = __assign(__assign(__assign({}, options), { animate: true }), zoomOptions);
+    return zoom(scale * Math.exp((isIn ? 1 : -1) * opts.step), opts);
+  }
+  function zoomIn(zoomOptions) {
+    return zoomInOut(true, zoomOptions);
+  }
+  function zoomOut(zoomOptions) {
+    return zoomInOut(false, zoomOptions);
+  }
+  function zoomToPoint(toScale, point, zoomOptions, originalEvent) {
+    var dims = getDimensions(elem);
+    var effectiveArea = {
+      width: dims.parent.width - dims.parent.padding.left - dims.parent.padding.right - dims.parent.border.left - dims.parent.border.right,
+      height: dims.parent.height - dims.parent.padding.top - dims.parent.padding.bottom - dims.parent.border.top - dims.parent.border.bottom
+    };
+    var clientX = point.clientX - dims.parent.left - dims.parent.padding.left - dims.parent.border.left - dims.elem.margin.left;
+    var clientY = point.clientY - dims.parent.top - dims.parent.padding.top - dims.parent.border.top - dims.elem.margin.top;
+    if (!isSVG) {
+      clientX -= dims.elem.width / scale / 2;
+      clientY -= dims.elem.height / scale / 2;
+    }
+    var focal = {
+      x: clientX / effectiveArea.width * (effectiveArea.width * toScale),
+      y: clientY / effectiveArea.height * (effectiveArea.height * toScale)
+    };
+    return zoom(toScale, __assign(__assign({}, zoomOptions), { animate: false, focal }), originalEvent);
+  }
+  function zoomWithWheel(event, zoomOptions) {
+    event.preventDefault();
+    var opts = __assign(__assign(__assign({}, options), zoomOptions), { animate: false });
+    var delta = event.deltaY === 0 && event.deltaX ? event.deltaX : event.deltaY;
+    var wheel = delta < 0 ? 1 : -1;
+    var toScale = constrainScale(scale * Math.exp(wheel * opts.step / 3), opts).scale;
+    return zoomToPoint(toScale, event, opts, event);
+  }
+  function reset(resetOptions) {
+    var opts = __assign(__assign(__assign({}, options), { animate: true, force: true }), resetOptions);
+    scale = constrainScale(opts.startScale, opts).scale;
+    var panResult = constrainXY(opts.startX, opts.startY, scale, opts);
+    x = panResult.x;
+    y = panResult.y;
+    return setTransformWithEvent("panzoomreset", opts);
+  }
+  var origX;
+  var origY;
+  var startClientX;
+  var startClientY;
+  var startScale;
+  var startDistance;
+  var pointers = [];
+  function handleDown(event) {
+    if (isExcluded(event.target, options)) {
+      return;
+    }
+    addPointer(pointers, event);
+    isPanning = true;
+    options.handleStartEvent(event);
+    origX = x;
+    origY = y;
+    trigger("panzoomstart", { x, y, scale, isSVG, originalEvent: event }, options);
+    var point = getMiddle(pointers);
+    startClientX = point.clientX;
+    startClientY = point.clientY;
+    startScale = scale;
+    startDistance = getDistance(pointers);
+  }
+  function handleMove(event) {
+    if (!isPanning || origX === void 0 || origY === void 0 || startClientX === void 0 || startClientY === void 0) {
+      return;
+    }
+    addPointer(pointers, event);
+    var current = getMiddle(pointers);
+    var hasMultiple = pointers.length > 1;
+    var toScale = scale;
+    if (hasMultiple) {
+      if (startDistance === 0) {
+        startDistance = getDistance(pointers);
+      }
+      var diff = getDistance(pointers) - startDistance;
+      toScale = constrainScale(diff * options.step / 80 + startScale).scale;
+      zoomToPoint(toScale, current, { animate: false }, event);
+    }
+    if (!hasMultiple || options.pinchAndPan) {
+      pan(origX + (current.clientX - startClientX) / toScale, origY + (current.clientY - startClientY) / toScale, {
+        animate: false
+      }, event);
+    }
+  }
+  function handleUp(event) {
+    if (pointers.length === 1) {
+      trigger("panzoomend", { x, y, scale, isSVG, originalEvent: event }, options);
+    }
+    removePointer(pointers, event);
+    if (!isPanning) {
+      return;
+    }
+    isPanning = false;
+    origX = origY = startClientX = startClientY = void 0;
+  }
+  var bound = false;
+  function bind() {
+    if (bound) {
+      return;
+    }
+    bound = true;
+    onPointer("down", options.canvas ? parent : elem, handleDown);
+    onPointer("move", document, handleMove, { passive: true });
+    onPointer("up", document, handleUp, { passive: true });
+  }
+  function destroy() {
+    bound = false;
+    destroyPointer("down", options.canvas ? parent : elem, handleDown);
+    destroyPointer("move", document, handleMove);
+    destroyPointer("up", document, handleUp);
+  }
+  if (!options.noBind) {
+    bind();
+  }
+  return {
+    bind,
+    destroy,
+    eventNames: events,
+    getPan: function() {
+      return { x, y };
+    },
+    getScale: function() {
+      return scale;
+    },
+    getOptions: function() {
+      return shallowClone(options);
+    },
+    handleDown,
+    handleMove,
+    handleUp,
+    pan,
+    reset,
+    resetStyle,
+    setOptions,
+    setStyle: function(name, value) {
+      return setStyle(elem, name, value);
+    },
+    zoom,
+    zoomIn,
+    zoomOut,
+    zoomToPoint,
+    zoomWithWheel
+  };
+}
+Panzoom.defaultOptions = defaultOptions;
+
+// src/shared/image-zoom-gestures.ts
+var import_obsidian = require("obsidian");
+init_style_settings();
+function setupImageZoomGestures(imgEl, container, app, file) {
+  let panzoomInstance = null;
+  let clickHandler = null;
+  let dblclickHandler = null;
+  let contextmenuHandler = null;
+  let loadHandler = null;
+  function attachPanzoom() {
+    var _a;
+    const zoomSensitivity = getZoomSensitivity();
+    const isMobile = (_a = app == null ? void 0 : app.isMobile) != null ? _a : false;
+    let startScale = 1;
+    let minScale = 0.1;
+    if (isMobile) {
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const naturalWidth = imgEl.naturalWidth;
+      const naturalHeight = imgEl.naturalHeight;
+      const widthScale = viewportWidth / naturalWidth;
+      const heightScale = viewportHeight / naturalHeight;
+      startScale = Math.min(1, widthScale, heightScale);
+      minScale = startScale;
+    }
+    panzoomInstance = Panzoom(imgEl, {
+      maxScale: 4,
+      minScale,
+      startScale,
+      step: zoomSensitivity,
+      canvas: false,
+      cursor: "move"
+    });
+    container.addEventListener("wheel", panzoomInstance.zoomWithWheel, {
+      passive: false
+    });
+    clickHandler = (e) => {
+      e.stopPropagation();
+    };
+    imgEl.addEventListener("click", clickHandler);
+    dblclickHandler = (e) => {
+      e.stopPropagation();
+      panzoomInstance == null ? void 0 : panzoomInstance.reset();
+    };
+    imgEl.addEventListener("dblclick", dblclickHandler);
+    if (app && file) {
+      contextmenuHandler = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const menu = new import_obsidian.Menu();
+        app.workspace.trigger("file-menu", menu, file, "file-explorer");
+        menu.showAtMouseEvent(e);
+      };
+      imgEl.addEventListener("contextmenu", contextmenuHandler);
+    }
+  }
+  if (imgEl.complete && imgEl.naturalWidth > 0) {
+    attachPanzoom();
+  } else {
+    loadHandler = () => {
+      attachPanzoom();
+    };
+    imgEl.addEventListener("load", loadHandler, { once: true });
+  }
+  return () => {
+    if (panzoomInstance) {
+      container.removeEventListener("wheel", panzoomInstance.zoomWithWheel, {
+        passive: false
+      });
+      panzoomInstance.destroy();
+    }
+    if (clickHandler) {
+      imgEl.removeEventListener("click", clickHandler);
+    }
+    if (dblclickHandler) {
+      imgEl.removeEventListener("dblclick", dblclickHandler);
+    }
+    if (contextmenuHandler) {
+      imgEl.removeEventListener("contextmenu", contextmenuHandler);
+    }
+    if (loadHandler) {
+      imgEl.removeEventListener("load", loadHandler);
+    }
+  };
+}
+
+// src/shared/image-zoom-handler.ts
+var zoomListenerCleanups = /* @__PURE__ */ new WeakMap();
+function handleImageZoomClick(e, cardPath, app, zoomCleanupFns2, zoomedOriginalParents2) {
+  const isZoomEnabled = document.body.classList.contains(
+    "dynamic-views-image-zoom-enabled"
+  );
+  if (!isZoomEnabled)
+    return;
+  e.stopPropagation();
+  const embedEl = e.currentTarget;
+  const isZoomed = embedEl.classList.contains("is-zoomed");
+  if (isZoomed) {
+    closeImageZoom(embedEl, zoomCleanupFns2, zoomedOriginalParents2);
+  } else {
+    openImageZoom(
+      embedEl,
+      cardPath,
+      app,
+      zoomCleanupFns2,
+      zoomedOriginalParents2
+    );
+  }
+}
+function closeImageZoom(embedEl, zoomCleanupFns2, zoomedOriginalParents2) {
+  embedEl.classList.remove("is-zoomed");
+  const originalParent = zoomedOriginalParents2.get(embedEl);
+  if (originalParent && embedEl.parentElement !== originalParent) {
+    originalParent.appendChild(embedEl);
+    zoomedOriginalParents2.delete(embedEl);
+  }
+  const cleanup = zoomCleanupFns2.get(embedEl);
+  if (cleanup) {
+    cleanup();
+    zoomCleanupFns2.delete(embedEl);
+  }
+  const removeListeners = zoomListenerCleanups.get(embedEl);
+  if (removeListeners) {
+    removeListeners();
+    zoomListenerCleanups.delete(embedEl);
+  }
+}
+function openImageZoom(embedEl, cardPath, app, zoomCleanupFns2, zoomedOriginalParents2) {
+  const viewContainer = embedEl.closest(".workspace-leaf-content");
+  if (viewContainer) {
+    viewContainer.querySelectorAll(".image-embed.is-zoomed").forEach((el) => {
+      el.classList.remove("is-zoomed");
+      const originalParent2 = zoomedOriginalParents2.get(el);
+      if (originalParent2 && el.parentElement !== originalParent2) {
+        originalParent2.appendChild(el);
+        zoomedOriginalParents2.delete(el);
+      }
+      const cleanup2 = zoomCleanupFns2.get(el);
+      if (cleanup2) {
+        cleanup2();
+        zoomCleanupFns2.delete(el);
+      }
+    });
+  }
+  const isConstrained = document.body.classList.contains(
+    "dynamic-views-zoom-constrain-to-editor"
+  );
+  const originalParent = embedEl.parentElement;
+  if (originalParent && !isConstrained) {
+    zoomedOriginalParents2.set(embedEl, originalParent);
+    document.body.appendChild(embedEl);
+  }
+  embedEl.classList.add("is-zoomed");
+  const imgEl = embedEl.querySelector("img");
+  if (!imgEl) {
+    console.warn("Dynamic Views: Zoom opened but no img element found");
+    return;
+  }
+  const file = app.vault.getAbstractFileByPath(cardPath);
+  const cleanup = setupImageZoomGestures(
+    imgEl,
+    embedEl,
+    app,
+    file instanceof import_obsidian2.TFile ? file : void 0
+  );
+  zoomCleanupFns2.set(embedEl, cleanup);
+  const closeZoom = (evt) => {
+    const target = evt.target;
+    if (!embedEl.contains(target)) {
+      embedEl.classList.remove("is-zoomed");
+      const originalParent2 = zoomedOriginalParents2.get(embedEl);
+      if (originalParent2 && embedEl.parentElement !== originalParent2) {
+        originalParent2.appendChild(embedEl);
+        zoomedOriginalParents2.delete(embedEl);
+      }
+      const cleanup2 = zoomCleanupFns2.get(embedEl);
+      if (cleanup2) {
+        cleanup2();
+        zoomCleanupFns2.delete(embedEl);
+      }
+      const removeListeners = zoomListenerCleanups.get(embedEl);
+      if (removeListeners) {
+        removeListeners();
+        zoomListenerCleanups.delete(embedEl);
+      }
+    }
+  };
+  const handleEscape = (evt) => {
+    if (evt.key === "Escape") {
+      embedEl.classList.remove("is-zoomed");
+      const originalParent2 = zoomedOriginalParents2.get(embedEl);
+      if (originalParent2 && embedEl.parentElement !== originalParent2) {
+        originalParent2.appendChild(embedEl);
+        zoomedOriginalParents2.delete(embedEl);
+      }
+      const cleanup2 = zoomCleanupFns2.get(embedEl);
+      if (cleanup2) {
+        cleanup2();
+        zoomCleanupFns2.delete(embedEl);
+      }
+      const removeListeners = zoomListenerCleanups.get(embedEl);
+      if (removeListeners) {
+        removeListeners();
+        zoomListenerCleanups.delete(embedEl);
+      }
+    }
+  };
+  setTimeout(() => {
+    document.addEventListener("click", closeZoom);
+    document.addEventListener("keydown", handleEscape);
+  }, 0);
+  zoomListenerCleanups.set(embedEl, () => {
+    document.removeEventListener("click", closeZoom);
+    document.removeEventListener("keydown", handleEscape);
+  });
+}
+
+// src/shared/card-renderer.tsx
+function renderLink(link, app) {
+  if (link.type === "internal") {
+    if (link.isEmbed) {
+      return /* @__PURE__ */ h(
+        "span",
+        {
+          className: "internal-embed",
+          "data-src": link.url,
+          onClick: (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const newLeaf = e.metaKey || e.ctrlKey;
+            void app.workspace.openLinkText(link.url, "", newLeaf);
+          }
+        },
+        link.caption
+      );
+    }
+    return /* @__PURE__ */ h(
+      "a",
+      {
+        href: link.url,
+        className: "internal-link",
+        "data-href": link.url,
+        draggable: true,
+        onClick: (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const newLeaf = e.metaKey || e.ctrlKey;
+          void app.workspace.openLinkText(link.url, "", newLeaf);
+        },
+        onDragStart: (e) => {
+          const file = app.metadataCache.getFirstLinkpathDest(link.url, "");
+          if (!(file instanceof import_obsidian3.TFile))
+            return;
+          const dragData = app.dragManager.dragFile(e, file);
+          app.dragManager.onDragStart(e, dragData);
+        }
+      },
+      link.caption
+    );
+  }
+  if (link.isEmbed) {
+    return /* @__PURE__ */ h(
+      "img",
+      {
+        src: link.url,
+        alt: link.caption,
+        className: "external-embed",
+        onClick: (e) => {
+          e.stopPropagation();
+        }
+      }
+    );
+  }
+  return /* @__PURE__ */ h(
+    "a",
+    {
+      href: link.url,
+      className: "external-link",
+      target: link.isWebUrl ? "_blank" : void 0,
+      rel: link.isWebUrl ? "noopener noreferrer" : void 0,
+      onClick: (e) => {
+        e.stopPropagation();
+      },
+      onDragStart: (e) => {
+        var _a, _b;
+        (_a = e.dataTransfer) == null ? void 0 : _a.clearData();
+        const dragText = link.caption === link.url ? link.url : `[${link.caption}](${link.url})`;
+        (_b = e.dataTransfer) == null ? void 0 : _b.setData("text/plain", dragText);
+      }
+    },
+    link.caption
+  );
+}
+function renderTextWithLinks(text, app) {
+  const segments = findLinksInText(text);
+  const elements = [];
+  for (let i = 0; i < segments.length; i++) {
+    const segment = segments[i];
+    if (segment.type === "text") {
+      elements.push(segment.content);
+    } else {
+      elements.push(/* @__PURE__ */ h("span", { key: i }, renderLink(segment.link, app)));
+    }
+  }
+  return /* @__PURE__ */ h(Fragment, null, elements);
+}
+var zoomCleanupFns = /* @__PURE__ */ new Map();
+var zoomedOriginalParents = /* @__PURE__ */ new Map();
+function renderPropertyContent(propertyName, card, resolvedValue, timeIcon, settings, app) {
+  const stringValue = typeof resolvedValue === "string" ? resolvedValue : "";
+  return renderProperty(
+    propertyName,
+    null,
+    stringValue,
+    settings,
+    card,
+    app,
+    timeIcon
+  );
+}
+function CoverCarousel({
+  imageArray,
+  updateLayoutRef
+}) {
   const onCarouselRef = (carouselEl) => {
     if (!carouselEl)
       return;
@@ -4517,11 +5701,15 @@ function CoverCarousel({ imageArray, updateLayoutRef }) {
         newClasses: newSlide.className
       });
       newSlide.classList.remove("is-active", "slide-left", "slide-right");
-      newSlide.classList.add(direction === "next" ? "slide-right" : "slide-left");
+      newSlide.classList.add(
+        direction === "next" ? "slide-right" : "slide-left"
+      );
       console.log("// After positioning new slide:", newSlide.className);
       void newSlide.offsetHeight;
       oldSlide.classList.remove("is-active", "slide-left", "slide-right");
-      oldSlide.classList.add(direction === "next" ? "slide-left" : "slide-right");
+      oldSlide.classList.add(
+        direction === "next" ? "slide-left" : "slide-right"
+      );
       newSlide.classList.add("is-active");
       setTimeout(() => {
         newSlide.classList.remove("slide-left", "slide-right");
@@ -4547,47 +5735,101 @@ function CoverCarousel({ imageArray, updateLayoutRef }) {
       updateSlide(newIndex, direction);
     });
   };
-  return /* @__PURE__ */ h("div", { className: "card-cover card-cover-carousel", ref: onCarouselRef }, /* @__PURE__ */ h("div", { className: "carousel-slides" }, imageArray.map((url, index) => /* @__PURE__ */ h(
-    "div",
-    {
-      key: index,
-      className: `carousel-slide ${index === 0 ? "is-active" : ""}`
-    },
-    /* @__PURE__ */ h(
+  return /* @__PURE__ */ h("div", { className: "card-cover card-cover-carousel", ref: onCarouselRef }, /* @__PURE__ */ h("div", { className: "carousel-slides" }, imageArray.map(
+    (url, index) => /* @__PURE__ */ h(
       "div",
       {
-        className: "image-embed",
-        style: { "--cover-image-url": `url("${url}")` }
+        key: index,
+        className: `carousel-slide ${index === 0 ? "is-active" : ""}`
       },
-      index === 0 && /* @__PURE__ */ h("div", { className: "carousel-indicator" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round" }, /* @__PURE__ */ h("rect", { x: "5", y: "7", width: "13", height: "10", rx: "1" }), /* @__PURE__ */ h("polyline", { points: "4 2,8 2,8 7" }), /* @__PURE__ */ h("polyline", { points: "8 2,16 2,16 7" }), /* @__PURE__ */ h("polyline", { points: "16 2,20 2,20 7" }))),
       /* @__PURE__ */ h(
-        "img",
+        "div",
         {
-          src: url,
-          alt: "",
-          onLoad: (e) => {
-            var _a;
-            if (index === 0) {
-              const imgEl = e.currentTarget;
-              const imageEmbedEl = imgEl.parentElement;
-              if (imageEmbedEl) {
-                const slideEl = imageEmbedEl.parentElement;
-                if (slideEl) {
-                  const carouselEl = (_a = slideEl.parentElement) == null ? void 0 : _a.parentElement;
-                  if (carouselEl) {
-                    const cardEl = carouselEl.closest(".card");
-                    if (cardEl) {
-                      handleImageLoad(imgEl, imageEmbedEl, cardEl, updateLayoutRef.current);
+          className: "image-embed",
+          style: { "--cover-image-url": `url("${url}")` }
+        },
+        index === 0 && /* @__PURE__ */ h("div", { className: "carousel-indicator" }, /* @__PURE__ */ h(
+          "svg",
+          {
+            xmlns: "http://www.w3.org/2000/svg",
+            width: "24",
+            height: "24",
+            viewBox: "0 0 24 24",
+            fill: "none",
+            stroke: "currentColor",
+            "stroke-width": "2",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round"
+          },
+          /* @__PURE__ */ h("rect", { x: "5", y: "7", width: "13", height: "10", rx: "1" }),
+          /* @__PURE__ */ h("polyline", { points: "4 2,8 2,8 7" }),
+          /* @__PURE__ */ h("polyline", { points: "8 2,16 2,16 7" }),
+          /* @__PURE__ */ h("polyline", { points: "16 2,20 2,20 7" })
+        )),
+        /* @__PURE__ */ h(
+          "img",
+          {
+            src: url,
+            alt: "",
+            onLoad: (e) => {
+              var _a;
+              if (index === 0) {
+                const imgEl = e.currentTarget;
+                const imageEmbedEl = imgEl.parentElement;
+                if (imageEmbedEl) {
+                  const slideEl = imageEmbedEl.parentElement;
+                  if (slideEl) {
+                    const carouselEl = (_a = slideEl.parentElement) == null ? void 0 : _a.parentElement;
+                    if (carouselEl) {
+                      const cardEl = carouselEl.closest(
+                        ".card"
+                      );
+                      if (cardEl) {
+                        handleImageLoad(
+                          imgEl,
+                          imageEmbedEl,
+                          cardEl,
+                          updateLayoutRef.current
+                        );
+                      }
                     }
                   }
                 }
               }
             }
           }
-        }
+        )
       )
     )
-  ))), /* @__PURE__ */ h("div", { className: "carousel-nav-left" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round" }, /* @__PURE__ */ h("polyline", { points: "15 18 9 12 15 6" }))), /* @__PURE__ */ h("div", { className: "carousel-nav-right" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", "stroke-linecap": "round", "stroke-linejoin": "round" }, /* @__PURE__ */ h("polyline", { points: "9 18 15 12 9 6" }))));
+  )), /* @__PURE__ */ h("div", { className: "carousel-nav-left" }, /* @__PURE__ */ h(
+    "svg",
+    {
+      xmlns: "http://www.w3.org/2000/svg",
+      width: "24",
+      height: "24",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round"
+    },
+    /* @__PURE__ */ h("polyline", { points: "15 18 9 12 15 6" })
+  )), /* @__PURE__ */ h("div", { className: "carousel-nav-right" }, /* @__PURE__ */ h(
+    "svg",
+    {
+      xmlns: "http://www.w3.org/2000/svg",
+      width: "24",
+      height: "24",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round"
+    },
+    /* @__PURE__ */ h("polyline", { points: "9 18 15 12 9 6" })
+  )));
 }
 function renderProperty(propertyName, propertyValue, resolvedValue, settings, card, app, timeIcon) {
   if (propertyName === "") {
@@ -4609,90 +5851,124 @@ function renderProperty(propertyName, propertyValue, resolvedValue, settings, ca
       const arrayData = JSON.parse(resolvedValue);
       if (arrayData.type === "array" && Array.isArray(arrayData.items)) {
         const separator = getListSeparator();
-        return /* @__PURE__ */ h(Fragment, null, labelAbove, labelInline, /* @__PURE__ */ h("div", { className: "property-content-wrapper" }, /* @__PURE__ */ h("div", { className: "property-content" }, /* @__PURE__ */ h("span", { className: "list-wrapper" }, arrayData.items.map((item, idx) => /* @__PURE__ */ h("span", { key: idx }, /* @__PURE__ */ h("span", { className: "list-item" }, item), idx < arrayData.items.length - 1 && /* @__PURE__ */ h("span", { className: "list-separator" }, separator)))))));
+        return /* @__PURE__ */ h(Fragment, null, labelAbove, labelInline, /* @__PURE__ */ h("div", { className: "property-content-wrapper" }, /* @__PURE__ */ h("div", { className: "property-content" }, /* @__PURE__ */ h("span", { className: "list-wrapper" }, arrayData.items.map(
+          (item, idx) => /* @__PURE__ */ h("span", { key: idx }, /* @__PURE__ */ h("span", { className: "list-item" }, renderTextWithLinks(item, app)), idx < arrayData.items.length - 1 && /* @__PURE__ */ h("span", { className: "list-separator" }, separator))
+        )))));
       }
     } catch (e) {
     }
   }
   if (propertyName === "file.mtime" || propertyName === "file.ctime" || propertyName === "timestamp" || propertyName === "modified time" || propertyName === "created time") {
-    return /* @__PURE__ */ h(Fragment, null, labelAbove, labelInline, /* @__PURE__ */ h("div", { className: "property-content-wrapper" }, /* @__PURE__ */ h("div", { className: "property-content" }, /* @__PURE__ */ h("span", null, showTimestampIcon() && settings.propertyLabels === "hide" && /* @__PURE__ */ h("svg", { className: "timestamp-icon", xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, timeIcon === "calendar" ? /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("path", { d: "M8 2v4" }), /* @__PURE__ */ h("path", { d: "M16 2v4" }), /* @__PURE__ */ h("rect", { width: "18", height: "18", x: "3", y: "4", rx: "2" }), /* @__PURE__ */ h("path", { d: "M3 10h18" })) : /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("circle", { cx: "12", cy: "12", r: "10" }), /* @__PURE__ */ h("polyline", { points: "12 6 12 12 16 14" }))), /* @__PURE__ */ h("span", null, resolvedValue)))));
+    return /* @__PURE__ */ h(Fragment, null, labelAbove, labelInline, /* @__PURE__ */ h("div", { className: "property-content-wrapper" }, /* @__PURE__ */ h("div", { className: "property-content" }, /* @__PURE__ */ h("span", null, showTimestampIcon() && settings.propertyLabels === "hide" && /* @__PURE__ */ h(
+      "svg",
+      {
+        className: "timestamp-icon",
+        xmlns: "http://www.w3.org/2000/svg",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      timeIcon === "calendar" ? /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("path", { d: "M8 2v4" }), /* @__PURE__ */ h("path", { d: "M16 2v4" }), /* @__PURE__ */ h("rect", { width: "18", height: "18", x: "3", y: "4", rx: "2" }), /* @__PURE__ */ h("path", { d: "M3 10h18" })) : /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("circle", { cx: "12", cy: "12", r: "10" }), /* @__PURE__ */ h("polyline", { points: "12 6 12 12 16 14" }))
+    ), /* @__PURE__ */ h("span", null, resolvedValue)))));
   } else if ((propertyName === "tags" || propertyName === "note.tags") && card.yamlTags.length > 0) {
-    const tagStyle = getTagStyle();
-    const showHashPrefix = tagStyle === "minimal";
-    return /* @__PURE__ */ h(Fragment, null, labelAbove, labelInline, /* @__PURE__ */ h("div", { className: "property-content-wrapper" }, /* @__PURE__ */ h("div", { className: "property-content" }, /* @__PURE__ */ h("div", { className: "tags-wrapper" }, card.yamlTags.map((tag) => /* @__PURE__ */ h(
-      "a",
-      {
-        key: tag,
-        href: "#",
-        className: "tag",
-        onClick: (e) => {
-          var _a;
-          e.preventDefault();
-          const searchPlugin = app.internalPlugins.plugins["global-search"];
-          if ((_a = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _a.openGlobalSearch) {
-            searchPlugin.instance.openGlobalSearch("tag:" + tag);
+    const showHashPrefix = showTagHashPrefix();
+    return /* @__PURE__ */ h(Fragment, null, labelAbove, labelInline, /* @__PURE__ */ h("div", { className: "property-content-wrapper" }, /* @__PURE__ */ h("div", { className: "property-content" }, /* @__PURE__ */ h("div", { className: "tags-wrapper" }, card.yamlTags.map(
+      (tag) => /* @__PURE__ */ h(
+        "a",
+        {
+          key: tag,
+          href: "#",
+          className: "tag",
+          onClick: (e) => {
+            var _a;
+            e.preventDefault();
+            const searchPlugin = app.internalPlugins.plugins["global-search"];
+            if ((_a = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _a.openGlobalSearch) {
+              searchPlugin.instance.openGlobalSearch("tag:" + tag);
+            }
           }
-        }
-      },
-      showHashPrefix ? "#" + tag : tag
-    ))))));
+        },
+        showHashPrefix ? "#" + tag : tag
+      )
+    )))));
   } else if ((propertyName === "file.tags" || propertyName === "file tags") && card.tags.length > 0) {
-    const tagStyle = getTagStyle();
-    const showHashPrefix = tagStyle === "minimal";
-    return /* @__PURE__ */ h(Fragment, null, labelAbove, labelInline, /* @__PURE__ */ h("div", { className: "property-content-wrapper" }, /* @__PURE__ */ h("div", { className: "property-content" }, /* @__PURE__ */ h("div", { className: "tags-wrapper" }, card.tags.map((tag) => /* @__PURE__ */ h(
-      "a",
-      {
-        key: tag,
-        href: "#",
-        className: "tag",
-        onClick: (e) => {
-          var _a;
-          e.preventDefault();
-          const searchPlugin = app.internalPlugins.plugins["global-search"];
-          if ((_a = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _a.openGlobalSearch) {
-            searchPlugin.instance.openGlobalSearch("tag:" + tag);
+    const showHashPrefix = showTagHashPrefix();
+    return /* @__PURE__ */ h(Fragment, null, labelAbove, labelInline, /* @__PURE__ */ h("div", { className: "property-content-wrapper" }, /* @__PURE__ */ h("div", { className: "property-content" }, /* @__PURE__ */ h("div", { className: "tags-wrapper" }, card.tags.map(
+      (tag) => /* @__PURE__ */ h(
+        "a",
+        {
+          key: tag,
+          href: "#",
+          className: "tag",
+          onClick: (e) => {
+            var _a;
+            e.preventDefault();
+            const searchPlugin = app.internalPlugins.plugins["global-search"];
+            if ((_a = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _a.openGlobalSearch) {
+              searchPlugin.instance.openGlobalSearch("tag:" + tag);
+            }
           }
-        }
-      },
-      showHashPrefix ? "#" + tag : tag
-    ))))));
+        },
+        showHashPrefix ? "#" + tag : tag
+      )
+    )))));
   } else if ((propertyName === "file.path" || propertyName === "path" || propertyName === "file path") && resolvedValue) {
     return /* @__PURE__ */ h(Fragment, null, labelAbove, labelInline, /* @__PURE__ */ h("div", { className: "property-content-wrapper" }, /* @__PURE__ */ h("div", { className: "property-content" }, /* @__PURE__ */ h("div", { className: "path-wrapper" }, resolvedValue.split("/").filter((f) => f).map((segment, idx, array) => {
       const allParts = resolvedValue.split("/").filter((f) => f);
       const cumulativePath = allParts.slice(0, idx + 1).join("/");
       const isLastSegment = idx === array.length - 1;
       const segmentClass = isLastSegment ? "path-segment filename-segment" : "path-segment file-path-segment";
-      return /* @__PURE__ */ h("span", { key: idx, style: { display: "inline-flex", alignItems: "center" } }, /* @__PURE__ */ h(
+      return /* @__PURE__ */ h(
         "span",
         {
-          className: segmentClass,
-          onClick: (e) => {
-            var _a, _b, _c;
-            e.stopPropagation();
-            const fileExplorer = (_b = (_a = app.internalPlugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b["file-explorer"];
-            if ((_c = fileExplorer == null ? void 0 : fileExplorer.instance) == null ? void 0 : _c.revealInFolder) {
-              const folder = app.vault.getAbstractFileByPath(cumulativePath);
-              if (folder) {
-                fileExplorer.instance.revealInFolder(folder);
-              }
-            }
-          },
-          onContextMenu: !isLastSegment ? (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            const folderFile = app.vault.getAbstractFileByPath(cumulativePath);
-            if (folderFile instanceof import_obsidian.TFolder) {
-              const menu = new import_obsidian.Menu();
-              app.workspace.trigger("file-menu", menu, folderFile, "file-explorer");
-              menu.showAtMouseEvent(e);
-            }
-          } : void 0
+          key: idx,
+          style: { display: "inline-flex", alignItems: "center" }
         },
-        segment
-      ), idx < array.length - 1 && /* @__PURE__ */ h("span", { className: "path-separator" }, "/"));
+        /* @__PURE__ */ h(
+          "span",
+          {
+            className: segmentClass,
+            onClick: (e) => {
+              var _a, _b, _c;
+              e.stopPropagation();
+              const fileExplorer = (_b = (_a = app.internalPlugins) == null ? void 0 : _a.plugins) == null ? void 0 : _b["file-explorer"];
+              if ((_c = fileExplorer == null ? void 0 : fileExplorer.instance) == null ? void 0 : _c.revealInFolder) {
+                const folder = app.vault.getAbstractFileByPath(cumulativePath);
+                if (folder) {
+                  fileExplorer.instance.revealInFolder(folder);
+                }
+              }
+            },
+            onContextMenu: !isLastSegment ? (e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              const folderFile = app.vault.getAbstractFileByPath(
+                cumulativePath
+              );
+              if (folderFile instanceof import_obsidian3.TFolder) {
+                const menu = new import_obsidian3.Menu();
+                app.workspace.trigger(
+                  "file-menu",
+                  menu,
+                  folderFile,
+                  "file-explorer"
+                );
+                menu.showAtMouseEvent(
+                  e
+                );
+              }
+            } : void 0
+          },
+          segment
+        ),
+        idx < array.length - 1 && /* @__PURE__ */ h("span", { className: "path-separator" }, "/")
+      );
     })))));
   }
-  return /* @__PURE__ */ h(Fragment, null, labelAbove, labelInline, /* @__PURE__ */ h("div", { className: "property-content-wrapper" }, /* @__PURE__ */ h("div", { className: "property-content" }, /* @__PURE__ */ h("span", null, resolvedValue))));
+  return /* @__PURE__ */ h(Fragment, null, labelAbove, labelInline, /* @__PURE__ */ h("div", { className: "property-content-wrapper" }, /* @__PURE__ */ h("div", { className: "property-content" }, /* @__PURE__ */ h("span", null, renderTextWithLinks(resolvedValue, app)))));
 }
 function CardRenderer({
   cards,
@@ -4753,7 +6029,9 @@ function Card({
   const useCreatedTime = sortMethod.startsWith("ctime") && !isShuffled;
   const timeIcon = useCreatedTime ? "calendar" : "clock";
   const isArray = Array.isArray(card.imageUrl);
-  const imageArray = isArray ? card.imageUrl.flat().filter((url) => typeof url === "string" && url.length > 0) : card.imageUrl ? [card.imageUrl] : [];
+  const imageArray = isArray ? card.imageUrl.flat().filter(
+    (url) => typeof url === "string" && url.length > 0
+  ) : card.imageUrl ? [card.imageUrl] : [];
   const imageFormat = settings.imageFormat;
   let format = "none";
   let position = "right";
@@ -4777,7 +6055,7 @@ function Card({
   }
   const handleDrag = (e) => {
     const file = app.vault.getAbstractFileByPath(card.path);
-    if (!(file instanceof import_obsidian.TFile))
+    if (!(file instanceof import_obsidian3.TFile))
       return;
     const dragData = app.dragManager.dragFile(e, file);
     app.dragManager.onDragStart(e, dragData);
@@ -4796,9 +6074,7 @@ function Card({
           const isLink = target.tagName === "A" || target.closest("a");
           const isTag = target.classList.contains("tag") || target.closest(".tag");
           const isImage = target.tagName === "IMG";
-          const expandOnClick = document.body.classList.contains("dynamic-views-thumbnail-expand-click-hold") || document.body.classList.contains("dynamic-views-thumbnail-expand-click-toggle");
-          const shouldBlockImageClick = isImage && expandOnClick;
-          if (!isLink && !isTag && !shouldBlockImageClick) {
+          if (!isLink && !isTag && !isImage) {
             const newLeaf = e.metaKey || e.ctrlKey;
             if (onCardClick) {
               onCardClick(card.path, newLeaf);
@@ -4841,120 +6117,170 @@ function Card({
           sourcePath: card.path
         });
         const imageSelector = format === "cover" ? ".card-cover img" : ".card-thumbnail img";
-        const imgEl = e.currentTarget.querySelector(imageSelector);
+        const imgEl = e.currentTarget.querySelector(
+          imageSelector
+        );
         const firstImage = imageArray[0];
         if (imgEl && firstImage) {
           imgEl.src = firstImage;
         }
       },
-      style: { cursor: settings.openFileAction === "card" ? "pointer" : "default" }
-    },
-    settings.showTitle && /* @__PURE__ */ h("div", { className: "card-title" }, settings.openFileAction === "title" ? /* @__PURE__ */ h(
-      "a",
-      {
-        href: card.path,
-        className: "internal-link",
-        "data-href": card.path,
-        draggable: true,
-        onDragStart: handleDrag,
-        onClick: (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const newLeaf = e.metaKey || e.ctrlKey;
-          void app.workspace.openLinkText(card.path, "", newLeaf);
-        }
-      },
-      card.title
-    ) : card.title),
-    format === "cover" && /* @__PURE__ */ h("div", { className: imageArray.length > 0 ? "card-cover-wrapper" : "card-cover-wrapper card-cover-wrapper-placeholder" }, imageArray.length > 0 ? (() => {
-      const shouldShowCarousel = (position === "top" || position === "bottom") && imageArray.length >= 2;
-      if (shouldShowCarousel) {
-        return /* @__PURE__ */ h(CoverCarousel, { imageArray, updateLayoutRef });
+      style: {
+        cursor: settings.openFileAction === "card" ? "pointer" : "default"
       }
-      return /* @__PURE__ */ h("div", { className: "card-cover" }, /* @__PURE__ */ h(
-        "div",
+    },
+    (settings.showTitle || card.hasValidUrl) && /* @__PURE__ */ h(
+      "div",
+      {
+        className: card.hasValidUrl ? "card-title-container" : "card-title"
+      },
+      settings.showTitle && /* @__PURE__ */ h("div", { className: card.hasValidUrl ? "card-title" : void 0 }, settings.openFileAction === "title" ? /* @__PURE__ */ h(
+        "a",
         {
-          className: "image-embed",
-          style: { "--cover-image-url": `url("${imageArray[0] || ""}")` },
+          href: card.path,
+          className: "internal-link",
+          "data-href": card.path,
+          draggable: true,
+          onDragStart: handleDrag,
           onClick: (e) => {
-            const isToggleMode = document.body.classList.contains("dynamic-views-thumbnail-expand-click-toggle");
-            const isHoldMode = document.body.classList.contains("dynamic-views-thumbnail-expand-click-hold");
-            if (isToggleMode || isHoldMode) {
-              e.stopPropagation();
-              if (isToggleMode) {
-                const embedEl = e.currentTarget;
-                const isZoomed = embedEl.classList.contains("is-zoomed");
-                if (isZoomed) {
-                  embedEl.classList.remove("is-zoomed");
-                } else {
-                  document.querySelectorAll(".image-embed.is-zoomed").forEach((el) => {
-                    el.classList.remove("is-zoomed");
-                  });
-                  embedEl.classList.add("is-zoomed");
-                  const closeZoom = (evt) => {
-                    const target = evt.target;
-                    if (!embedEl.contains(target)) {
-                      embedEl.classList.remove("is-zoomed");
-                      document.removeEventListener("click", closeZoom);
-                      document.removeEventListener("keydown", handleEscape);
-                    }
-                  };
-                  const handleEscape = (evt) => {
-                    if (evt.key === "Escape") {
-                      embedEl.classList.remove("is-zoomed");
-                      document.removeEventListener("click", closeZoom);
-                      document.removeEventListener("keydown", handleEscape);
-                    }
-                  };
-                  setTimeout(() => {
-                    document.addEventListener("click", closeZoom);
-                    document.addEventListener("keydown", handleEscape);
-                  }, 0);
-                }
-              }
-            }
+            e.preventDefault();
+            e.stopPropagation();
+            const newLeaf = e.metaKey || e.ctrlKey;
+            void app.workspace.openLinkText(card.path, "", newLeaf);
           }
         },
-        /* @__PURE__ */ h(
-          "img",
+        card.title
+      ) : card.title),
+      card.hasValidUrl && card.urlValue && /* @__PURE__ */ h(
+        "svg",
+        {
+          className: "card-title-url-icon text-icon-button svg-icon",
+          xmlns: "http://www.w3.org/2000/svg",
+          width: "24",
+          height: "24",
+          viewBox: "0 0 24 24",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "2",
+          strokeLinecap: "round",
+          strokeLinejoin: "round",
+          onClick: (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            window.open(card.urlValue, "_blank", "noopener,noreferrer");
+          },
+          title: "Open URL"
+        },
+        /* @__PURE__ */ h("path", { d: "M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" }),
+        /* @__PURE__ */ h("path", { d: "m21 3-9 9" }),
+        /* @__PURE__ */ h("path", { d: "M15 3h6v6" })
+      )
+    ),
+    settings.subtitleProperty && card.subtitle && /* @__PURE__ */ h("div", { className: "card-subtitle" }, renderProperty(
+      settings.subtitleProperty,
+      null,
+      card.subtitle,
+      { ...settings, propertyLabels: "hide" },
+      card,
+      app,
+      timeIcon
+    )),
+    format === "cover" && /* @__PURE__ */ h(
+      "div",
+      {
+        className: imageArray.length > 0 ? "card-cover-wrapper" : "card-cover-wrapper card-cover-wrapper-placeholder"
+      },
+      imageArray.length > 0 ? (() => {
+        const shouldShowCarousel = (position === "top" || position === "bottom") && imageArray.length >= 2;
+        if (shouldShowCarousel) {
+          return /* @__PURE__ */ h(
+            CoverCarousel,
+            {
+              imageArray,
+              updateLayoutRef
+            }
+          );
+        }
+        return /* @__PURE__ */ h("div", { className: "card-cover" }, /* @__PURE__ */ h(
+          "div",
           {
-            src: imageArray[0] || "",
-            alt: "",
-            onLoad: (e) => {
-              const imgEl = e.currentTarget;
-              const imageEmbedEl = imgEl.parentElement;
-              if (imageEmbedEl) {
-                const imageEl = imageEmbedEl.parentElement;
-                if (imageEl) {
-                  const cardEl = imageEl.closest(".card");
-                  if (cardEl) {
-                    handleImageLoad(imgEl, imageEmbedEl, cardEl, updateLayoutRef.current);
+            className: "image-embed",
+            style: {
+              "--cover-image-url": `url("${imageArray[0] || ""}")`
+            },
+            onClick: (e) => {
+              handleImageZoomClick(
+                e,
+                card.path,
+                app,
+                zoomCleanupFns,
+                zoomedOriginalParents
+              );
+            }
+          },
+          /* @__PURE__ */ h(
+            "img",
+            {
+              src: imageArray[0] || "",
+              alt: "",
+              onLoad: (e) => {
+                const imgEl = e.currentTarget;
+                const imageEmbedEl = imgEl.parentElement;
+                if (imageEmbedEl) {
+                  const imageEl = imageEmbedEl.parentElement;
+                  if (imageEl) {
+                    const cardEl = imageEl.closest(
+                      ".card"
+                    );
+                    if (cardEl) {
+                      handleImageLoad(
+                        imgEl,
+                        imageEmbedEl,
+                        cardEl,
+                        updateLayoutRef.current
+                      );
+                    }
                   }
                 }
               }
             }
-          }
-        )
-      ));
-    })() : /* @__PURE__ */ h("div", { className: "card-cover-placeholder" })),
+          )
+        ));
+      })() : /* @__PURE__ */ h("div", { className: "card-cover-placeholder" })
+    ),
     format === "cover" && (position === "left" || position === "right") && (() => {
       setTimeout(() => {
-        const cardEl = document.querySelector(`[data-path="${card.path}"]`);
+        const cardEl = document.querySelector(
+          `[data-path="${card.path}"]`
+        );
         if (!cardEl)
           return;
         const aspectRatio = typeof settings.imageAspectRatio === "string" ? parseFloat(settings.imageAspectRatio) : settings.imageAspectRatio || 1;
         const wrapperRatio = aspectRatio / (aspectRatio + 1);
         const elementSpacing = 8;
-        cardEl.style.setProperty("--dynamic-views-wrapper-ratio", wrapperRatio.toString());
+        cardEl.style.setProperty(
+          "--dynamic-views-wrapper-ratio",
+          wrapperRatio.toString()
+        );
         const updateWrapperDimensions = () => {
           const cardWidth = cardEl.offsetWidth;
           const targetWidth2 = Math.floor(wrapperRatio * cardWidth);
           const paddingValue2 = targetWidth2 + elementSpacing;
-          cardEl.style.setProperty("--dynamic-views-side-cover-width", `${targetWidth2}px`);
-          cardEl.style.setProperty("--dynamic-views-side-cover-content-padding", `${paddingValue2}px`);
+          cardEl.style.setProperty(
+            "--dynamic-views-side-cover-width",
+            `${targetWidth2}px`
+          );
+          cardEl.style.setProperty(
+            "--dynamic-views-side-cover-content-padding",
+            `${paddingValue2}px`
+          );
           return { cardWidth, targetWidth: targetWidth2, paddingValue: paddingValue2 };
         };
-        const { cardWidth: _cardWidth, targetWidth, paddingValue } = updateWrapperDimensions();
+        const {
+          cardWidth: _cardWidth,
+          targetWidth,
+          paddingValue
+        } = updateWrapperDimensions();
         const cardComputed = getComputedStyle(cardEl);
         console.log(
           "[CSS Variable Check]",
@@ -4988,9 +6314,13 @@ function Card({
           paddingValue
         );
         setTimeout(() => {
-          const wrapper = cardEl.querySelector(".card-cover-wrapper");
+          const wrapper = cardEl.querySelector(
+            ".card-cover-wrapper"
+          );
           const cover = cardEl.querySelector(".card-cover");
-          const img = cardEl.querySelector(".card-cover img");
+          const img = cardEl.querySelector(
+            ".card-cover img"
+          );
           if (wrapper && cover && img) {
             const wrapperComputed = getComputedStyle(wrapper);
             console.log(
@@ -5004,7 +6334,9 @@ function Card({
               "wrapper CSS width value:",
               wrapperComputed.getPropertyValue("width"),
               "wrapper resolves variable:",
-              wrapperComputed.getPropertyValue("--dynamic-views-side-cover-width")
+              wrapperComputed.getPropertyValue(
+                "--dynamic-views-side-cover-width"
+              )
             );
             console.log(
               "[Side Cover Rendered - card-renderer]",
@@ -5032,13 +6364,21 @@ function Card({
             const target = entry.target;
             const newCardWidth = target.offsetWidth;
             if (newCardWidth === 0) {
-              console.log("[Side Cover Resize - card-renderer] Skipped - cardWidth is 0");
+              console.log(
+                "[Side Cover Resize - card-renderer] Skipped - cardWidth is 0"
+              );
               continue;
             }
             const newTargetWidth = Math.floor(wrapperRatio * newCardWidth);
             const newPaddingValue = newTargetWidth + elementSpacing;
-            cardEl.style.setProperty("--dynamic-views-side-cover-width", `${newTargetWidth}px`);
-            cardEl.style.setProperty("--dynamic-views-side-cover-content-padding", `${newPaddingValue}px`);
+            cardEl.style.setProperty(
+              "--dynamic-views-side-cover-width",
+              `${newTargetWidth}px`
+            );
+            cardEl.style.setProperty(
+              "--dynamic-views-side-cover-content-padding",
+              `${newPaddingValue}px`
+            );
             console.log(
               "[Side Cover Resize - card-renderer]",
               "cardPath:",
@@ -5063,7 +6403,9 @@ function Card({
         onMouseMove: !app.isMobile && isArray && imageArray.length > 1 ? (e) => {
           const rect = e.currentTarget.getBoundingClientRect();
           const x = e.clientX - rect.left;
-          const section = Math.floor(x / rect.width * imageArray.length);
+          const section = Math.floor(
+            x / rect.width * imageArray.length
+          );
           const newIndex = Math.min(section, imageArray.length - 1);
           const imgEl = e.currentTarget.querySelector("img");
           const newSrc = imageArray[newIndex];
@@ -5088,42 +6430,13 @@ function Card({
           className: "image-embed",
           style: { "--cover-image-url": `url("${imageArray[0] || ""}")` },
           onClick: (e) => {
-            const isToggleMode = document.body.classList.contains("dynamic-views-thumbnail-expand-click-toggle");
-            const isHoldMode = document.body.classList.contains("dynamic-views-thumbnail-expand-click-hold");
-            if (isToggleMode || isHoldMode) {
-              e.stopPropagation();
-              if (isToggleMode) {
-                const embedEl = e.currentTarget;
-                const isZoomed = embedEl.classList.contains("is-zoomed");
-                if (isZoomed) {
-                  embedEl.classList.remove("is-zoomed");
-                } else {
-                  document.querySelectorAll(".image-embed.is-zoomed").forEach((el) => {
-                    el.classList.remove("is-zoomed");
-                  });
-                  embedEl.classList.add("is-zoomed");
-                  const closeZoom = (evt) => {
-                    const target = evt.target;
-                    if (!embedEl.contains(target)) {
-                      embedEl.classList.remove("is-zoomed");
-                      document.removeEventListener("click", closeZoom);
-                      document.removeEventListener("keydown", handleEscape);
-                    }
-                  };
-                  const handleEscape = (evt) => {
-                    if (evt.key === "Escape") {
-                      embedEl.classList.remove("is-zoomed");
-                      document.removeEventListener("click", closeZoom);
-                      document.removeEventListener("keydown", handleEscape);
-                    }
-                  };
-                  setTimeout(() => {
-                    document.addEventListener("click", closeZoom);
-                    document.addEventListener("keydown", handleEscape);
-                  }, 0);
-                }
-              }
-            }
+            handleImageZoomClick(
+              e,
+              card.path,
+              app,
+              zoomCleanupFns,
+              zoomedOriginalParents
+            );
           }
         },
         /* @__PURE__ */ h(
@@ -5139,7 +6452,12 @@ function Card({
                 if (imageEl) {
                   const cardEl = imageEl.closest(".card");
                   if (cardEl) {
-                    handleImageLoad(imgEl, imageEmbedEl, cardEl, updateLayoutRef.current);
+                    handleImageLoad(
+                      imgEl,
+                      imageEmbedEl,
+                      cardEl,
+                      updateLayoutRef.current
+                    );
                   }
                 }
               }
@@ -5155,8 +6473,13 @@ function Card({
         onMouseMove: !app.isMobile && isArray && imageArray.length > 1 ? (e) => {
           const rect = e.currentTarget.getBoundingClientRect();
           const x = e.clientX - rect.left;
-          const section = Math.floor(x / rect.width * imageArray.length);
-          const newIndex = Math.min(section, imageArray.length - 1);
+          const section = Math.floor(
+            x / rect.width * imageArray.length
+          );
+          const newIndex = Math.min(
+            section,
+            imageArray.length - 1
+          );
           const imgEl = e.currentTarget.querySelector("img");
           const newSrc = imageArray[newIndex];
           if (imgEl && newSrc) {
@@ -5178,44 +6501,17 @@ function Card({
         "div",
         {
           className: "image-embed",
-          style: { "--cover-image-url": `url("${imageArray[0] || ""}")` },
+          style: {
+            "--cover-image-url": `url("${imageArray[0] || ""}")`
+          },
           onClick: (e) => {
-            const isToggleMode = document.body.classList.contains("dynamic-views-thumbnail-expand-click-toggle");
-            const isHoldMode = document.body.classList.contains("dynamic-views-thumbnail-expand-click-hold");
-            if (isToggleMode || isHoldMode) {
-              e.stopPropagation();
-              if (isToggleMode) {
-                const embedEl = e.currentTarget;
-                const isZoomed = embedEl.classList.contains("is-zoomed");
-                if (isZoomed) {
-                  embedEl.classList.remove("is-zoomed");
-                } else {
-                  document.querySelectorAll(".image-embed.is-zoomed").forEach((el) => {
-                    el.classList.remove("is-zoomed");
-                  });
-                  embedEl.classList.add("is-zoomed");
-                  const closeZoom = (evt) => {
-                    const target = evt.target;
-                    if (!embedEl.contains(target)) {
-                      embedEl.classList.remove("is-zoomed");
-                      document.removeEventListener("click", closeZoom);
-                      document.removeEventListener("keydown", handleEscape);
-                    }
-                  };
-                  const handleEscape = (evt) => {
-                    if (evt.key === "Escape") {
-                      embedEl.classList.remove("is-zoomed");
-                      document.removeEventListener("click", closeZoom);
-                      document.removeEventListener("keydown", handleEscape);
-                    }
-                  };
-                  setTimeout(() => {
-                    document.addEventListener("click", closeZoom);
-                    document.addEventListener("keydown", handleEscape);
-                  }, 0);
-                }
-              }
-            }
+            handleImageZoomClick(
+              e,
+              card.path,
+              app,
+              zoomCleanupFns,
+              zoomedOriginalParents
+            );
           }
         },
         /* @__PURE__ */ h(
@@ -5229,9 +6525,16 @@ function Card({
               if (imageEmbedEl) {
                 const imageEl = imageEmbedEl.parentElement;
                 if (imageEl) {
-                  const cardEl = imageEl.closest(".card");
+                  const cardEl = imageEl.closest(
+                    ".card"
+                  );
                   if (cardEl) {
-                    handleImageLoad(imgEl, imageEmbedEl, cardEl, updateLayoutRef.current);
+                    handleImageLoad(
+                      imgEl,
+                      imageEmbedEl,
+                      cardEl,
+                      updateLayoutRef.current
+                    );
                   }
                 }
               }
@@ -5250,7 +6553,9 @@ function Card({
         onMouseMove: !app.isMobile && isArray && imageArray.length > 1 ? (e) => {
           const rect = e.currentTarget.getBoundingClientRect();
           const x = e.clientX - rect.left;
-          const section = Math.floor(x / rect.width * imageArray.length);
+          const section = Math.floor(
+            x / rect.width * imageArray.length
+          );
           const newIndex = Math.min(section, imageArray.length - 1);
           const imgEl = e.currentTarget.querySelector("img");
           const newSrc = imageArray[newIndex];
@@ -5275,42 +6580,13 @@ function Card({
           className: "image-embed",
           style: { "--cover-image-url": `url("${imageArray[0] || ""}")` },
           onClick: (e) => {
-            const isToggleMode = document.body.classList.contains("dynamic-views-thumbnail-expand-click-toggle");
-            const isHoldMode = document.body.classList.contains("dynamic-views-thumbnail-expand-click-hold");
-            if (isToggleMode || isHoldMode) {
-              e.stopPropagation();
-              if (isToggleMode) {
-                const embedEl = e.currentTarget;
-                const isZoomed = embedEl.classList.contains("is-zoomed");
-                if (isZoomed) {
-                  embedEl.classList.remove("is-zoomed");
-                } else {
-                  document.querySelectorAll(".image-embed.is-zoomed").forEach((el) => {
-                    el.classList.remove("is-zoomed");
-                  });
-                  embedEl.classList.add("is-zoomed");
-                  const closeZoom = (evt) => {
-                    const target = evt.target;
-                    if (!embedEl.contains(target)) {
-                      embedEl.classList.remove("is-zoomed");
-                      document.removeEventListener("click", closeZoom);
-                      document.removeEventListener("keydown", handleEscape);
-                    }
-                  };
-                  const handleEscape = (evt) => {
-                    if (evt.key === "Escape") {
-                      embedEl.classList.remove("is-zoomed");
-                      document.removeEventListener("click", closeZoom);
-                      document.removeEventListener("keydown", handleEscape);
-                    }
-                  };
-                  setTimeout(() => {
-                    document.addEventListener("click", closeZoom);
-                    document.addEventListener("keydown", handleEscape);
-                  }, 0);
-                }
-              }
-            }
+            handleImageZoomClick(
+              e,
+              card.path,
+              app,
+              zoomCleanupFns,
+              zoomedOriginalParents
+            );
           }
         },
         /* @__PURE__ */ h(
@@ -5326,7 +6602,12 @@ function Card({
                 if (imageEl) {
                   const cardEl = imageEl.closest(".card");
                   if (cardEl) {
-                    handleImageLoad(imgEl, imageEmbedEl, cardEl, updateLayoutRef.current);
+                    handleImageLoad(
+                      imgEl,
+                      imageEmbedEl,
+                      cardEl,
+                      updateLayoutRef.current
+                    );
                   }
                 }
               }
@@ -5336,18 +6617,223 @@ function Card({
       )
     ) : /* @__PURE__ */ h("div", { className: "card-thumbnail-placeholder" })),
     (() => {
-      var _a, _b, _c, _d;
+      var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n;
       const row1HasContent = settings.propertyLabels !== "hide" ? card.propertyName1 !== void 0 || card.propertyName2 !== void 0 : card.property1 !== null || card.property2 !== null;
       const row2HasContent = settings.propertyLabels !== "hide" ? card.propertyName3 !== void 0 || card.propertyName4 !== void 0 : card.property3 !== null || card.property4 !== null;
-      if (!row1HasContent && !row2HasContent)
+      const row3HasContent = settings.propertyLabels !== "hide" ? card.propertyName5 !== void 0 || card.propertyName6 !== void 0 : card.property5 !== null || card.property6 !== null;
+      const row4HasContent = settings.propertyLabels !== "hide" ? card.propertyName7 !== void 0 || card.propertyName8 !== void 0 : card.property7 !== null || card.property8 !== null;
+      const row5HasContent = settings.propertyLabels !== "hide" ? card.propertyName9 !== void 0 || card.propertyName10 !== void 0 : card.property9 !== null || card.property10 !== null;
+      const row6HasContent = settings.propertyLabels !== "hide" ? card.propertyName11 !== void 0 || card.propertyName12 !== void 0 : card.property11 !== null || card.property12 !== null;
+      const row7HasContent = settings.propertyLabels !== "hide" ? card.propertyName13 !== void 0 || card.propertyName14 !== void 0 : card.property13 !== null || card.property14 !== null;
+      if (!row1HasContent && !row2HasContent && !row3HasContent && !row4HasContent && !row5HasContent && !row6HasContent && !row7HasContent)
         return null;
-      return /* @__PURE__ */ h("div", { className: "card-properties properties-4field" }, row1HasContent && /* @__PURE__ */ h("div", { className: `property-row property-row-1${settings.propertyLayout12SideBySide ? " property-row-sidebyside" : ""}${card.property1 === null && card.property2 !== null || card.property1 !== null && card.property2 === null ? " property-row-single" : ""}` }, /* @__PURE__ */ h("div", { className: "property-field property-field-1" }, card.propertyName1 && renderPropertyContent(card.propertyName1, card, (_a = card.property1) != null ? _a : null, timeIcon, settings, app)), /* @__PURE__ */ h("div", { className: "property-field property-field-2" }, card.propertyName2 && renderPropertyContent(card.propertyName2, card, (_b = card.property2) != null ? _b : null, timeIcon, settings, app))), row2HasContent && /* @__PURE__ */ h("div", { className: `property-row property-row-2${settings.propertyLayout34SideBySide ? " property-row-sidebyside" : ""}${card.property3 === null && card.property4 !== null || card.property3 !== null && card.property4 === null ? " property-row-single" : ""}` }, /* @__PURE__ */ h("div", { className: "property-field property-field-3" }, card.propertyName3 && renderPropertyContent(card.propertyName3, card, (_c = card.property3) != null ? _c : null, timeIcon, settings, app)), /* @__PURE__ */ h("div", { className: "property-field property-field-4" }, card.propertyName4 && renderPropertyContent(card.propertyName4, card, (_d = card.property4) != null ? _d : null, timeIcon, settings, app))));
+      const row1 = row1HasContent && /* @__PURE__ */ h(
+        "div",
+        {
+          className: `property-row property-row-1${settings.propertyLayout12SideBySide ? " property-row-sidebyside" : ""}${card.property1 === null && card.property2 !== null || card.property1 !== null && card.property2 === null ? " property-row-single" : ""}`
+        },
+        /* @__PURE__ */ h("div", { className: "property-field property-field-1" }, card.propertyName1 && renderPropertyContent(
+          card.propertyName1,
+          card,
+          (_a = card.property1) != null ? _a : null,
+          timeIcon,
+          settings,
+          app
+        )),
+        /* @__PURE__ */ h("div", { className: "property-field property-field-2" }, card.propertyName2 && renderPropertyContent(
+          card.propertyName2,
+          card,
+          (_b = card.property2) != null ? _b : null,
+          timeIcon,
+          settings,
+          app
+        ))
+      );
+      const row2 = row2HasContent && /* @__PURE__ */ h(
+        "div",
+        {
+          className: `property-row property-row-2${settings.propertyLayout34SideBySide ? " property-row-sidebyside" : ""}${card.property3 === null && card.property4 !== null || card.property3 !== null && card.property4 === null ? " property-row-single" : ""}`
+        },
+        /* @__PURE__ */ h("div", { className: "property-field property-field-3" }, card.propertyName3 && renderPropertyContent(
+          card.propertyName3,
+          card,
+          (_c = card.property3) != null ? _c : null,
+          timeIcon,
+          settings,
+          app
+        )),
+        /* @__PURE__ */ h("div", { className: "property-field property-field-4" }, card.propertyName4 && renderPropertyContent(
+          card.propertyName4,
+          card,
+          (_d = card.property4) != null ? _d : null,
+          timeIcon,
+          settings,
+          app
+        ))
+      );
+      const row3 = row3HasContent && /* @__PURE__ */ h(
+        "div",
+        {
+          className: `property-row property-row-3${settings.propertyLayout56SideBySide ? " property-row-sidebyside" : ""}${card.property5 === null && card.property6 !== null || card.property5 !== null && card.property6 === null ? " property-row-single" : ""}`
+        },
+        /* @__PURE__ */ h("div", { className: "property-field property-field-5" }, card.propertyName5 && renderPropertyContent(
+          card.propertyName5,
+          card,
+          (_e = card.property5) != null ? _e : null,
+          timeIcon,
+          settings,
+          app
+        )),
+        /* @__PURE__ */ h("div", { className: "property-field property-field-6" }, card.propertyName6 && renderPropertyContent(
+          card.propertyName6,
+          card,
+          (_f = card.property6) != null ? _f : null,
+          timeIcon,
+          settings,
+          app
+        ))
+      );
+      const row4 = row4HasContent && /* @__PURE__ */ h(
+        "div",
+        {
+          className: `property-row property-row-4${settings.propertyLayout78SideBySide ? " property-row-sidebyside" : ""}${card.property7 === null && card.property8 !== null || card.property7 !== null && card.property8 === null ? " property-row-single" : ""}`
+        },
+        /* @__PURE__ */ h("div", { className: "property-field property-field-7" }, card.propertyName7 && renderPropertyContent(
+          card.propertyName7,
+          card,
+          (_g = card.property7) != null ? _g : null,
+          timeIcon,
+          settings,
+          app
+        )),
+        /* @__PURE__ */ h("div", { className: "property-field property-field-8" }, card.propertyName8 && renderPropertyContent(
+          card.propertyName8,
+          card,
+          (_h = card.property8) != null ? _h : null,
+          timeIcon,
+          settings,
+          app
+        ))
+      );
+      const row5 = row5HasContent && /* @__PURE__ */ h(
+        "div",
+        {
+          className: `property-row property-row-5${settings.propertyLayout910SideBySide ? " property-row-sidebyside" : ""}${card.property9 === null && card.property10 !== null || card.property9 !== null && card.property10 === null ? " property-row-single" : ""}`
+        },
+        /* @__PURE__ */ h("div", { className: "property-field property-field-9" }, card.propertyName9 && renderPropertyContent(
+          card.propertyName9,
+          card,
+          (_i = card.property9) != null ? _i : null,
+          timeIcon,
+          settings,
+          app
+        )),
+        /* @__PURE__ */ h("div", { className: "property-field property-field-10" }, card.propertyName10 && renderPropertyContent(
+          card.propertyName10,
+          card,
+          (_j = card.property10) != null ? _j : null,
+          timeIcon,
+          settings,
+          app
+        ))
+      );
+      const row6 = row6HasContent && /* @__PURE__ */ h(
+        "div",
+        {
+          className: `property-row property-row-6${settings.propertyLayout1112SideBySide ? " property-row-sidebyside" : ""}${card.property11 === null && card.property12 !== null || card.property11 !== null && card.property12 === null ? " property-row-single" : ""}`
+        },
+        /* @__PURE__ */ h("div", { className: "property-field property-field-11" }, card.propertyName11 && renderPropertyContent(
+          card.propertyName11,
+          card,
+          (_k = card.property11) != null ? _k : null,
+          timeIcon,
+          settings,
+          app
+        )),
+        /* @__PURE__ */ h("div", { className: "property-field property-field-12" }, card.propertyName12 && renderPropertyContent(
+          card.propertyName12,
+          card,
+          (_l = card.property12) != null ? _l : null,
+          timeIcon,
+          settings,
+          app
+        ))
+      );
+      const row7 = row7HasContent && /* @__PURE__ */ h(
+        "div",
+        {
+          className: `property-row property-row-7${settings.propertyLayout1314SideBySide ? " property-row-sidebyside" : ""}${card.property13 === null && card.property14 !== null || card.property13 !== null && card.property14 === null ? " property-row-single" : ""}`
+        },
+        /* @__PURE__ */ h("div", { className: "property-field property-field-13" }, card.propertyName13 && renderPropertyContent(
+          card.propertyName13,
+          card,
+          (_m = card.property13) != null ? _m : null,
+          timeIcon,
+          settings,
+          app
+        )),
+        /* @__PURE__ */ h("div", { className: "property-field property-field-14" }, card.propertyName14 && renderPropertyContent(
+          card.propertyName14,
+          card,
+          (_n = card.property14) != null ? _n : null,
+          timeIcon,
+          settings,
+          app
+        ))
+      );
+      const topRows = [];
+      const bottomRows = [];
+      if (row1) {
+        if (settings.propertyGroup1Position === "top")
+          topRows.push(row1);
+        else
+          bottomRows.push(row1);
+      }
+      if (row2) {
+        if (settings.propertyGroup2Position === "top")
+          topRows.push(row2);
+        else
+          bottomRows.push(row2);
+      }
+      if (row3) {
+        if (settings.propertyGroup3Position === "top")
+          topRows.push(row3);
+        else
+          bottomRows.push(row3);
+      }
+      if (row4) {
+        if (settings.propertyGroup4Position === "top")
+          topRows.push(row4);
+        else
+          bottomRows.push(row4);
+      }
+      if (row5) {
+        if (settings.propertyGroup5Position === "top")
+          topRows.push(row5);
+        else
+          bottomRows.push(row5);
+      }
+      if (row6) {
+        if (settings.propertyGroup6Position === "top")
+          topRows.push(row6);
+        else
+          bottomRows.push(row6);
+      }
+      if (row7) {
+        if (settings.propertyGroup7Position === "top")
+          topRows.push(row7);
+        else
+          bottomRows.push(row7);
+      }
+      return /* @__PURE__ */ h(Fragment, null, topRows.length > 0 && /* @__PURE__ */ h("div", { className: "card-properties card-properties-top properties-4field" }, topRows), bottomRows.length > 0 && /* @__PURE__ */ h("div", { className: "card-properties card-properties-bottom properties-4field" }, bottomRows));
     })()
   );
 }
 function handleArrowKey(e, currentIndex, viewMode, containerRef, onFocusChange) {
   var _a;
-  const cards = Array.from(((_a = containerRef.current) == null ? void 0 : _a.querySelectorAll(".card")) || []);
+  const cards = Array.from(
+    ((_a = containerRef.current) == null ? void 0 : _a.querySelectorAll(".card")) || []
+  );
   const currentCard = e.currentTarget;
   const actualIndex = cards.indexOf(currentCard);
   if (actualIndex === -1)
@@ -5417,6 +6903,9 @@ function handleArrowKey(e, currentIndex, viewMode, containerRef, onFocusChange) 
   }
 }
 
+// src/shared/data-transform.ts
+init_property();
+
 // src/shared/render-utils.ts
 function formatTimestamp(timestamp, settings, isDateOnly = false) {
   const date = new Date(timestamp);
@@ -5432,16 +6921,16 @@ function formatTimestamp(timestamp, settings, isDateOnly = false) {
   if (isDateOnly) {
     return `${yyyy}-${MM}-${dd}`;
   }
-  const { shouldShowRecentTimeOnly: shouldShowRecentTimeOnly2, shouldShowOlderDateOnly: shouldShowOlderDateOnly2 } = (init_style_settings(), __toCommonJS(style_settings_exports));
+  const styleSettings = (init_style_settings(), __toCommonJS(style_settings_exports));
   const now = Date.now();
   const isRecent = now - timestamp < 864e5;
   if (isRecent) {
-    if (shouldShowRecentTimeOnly2()) {
+    if (styleSettings.shouldShowRecentTimeOnly()) {
       return `${HH}:${mm}`;
     }
     return `${yyyy}-${MM}-${dd} ${HH}:${mm}`;
   }
-  if (shouldShowOlderDateOnly2()) {
+  if (styleSettings.shouldShowOlderDateOnly()) {
     return `${yyyy}-${MM}-${dd}`;
   }
   return `${yyyy}-${MM}-${dd} ${HH}:${mm}`;
@@ -5452,23 +6941,11 @@ function getTimestampIcon(propertyName, settings) {
   }
   return "clock";
 }
-function isDatacoreDateValue(value) {
+function isDateValue(value) {
   return value !== null && typeof value === "object" && "date" in value && value.date instanceof Date && "time" in value && typeof value.time === "boolean";
 }
-function extractDatacoreTimestamp(value) {
-  if (isDatacoreDateValue(value)) {
-    return {
-      timestamp: value.date.getTime(),
-      isDateOnly: value.time === false
-    };
-  }
-  return null;
-}
-function isBasesDateValue(value) {
-  return value !== null && typeof value === "object" && "date" in value && value.date instanceof Date && "time" in value && typeof value.time === "boolean";
-}
-function extractBasesTimestamp(value) {
-  if (isBasesDateValue(value)) {
+function extractTimestamp(value) {
+  if (isDateValue(value)) {
     return {
       timestamp: value.date.getTime(),
       isDateOnly: value.time === false
@@ -5478,6 +6955,40 @@ function extractBasesTimestamp(value) {
 }
 
 // src/shared/data-transform.ts
+function stripTagHashes(tags) {
+  return tags.map((tag) => tag.replace(/^#/, ""));
+}
+function handleTimestampPropertyFallback(propertyName, settings, cardData) {
+  const isCustomCreatedTime = settings.createdTimeProperty && propertyName === settings.createdTimeProperty;
+  const isCustomModifiedTime = settings.modifiedTimeProperty && propertyName === settings.modifiedTimeProperty;
+  if (!isCustomCreatedTime && !isCustomModifiedTime) {
+    return null;
+  }
+  if (settings.fallbackToFileMetadata) {
+    const timestamp = isCustomCreatedTime ? cardData.ctime : cardData.mtime;
+    return formatTimestamp(timestamp, settings);
+  } else {
+    return "...";
+  }
+}
+function resolveSubtitleToPlainText(subtitleValue, settings, cardData) {
+  if (!subtitleValue)
+    return void 0;
+  if (subtitleValue === "tags") {
+    const isYamlOnly = settings.subtitleProperty === "tags" || settings.subtitleProperty === "note.tags";
+    const tags = isYamlOnly ? cardData.yamlTags : cardData.tags;
+    return tags.length > 0 ? tags.join(", ") : void 0;
+  }
+  if (subtitleValue.startsWith('{"type":"array"')) {
+    try {
+      const parsed = JSON.parse(subtitleValue);
+      if (parsed.type === "array")
+        return parsed.items.join(", ");
+    } catch (e) {
+    }
+  }
+  return subtitleValue || void 0;
+}
 function applySmartTimestamp(props, sortMethod, settings) {
   if (!settings.smartTimestamp) {
     return props;
@@ -5497,7 +7008,11 @@ function applySmartTimestamp(props, sortMethod, settings) {
     return props;
   }
   const targetProperty = sortingByCtime ? settings.createdTimeProperty || "file.ctime" : settings.modifiedTimeProperty || "file.mtime";
-  const propertiesToReplace = sortingByCtime ? ["file.mtime", "modified time", settings.modifiedTimeProperty].filter(Boolean) : ["file.ctime", "created time", settings.createdTimeProperty].filter(Boolean);
+  const propertiesToReplace = sortingByCtime ? ["file.mtime", "modified time", settings.modifiedTimeProperty].filter(
+    Boolean
+  ) : ["file.ctime", "created time", settings.createdTimeProperty].filter(
+    Boolean
+  );
   const result = props.map((prop) => {
     if (propertiesToReplace.includes(prop)) {
       return targetProperty;
@@ -5536,7 +7051,17 @@ function datacoreResultToCardData(result, dc, settings, sortMethod, isShuffled, 
     settings.propertyDisplay1,
     settings.propertyDisplay2,
     settings.propertyDisplay3,
-    settings.propertyDisplay4
+    settings.propertyDisplay4,
+    settings.propertyDisplay5,
+    settings.propertyDisplay6,
+    settings.propertyDisplay7,
+    settings.propertyDisplay8,
+    settings.propertyDisplay9,
+    settings.propertyDisplay10,
+    settings.propertyDisplay11,
+    settings.propertyDisplay12,
+    settings.propertyDisplay13,
+    settings.propertyDisplay14
   ];
   props = applySmartTimestamp(props, sortMethod, settings);
   const seen = /* @__PURE__ */ new Set();
@@ -5548,19 +7073,58 @@ function datacoreResultToCardData(result, dc, settings, sortMethod, isShuffled, 
     seen.add(prop);
     return prop;
   });
-  cardData.propertyName1 = effectiveProps[0] || void 0;
-  cardData.propertyName2 = effectiveProps[1] || void 0;
-  cardData.propertyName3 = effectiveProps[2] || void 0;
-  cardData.propertyName4 = effectiveProps[3] || void 0;
-  cardData.property1 = effectiveProps[0] ? resolveDatacoreProperty(effectiveProps[0], result, cardData, settings, dc) : null;
-  cardData.property2 = effectiveProps[1] ? resolveDatacoreProperty(effectiveProps[1], result, cardData, settings, dc) : null;
-  cardData.property3 = effectiveProps[2] ? resolveDatacoreProperty(effectiveProps[2], result, cardData, settings, dc) : null;
-  cardData.property4 = effectiveProps[3] ? resolveDatacoreProperty(effectiveProps[3], result, cardData, settings, dc) : null;
+  for (let i = 0; i < 14; i++) {
+    const propName = `propertyName${i + 1}`;
+    const propValue = `property${i + 1}`;
+    cardData[propName] = effectiveProps[i] || void 0;
+    cardData[propValue] = effectiveProps[i] ? resolveDatacoreProperty(
+      effectiveProps[i],
+      result,
+      cardData,
+      settings,
+      dc
+    ) : null;
+  }
+  if (settings.subtitleProperty) {
+    const subtitleProps = settings.subtitleProperty.split(",").map((p) => p.trim()).filter((p) => p);
+    for (const prop of subtitleProps) {
+      const resolved = resolveDatacoreProperty(
+        prop,
+        result,
+        cardData,
+        settings,
+        dc
+      );
+      if (resolved !== null && resolved !== "") {
+        cardData.subtitle = resolveSubtitleToPlainText(
+          resolved,
+          settings,
+          cardData
+        );
+        break;
+      }
+    }
+  }
+  if (settings.urlProperty) {
+    const urlValue = getFirstDatacorePropertyValue(
+      result,
+      settings.urlProperty
+    );
+    if (urlValue !== null && typeof urlValue === "string") {
+      const { isValidUri: isValidUri2 } = (init_property(), __toCommonJS(property_exports));
+      cardData.urlValue = urlValue;
+      cardData.hasValidUrl = isValidUri2(urlValue);
+    }
+  }
   return cardData;
 }
 function basesEntryToCardData(app, entry, settings, sortMethod, isShuffled, snippet, imageUrl, hasImageAvailable) {
   const fileName = entry.file.basename || entry.file.name;
-  const titleValue = getFirstBasesPropertyValue(app, entry, settings.titleProperty);
+  const titleValue = getFirstBasesPropertyValue(
+    app,
+    entry,
+    settings.titleProperty
+  );
   const titleData = titleValue == null ? void 0 : titleValue.data;
   const title = titleData != null && titleData !== "" && (typeof titleData === "string" || typeof titleData === "number") ? String(titleData) : fileName;
   const path = entry.file.path;
@@ -5575,7 +7139,7 @@ function basesEntryToCardData(app, entry, settings, sortMethod, isShuffled, snip
       }
       return typeof t === "string" || typeof t === "number" ? String(t) : "";
     }).filter((t) => t) : typeof tagData === "string" || typeof tagData === "number" ? [String(tagData)] : [];
-    yamlTags = rawTags.map((tag) => tag.replace(/^#/, ""));
+    yamlTags = stripTagHashes(rawTags);
   }
   const allTagsValue = entry.getValue("file.tags");
   let tags = [];
@@ -5587,7 +7151,7 @@ function basesEntryToCardData(app, entry, settings, sortMethod, isShuffled, snip
       }
       return typeof t === "string" || typeof t === "number" ? String(t) : "";
     }).filter((t) => t) : typeof tagData === "string" || typeof tagData === "number" ? [String(tagData)] : [];
-    tags = rawTags.map((tag) => tag.replace(/^#/, ""));
+    tags = stripTagHashes(rawTags);
   }
   const ctime = entry.file.stat.ctime;
   const mtime = entry.file.stat.mtime;
@@ -5608,7 +7172,17 @@ function basesEntryToCardData(app, entry, settings, sortMethod, isShuffled, snip
     settings.propertyDisplay1,
     settings.propertyDisplay2,
     settings.propertyDisplay3,
-    settings.propertyDisplay4
+    settings.propertyDisplay4,
+    settings.propertyDisplay5,
+    settings.propertyDisplay6,
+    settings.propertyDisplay7,
+    settings.propertyDisplay8,
+    settings.propertyDisplay9,
+    settings.propertyDisplay10,
+    settings.propertyDisplay11,
+    settings.propertyDisplay12,
+    settings.propertyDisplay13,
+    settings.propertyDisplay14
   ];
   props = applySmartTimestamp(props, sortMethod, settings);
   const seen = /* @__PURE__ */ new Set();
@@ -5620,39 +7194,79 @@ function basesEntryToCardData(app, entry, settings, sortMethod, isShuffled, snip
     seen.add(prop);
     return prop;
   });
-  cardData.propertyName1 = effectiveProps[0] || void 0;
-  cardData.propertyName2 = effectiveProps[1] || void 0;
-  cardData.propertyName3 = effectiveProps[2] || void 0;
-  cardData.propertyName4 = effectiveProps[3] || void 0;
-  cardData.property1 = effectiveProps[0] ? resolveBasesProperty(app, effectiveProps[0], entry, cardData, settings) : null;
-  cardData.property2 = effectiveProps[1] ? resolveBasesProperty(app, effectiveProps[1], entry, cardData, settings) : null;
-  cardData.property3 = effectiveProps[2] ? resolveBasesProperty(app, effectiveProps[2], entry, cardData, settings) : null;
-  cardData.property4 = effectiveProps[3] ? resolveBasesProperty(app, effectiveProps[3], entry, cardData, settings) : null;
+  for (let i = 0; i < 14; i++) {
+    const propName = `propertyName${i + 1}`;
+    const propValue = `property${i + 1}`;
+    cardData[propName] = effectiveProps[i] || void 0;
+    cardData[propValue] = effectiveProps[i] ? resolveBasesProperty(
+      app,
+      effectiveProps[i],
+      entry,
+      cardData,
+      settings
+    ) : null;
+  }
+  if (settings.subtitleProperty) {
+    const subtitleProps = settings.subtitleProperty.split(",").map((p) => p.trim()).filter((p) => p);
+    for (const prop of subtitleProps) {
+      const resolved = resolveBasesProperty(
+        app,
+        prop,
+        entry,
+        cardData,
+        settings
+      );
+      if (resolved !== null && resolved !== "") {
+        cardData.subtitle = resolveSubtitleToPlainText(
+          resolved,
+          settings,
+          cardData
+        );
+        break;
+      }
+    }
+  }
+  if (settings.urlProperty) {
+    const urlValue = getFirstBasesPropertyValue(
+      app,
+      entry,
+      settings.urlProperty
+    );
+    if (urlValue && typeof urlValue === "object" && "data" in urlValue && typeof urlValue.data === "string") {
+      const { isValidUri: isValidUri2 } = (init_property(), __toCommonJS(property_exports));
+      cardData.urlValue = urlValue.data;
+      cardData.hasValidUrl = isValidUri2(urlValue.data);
+    }
+  }
   return cardData;
 }
 function transformDatacoreResults(results, dc, settings, sortMethod, isShuffled, snippets, images, hasImageAvailable) {
-  return results.filter((p) => p.$path).map((p) => datacoreResultToCardData(
-    p,
-    dc,
-    settings,
-    sortMethod,
-    isShuffled,
-    snippets[p.$path],
-    images[p.$path],
-    hasImageAvailable[p.$path]
-  ));
+  return results.filter((p) => p.$path).map(
+    (p) => datacoreResultToCardData(
+      p,
+      dc,
+      settings,
+      sortMethod,
+      isShuffled,
+      snippets[p.$path],
+      images[p.$path],
+      hasImageAvailable[p.$path]
+    )
+  );
 }
 function transformBasesEntries(app, entries, settings, sortMethod, isShuffled, snippets, images, hasImageAvailable) {
-  return entries.map((entry) => basesEntryToCardData(
-    app,
-    entry,
-    settings,
-    sortMethod,
-    isShuffled,
-    snippets[entry.file.path],
-    images[entry.file.path],
-    hasImageAvailable[entry.file.path]
-  ));
+  return entries.map(
+    (entry) => basesEntryToCardData(
+      app,
+      entry,
+      settings,
+      sortMethod,
+      isShuffled,
+      snippets[entry.file.path],
+      images[entry.file.path],
+      hasImageAvailable[entry.file.path]
+    )
+  );
 }
 function resolveBasesProperty(app, propertyName, entry, cardData, settings) {
   if (!propertyName || propertyName === "") {
@@ -5681,41 +7295,43 @@ function resolveBasesProperty(app, propertyName, entry, cardData, settings) {
   }
   const value = getFirstBasesPropertyValue(app, entry, propertyName);
   if (!value) {
-    const isCustomCreatedTime = settings.createdTimeProperty && propertyName === settings.createdTimeProperty;
-    const isCustomModifiedTime = settings.modifiedTimeProperty && propertyName === settings.modifiedTimeProperty;
-    if (isCustomCreatedTime || isCustomModifiedTime) {
-      if (settings.fallbackToFileMetadata) {
-        const timestamp = isCustomCreatedTime ? cardData.ctime : cardData.mtime;
-        return formatTimestamp(timestamp, settings);
-      } else {
-        return "...";
-      }
-    }
+    const fallback = handleTimestampPropertyFallback(
+      propertyName,
+      settings,
+      cardData
+    );
+    if (fallback !== null)
+      return fallback;
     return null;
   }
-  const timestampData = extractBasesTimestamp(value);
+  const timestampData = extractTimestamp(value);
   if (timestampData) {
-    const formatted = formatTimestamp(timestampData.timestamp, settings, timestampData.isDateOnly);
+    const formatted = formatTimestamp(
+      timestampData.timestamp,
+      settings,
+      timestampData.isDateOnly
+    );
     return formatted;
   }
   const data = value == null ? void 0 : value.data;
   if (data == null || data === "" || Array.isArray(data) && data.length === 0) {
-    const isCustomCreatedTime = settings.createdTimeProperty && propertyName === settings.createdTimeProperty;
-    const isCustomModifiedTime = settings.modifiedTimeProperty && propertyName === settings.modifiedTimeProperty;
-    if (isCustomCreatedTime || isCustomModifiedTime) {
-      if (settings.fallbackToFileMetadata) {
-        const timestamp = isCustomCreatedTime ? cardData.ctime : cardData.mtime;
-        return formatTimestamp(timestamp, settings);
-      } else {
-        return "...";
-      }
-    }
+    const fallback = handleTimestampPropertyFallback(
+      propertyName,
+      settings,
+      cardData
+    );
+    if (fallback !== null)
+      return fallback;
     return "";
   }
   if (typeof data === "string" || typeof data === "number" || typeof data === "boolean") {
     const result = String(data);
     if (typeof data === "string" && result.trim() === "") {
       return "";
+    }
+    const valueObj = value;
+    if (typeof data === "string" && (valueObj.sourcePath !== void 0 || valueObj.display !== void 0)) {
+      return `[[${result}]]`;
     }
     return result;
   }
@@ -5728,6 +7344,20 @@ function resolveBasesProperty(app, propertyName, entry, cardData, settings) {
         if (typeof nestedData === "string" || typeof nestedData === "number" || typeof nestedData === "boolean") {
           return String(nestedData);
         }
+        if (typeof nestedData === "object" && nestedData !== null) {
+          if ("path" in nestedData) {
+            const pathValue = nestedData.path;
+            if (typeof pathValue === "string" && pathValue.trim() !== "") {
+              return `[[${pathValue}]]`;
+            }
+          }
+          if ("link" in nestedData) {
+            const linkValue = nestedData.link;
+            if (typeof linkValue === "string" && linkValue.trim() !== "") {
+              return `[[${linkValue}]]`;
+            }
+          }
+        }
         return null;
       }
       if (item == null || item === "")
@@ -5735,12 +7365,40 @@ function resolveBasesProperty(app, propertyName, entry, cardData, settings) {
       if (typeof item === "string" || typeof item === "number" || typeof item === "boolean") {
         return String(item);
       }
+      if (typeof item === "object") {
+        if ("path" in item) {
+          const pathValue = item.path;
+          if (typeof pathValue === "string" && pathValue.trim() !== "") {
+            return `[[${pathValue}]]`;
+          }
+        }
+        if ("link" in item) {
+          const linkValue = item.link;
+          if (typeof linkValue === "string" && linkValue.trim() !== "") {
+            return `[[${linkValue}]]`;
+          }
+        }
+      }
       return null;
     }).filter((s) => s !== null);
     if (stringElements.length === 0) {
-      return "";
+      return null;
     }
     return JSON.stringify({ type: "array", items: stringElements });
+  }
+  if (typeof data === "object" && data !== null) {
+    if ("path" in data) {
+      const pathValue = data.path;
+      if (typeof pathValue === "string" && pathValue.trim() !== "") {
+        return `[[${pathValue}]]`;
+      }
+    }
+    if ("link" in data) {
+      const linkValue = data.link;
+      if (typeof linkValue === "string" && linkValue.trim() !== "") {
+        return `[[${linkValue}]]`;
+      }
+    }
   }
   return null;
 }
@@ -5765,26 +7423,39 @@ function resolveDatacoreProperty(propertyName, result, cardData, settings, dc) {
   if (propertyName === "file.mtime" || propertyName === "modified time") {
     return formatTimestamp(cardData.mtime, settings);
   }
-  let rawValue = getFirstDatacorePropertyValue(result, propertyName);
+  const rawValue = getFirstDatacorePropertyValue(result, propertyName);
   if (Array.isArray(rawValue)) {
     const firstElement = rawValue[0];
-    const timestampData2 = extractDatacoreTimestamp(firstElement);
+    const timestampData2 = extractTimestamp(firstElement);
     if (timestampData2) {
-      return formatTimestamp(timestampData2.timestamp, settings, timestampData2.isDateOnly);
+      return formatTimestamp(
+        timestampData2.timestamp,
+        settings,
+        timestampData2.isDateOnly
+      );
     }
     const stringElements = rawValue.map((item) => {
+      if (typeof item === "object" && item !== null && "path" in item) {
+        const pathValue = item.path;
+        if (typeof pathValue === "string" && pathValue.trim() !== "") {
+          return pathValue;
+        }
+      }
       const str = dc.coerce.string(item);
       return str && str.trim() !== "" ? str : null;
     }).filter((s) => s !== null);
     if (stringElements.length === 0) {
-      rawValue = null;
-    } else {
-      return JSON.stringify({ type: "array", items: stringElements });
+      return null;
     }
+    return JSON.stringify({ type: "array", items: stringElements });
   }
-  const timestampData = extractDatacoreTimestamp(rawValue);
+  const timestampData = extractTimestamp(rawValue);
   if (timestampData) {
-    return formatTimestamp(timestampData.timestamp, settings, timestampData.isDateOnly);
+    return formatTimestamp(
+      timestampData.timestamp,
+      settings,
+      timestampData.isDateOnly
+    );
   }
   if (rawValue === null || rawValue === void 0) {
     const isCustomCreatedTime = settings.createdTimeProperty && propertyName === settings.createdTimeProperty;
@@ -5799,18 +7470,21 @@ function resolveDatacoreProperty(propertyName, result, cardData, settings, dc) {
     }
     return null;
   }
-  const value = dc.coerce.string(rawValue);
-  if (value === "" || typeof value === "string" && value.trim() === "") {
-    const isCustomCreatedTime = settings.createdTimeProperty && propertyName === settings.createdTimeProperty;
-    const isCustomModifiedTime = settings.modifiedTimeProperty && propertyName === settings.modifiedTimeProperty;
-    if (isCustomCreatedTime || isCustomModifiedTime) {
-      if (settings.fallbackToFileMetadata) {
-        const timestamp = isCustomCreatedTime ? cardData.ctime : cardData.mtime;
-        return formatTimestamp(timestamp, settings);
-      } else {
-        return "...";
-      }
+  if (typeof rawValue === "object" && rawValue !== null && "path" in rawValue) {
+    const pathValue = rawValue.path;
+    if (typeof pathValue === "string" && pathValue.trim() !== "") {
+      return `[[${pathValue}]]`;
     }
+  }
+  const value = dc.coerce.string(rawValue);
+  if (!value || value.trim() === "") {
+    const fallback = handleTimestampPropertyFallback(
+      propertyName,
+      settings,
+      cardData
+    );
+    if (fallback !== null)
+      return fallback;
     return "";
   }
   return value;
@@ -5870,6 +7544,7 @@ function MasonryView(props) {
 }
 
 // src/components/list-view.tsx
+init_property();
 function ListView({
   results,
   displayedCount,
@@ -5887,7 +7562,10 @@ function ListView({
       style: settings.queryHeight > 0 ? { maxHeight: `${settings.queryHeight}px`, overflowY: "auto" } : {}
     },
     results.slice(0, displayedCount).filter((p) => p.$path).map((p, index) => {
-      let rawTitle = getFirstDatacorePropertyValue(p, settings.titleProperty);
+      let rawTitle = getFirstDatacorePropertyValue(
+        p,
+        settings.titleProperty
+      );
       if (Array.isArray(rawTitle))
         rawTitle = rawTitle[0];
       const titleValue = dc.coerce.string(rawTitle || p.$name);
@@ -5921,81 +7599,104 @@ function ListView({
         },
         titleValue
       ), (() => {
-        const card = datacoreResultToCardData(p, dc, settings, "mtime-desc", false);
+        const card = datacoreResultToCardData(
+          p,
+          dc,
+          settings,
+          "mtime-desc",
+          false
+        );
         const hasProperties = card.property1 || card.property2 || card.property3 || card.property4;
         if (!hasProperties)
           return null;
-        return /* @__PURE__ */ h("span", { className: "list-meta" }, card.property1 === "tags" && p.$tags && p.$tags.length > 0 ? /* @__PURE__ */ h(Fragment, null, p.$tags.map((tag) => /* @__PURE__ */ h(
-          "a",
-          {
-            key: tag,
-            href: "#",
-            className: "tag",
-            onClick: (e) => {
-              var _a;
-              e.preventDefault();
-              const searchPlugin = app.internalPlugins.plugins["global-search"];
-              if ((_a = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _a.openGlobalSearch) {
-                searchPlugin.instance.openGlobalSearch("tag:" + tag);
+        return /* @__PURE__ */ h("span", { className: "list-meta" }, card.property1 === "tags" && p.$tags && p.$tags.length > 0 ? /* @__PURE__ */ h(Fragment, null, p.$tags.map(
+          (tag) => /* @__PURE__ */ h(
+            "a",
+            {
+              key: tag,
+              href: "#",
+              className: "tag",
+              onClick: (e) => {
+                var _a;
+                e.preventDefault();
+                const searchPlugin = app.internalPlugins.plugins["global-search"];
+                if ((_a = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _a.openGlobalSearch) {
+                  searchPlugin.instance.openGlobalSearch(
+                    "tag:" + tag
+                  );
+                }
               }
-            }
-          },
-          tag.replace(/^#/, "")
-        ))) : card.property1 ? /* @__PURE__ */ h("span", { className: "list-text" }, card.property1) : null, card.property2 === "tags" && p.$tags && p.$tags.length > 0 ? /* @__PURE__ */ h(Fragment, null, p.$tags.map((tag) => /* @__PURE__ */ h(
-          "a",
-          {
-            key: tag,
-            href: "#",
-            className: "tag",
-            onClick: (e) => {
-              var _a;
-              e.preventDefault();
-              const searchPlugin = app.internalPlugins.plugins["global-search"];
-              if ((_a = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _a.openGlobalSearch) {
-                searchPlugin.instance.openGlobalSearch("tag:" + tag);
+            },
+            tag.replace(/^#/, "")
+          )
+        )) : card.property1 ? /* @__PURE__ */ h("span", { className: "list-text" }, card.property1) : null, card.property2 === "tags" && p.$tags && p.$tags.length > 0 ? /* @__PURE__ */ h(Fragment, null, p.$tags.map(
+          (tag) => /* @__PURE__ */ h(
+            "a",
+            {
+              key: tag,
+              href: "#",
+              className: "tag",
+              onClick: (e) => {
+                var _a;
+                e.preventDefault();
+                const searchPlugin = app.internalPlugins.plugins["global-search"];
+                if ((_a = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _a.openGlobalSearch) {
+                  searchPlugin.instance.openGlobalSearch(
+                    "tag:" + tag
+                  );
+                }
               }
-            }
-          },
-          tag.replace(/^#/, "")
-        ))) : card.property2 ? /* @__PURE__ */ h("span", { className: "list-text" }, card.property2) : null, card.property3 === "tags" && p.$tags && p.$tags.length > 0 ? /* @__PURE__ */ h(Fragment, null, p.$tags.map((tag) => /* @__PURE__ */ h(
-          "a",
-          {
-            key: tag,
-            href: "#",
-            className: "tag",
-            onClick: (e) => {
-              var _a;
-              e.preventDefault();
-              const searchPlugin = app.internalPlugins.plugins["global-search"];
-              if ((_a = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _a.openGlobalSearch) {
-                searchPlugin.instance.openGlobalSearch("tag:" + tag);
+            },
+            tag.replace(/^#/, "")
+          )
+        )) : card.property2 ? /* @__PURE__ */ h("span", { className: "list-text" }, card.property2) : null, card.property3 === "tags" && p.$tags && p.$tags.length > 0 ? /* @__PURE__ */ h(Fragment, null, p.$tags.map(
+          (tag) => /* @__PURE__ */ h(
+            "a",
+            {
+              key: tag,
+              href: "#",
+              className: "tag",
+              onClick: (e) => {
+                var _a;
+                e.preventDefault();
+                const searchPlugin = app.internalPlugins.plugins["global-search"];
+                if ((_a = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _a.openGlobalSearch) {
+                  searchPlugin.instance.openGlobalSearch(
+                    "tag:" + tag
+                  );
+                }
               }
-            }
-          },
-          tag.replace(/^#/, "")
-        ))) : card.property3 ? /* @__PURE__ */ h("span", { className: "list-text" }, card.property3) : null, card.property4 === "tags" && p.$tags && p.$tags.length > 0 ? /* @__PURE__ */ h(Fragment, null, p.$tags.map((tag) => /* @__PURE__ */ h(
-          "a",
-          {
-            key: tag,
-            href: "#",
-            className: "tag",
-            onClick: (e) => {
-              var _a;
-              e.preventDefault();
-              const searchPlugin = app.internalPlugins.plugins["global-search"];
-              if ((_a = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _a.openGlobalSearch) {
-                searchPlugin.instance.openGlobalSearch("tag:" + tag);
+            },
+            tag.replace(/^#/, "")
+          )
+        )) : card.property3 ? /* @__PURE__ */ h("span", { className: "list-text" }, card.property3) : null, card.property4 === "tags" && p.$tags && p.$tags.length > 0 ? /* @__PURE__ */ h(Fragment, null, p.$tags.map(
+          (tag) => /* @__PURE__ */ h(
+            "a",
+            {
+              key: tag,
+              href: "#",
+              className: "tag",
+              onClick: (e) => {
+                var _a;
+                e.preventDefault();
+                const searchPlugin = app.internalPlugins.plugins["global-search"];
+                if ((_a = searchPlugin == null ? void 0 : searchPlugin.instance) == null ? void 0 : _a.openGlobalSearch) {
+                  searchPlugin.instance.openGlobalSearch(
+                    "tag:" + tag
+                  );
+                }
               }
-            }
-          },
-          tag.replace(/^#/, "")
-        ))) : card.property4 ? /* @__PURE__ */ h("span", { className: "list-text" }, card.property4) : null);
+            },
+            tag.replace(/^#/, "")
+          )
+        )) : card.property4 ? /* @__PURE__ */ h("span", { className: "list-text" }, card.property4) : null);
       })());
     })
   );
 }
 
 // src/components/settings.tsx
+init_property();
 function Settings({
   dc,
   app,
@@ -6084,7 +7785,9 @@ function Settings({
         const evt = e;
         if (evt.key === "Enter" || evt.key === " ") {
           evt.preventDefault();
-          onSettingsChange({ fallbackToContent: !settings.fallbackToContent });
+          onSettingsChange({
+            fallbackToContent: !settings.fallbackToContent
+          });
         }
       },
       tabIndex: 0,
@@ -6105,7 +7808,9 @@ function Settings({
           onSettingsChange({ imageFormat: "none" });
         } else {
           const currentPosition = settings.imageFormat === "none" ? "right" : settings.imageFormat.split("-")[1] || "right";
-          onSettingsChange({ imageFormat: `${newFormat}-${currentPosition}` });
+          onSettingsChange({
+            imageFormat: `${newFormat}-${currentPosition}`
+          });
         }
       },
       className: "dropdown"
@@ -6123,7 +7828,9 @@ function Settings({
       onChange: (e) => {
         const evt = e;
         const currentFormat = settings.imageFormat.split("-")[0];
-        onSettingsChange({ imageFormat: `${currentFormat}-${evt.target.value}` });
+        onSettingsChange({
+          imageFormat: `${currentFormat}-${evt.target.value}`
+        });
       },
       className: "dropdown"
     },
@@ -6149,7 +7856,9 @@ function Settings({
       value: settings.fallbackToEmbeds,
       onChange: (e) => {
         const evt = e;
-        onSettingsChange({ fallbackToEmbeds: evt.target.value });
+        onSettingsChange({
+          fallbackToEmbeds: evt.target.value
+        });
       },
       className: "dropdown"
     },
@@ -6162,7 +7871,9 @@ function Settings({
       value: settings.coverFitMode,
       onChange: (e) => {
         const evt = e;
-        onSettingsChange({ coverFitMode: evt.target.value });
+        onSettingsChange({
+          coverFitMode: evt.target.value
+        });
       },
       className: "dropdown"
     },
@@ -6178,7 +7889,9 @@ function Settings({
       value: settings.imageAspectRatio,
       onChange: (e) => {
         const evt = e;
-        onSettingsChange({ imageAspectRatio: parseFloat(evt.target.value) });
+        onSettingsChange({
+          imageAspectRatio: parseFloat(evt.target.value)
+        });
       },
       style: { flex: 1 }
     }
@@ -6193,7 +7906,9 @@ function Settings({
       className: "dropdown"
     },
     /* @__PURE__ */ h("option", { value: "" }, "None"),
-    allProperties.map((prop) => /* @__PURE__ */ h("option", { key: prop, value: prop }, prop))
+    allProperties.map(
+      (prop) => /* @__PURE__ */ h("option", { key: prop, value: prop }, prop)
+    )
   )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-text" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Second property"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Property to show in second position")), /* @__PURE__ */ h(
     "select",
     {
@@ -6205,17 +7920,23 @@ function Settings({
       className: "dropdown"
     },
     /* @__PURE__ */ h("option", { value: "" }, "None"),
-    allProperties.map((prop) => /* @__PURE__ */ h("option", { key: prop, value: prop }, prop))
+    allProperties.map(
+      (prop) => /* @__PURE__ */ h("option", { key: prop, value: prop }, prop)
+    )
   )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-toggle" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Pair first and second properties"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Display first two properties horizontally")), /* @__PURE__ */ h(
     "div",
     {
       className: `checkbox-container ${settings.propertyLayout12SideBySide ? "is-enabled" : ""}`,
-      onClick: () => onSettingsChange({ propertyLayout12SideBySide: !settings.propertyLayout12SideBySide }),
+      onClick: () => onSettingsChange({
+        propertyLayout12SideBySide: !settings.propertyLayout12SideBySide
+      }),
       onKeyDown: (e) => {
         const evt = e;
         if (evt.key === "Enter" || evt.key === " ") {
           evt.preventDefault();
-          onSettingsChange({ propertyLayout12SideBySide: !settings.propertyLayout12SideBySide });
+          onSettingsChange({
+            propertyLayout12SideBySide: !settings.propertyLayout12SideBySide
+          });
         }
       },
       tabIndex: 0,
@@ -6233,7 +7954,9 @@ function Settings({
       className: "dropdown"
     },
     /* @__PURE__ */ h("option", { value: "" }, "None"),
-    allProperties.map((prop) => /* @__PURE__ */ h("option", { key: prop, value: prop }, prop))
+    allProperties.map(
+      (prop) => /* @__PURE__ */ h("option", { key: prop, value: prop }, prop)
+    )
   )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-text" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Fourth property"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Property to show in fourth position")), /* @__PURE__ */ h(
     "select",
     {
@@ -6245,17 +7968,23 @@ function Settings({
       className: "dropdown"
     },
     /* @__PURE__ */ h("option", { value: "" }, "None"),
-    allProperties.map((prop) => /* @__PURE__ */ h("option", { key: prop, value: prop }, prop))
+    allProperties.map(
+      (prop) => /* @__PURE__ */ h("option", { key: prop, value: prop }, prop)
+    )
   )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-toggle" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Pair third and fourth properties"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Display third and fourth properties horizontally")), /* @__PURE__ */ h(
     "div",
     {
       className: `checkbox-container ${settings.propertyLayout34SideBySide ? "is-enabled" : ""}`,
-      onClick: () => onSettingsChange({ propertyLayout34SideBySide: !settings.propertyLayout34SideBySide }),
+      onClick: () => onSettingsChange({
+        propertyLayout34SideBySide: !settings.propertyLayout34SideBySide
+      }),
       onKeyDown: (e) => {
         const evt = e;
         if (evt.key === "Enter" || evt.key === " ") {
           evt.preventDefault();
-          onSettingsChange({ propertyLayout34SideBySide: !settings.propertyLayout34SideBySide });
+          onSettingsChange({
+            propertyLayout34SideBySide: !settings.propertyLayout34SideBySide
+          });
         }
       },
       tabIndex: 0,
@@ -6268,7 +7997,9 @@ function Settings({
       value: settings.propertyLabels,
       onChange: (e) => {
         const evt = e;
-        onSettingsChange({ propertyLabels: evt.target.value });
+        onSettingsChange({
+          propertyLabels: evt.target.value
+        });
       },
       className: "dropdown"
     },
@@ -6281,7 +8012,9 @@ function Settings({
       value: settings.listMarker,
       onChange: (e) => {
         const evt = e;
-        onSettingsChange({ listMarker: evt.target.value });
+        onSettingsChange({
+          listMarker: evt.target.value
+        });
       },
       className: "dropdown"
     },
@@ -6295,7 +8028,23 @@ function Settings({
       "aria-label": "Restore default",
       onClick: () => onSettingsChange({ queryHeight: 0 })
     },
-    /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: "lucide lucide-rotate-ccw" }, /* @__PURE__ */ h("path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" }), /* @__PURE__ */ h("path", { d: "M3 3v5h5" }))
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        className: "lucide lucide-rotate-ccw"
+      },
+      /* @__PURE__ */ h("path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" }),
+      /* @__PURE__ */ h("path", { d: "M3 3v5h5" })
+    )
   ), /* @__PURE__ */ h(
     "input",
     {
@@ -6325,7 +8074,10 @@ function positionDropdown(buttonElement, menuElement) {
   const viewportHeight = window.innerHeight;
   const EDGE_PADDING = 8;
   if (left + menuRect.width > viewportWidth - EDGE_PADDING) {
-    left = Math.max(EDGE_PADDING, viewportWidth - menuRect.width - EDGE_PADDING);
+    left = Math.max(
+      EDGE_PADDING,
+      viewportWidth - menuRect.width - EDGE_PADDING
+    );
   }
   if (top + menuRect.height > viewportHeight - EDGE_PADDING) {
     const topPosition = buttonRect.top - menuRect.height - 4;
@@ -6441,9 +8193,14 @@ function Toolbar({
   dc.useEffect(() => {
     if (showSettings && settingsButtonRef.current && settingsMenuRef.current) {
       positionDropdown(settingsButtonRef.current, settingsMenuRef.current);
-      const settingsWrapper = settingsButtonRef.current.closest(".settings-dropdown-wrapper");
+      const settingsWrapper = settingsButtonRef.current.closest(
+        ".settings-dropdown-wrapper"
+      );
       if (settingsWrapper) {
-        return setupClickOutside(settingsWrapper, onToggleSettings);
+        return setupClickOutside(
+          settingsWrapper,
+          onToggleSettings
+        );
       }
     }
   }, [showSettings, onToggleSettings]);
@@ -6467,7 +8224,13 @@ function Toolbar({
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [showViewDropdown, showSortDropdown, showLimitDropdown, showQueryEditor, showSettings]);
+  }, [
+    showViewDropdown,
+    showSortDropdown,
+    showLimitDropdown,
+    showQueryEditor,
+    showSettings
+  ]);
   return /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("div", { className: "bottom-controls" }, /* @__PURE__ */ h("div", { className: "view-controls-wrapper" }, /* @__PURE__ */ h("div", { className: "view-dropdown-wrapper" }, /* @__PURE__ */ h(
     "button",
     {
@@ -6477,27 +8240,140 @@ function Toolbar({
       "aria-label": "Switch view",
       tabIndex: 0
     },
-    /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, viewMode === "list" ? /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("line", { x1: "8", y1: "6", x2: "21", y2: "6" }), /* @__PURE__ */ h("line", { x1: "8", y1: "12", x2: "21", y2: "12" }), /* @__PURE__ */ h("line", { x1: "8", y1: "18", x2: "21", y2: "18" }), /* @__PURE__ */ h("line", { x1: "3", y1: "6", x2: "3.01", y2: "6" }), /* @__PURE__ */ h("line", { x1: "3", y1: "12", x2: "3.01", y2: "12" }), /* @__PURE__ */ h("line", { x1: "3", y1: "18", x2: "3.01", y2: "18" })) : viewMode === "card" ? /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("path", { d: "M12 3v18" }), /* @__PURE__ */ h("path", { d: "M3 12h18" }), /* @__PURE__ */ h("rect", { x: "3", y: "3", width: "18", height: "18", rx: "2" })) : /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("rect", { width: "18", height: "18", x: "3", y: "3", rx: "2" }), /* @__PURE__ */ h("path", { d: "M3 15h12" }), /* @__PURE__ */ h("path", { d: "M15 3v18" }))),
-    /* @__PURE__ */ h("svg", { className: "chevron", xmlns: "http://www.w3.org/2000/svg", width: "12", height: "12", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "m6 9 6 6 6-6" }))
-  ), showViewDropdown ? /* @__PURE__ */ h("div", { ref: viewMenuRef, className: "view-dropdown-menu" }, /* @__PURE__ */ h("div", { className: "view-option", onClick: onSetViewCard, onKeyDown: (e) => {
-    const evt = e;
-    if (evt.key === "Enter" || evt.key === " ") {
-      evt.preventDefault();
-      onSetViewCard();
-    }
-  }, tabIndex: 0, role: "menuitem" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M12 3v18" }), /* @__PURE__ */ h("path", { d: "M3 12h18" }), /* @__PURE__ */ h("rect", { x: "3", y: "3", width: "18", height: "18", rx: "2" })), /* @__PURE__ */ h("span", null, "Grid")), /* @__PURE__ */ h("div", { className: "view-option", onClick: onSetViewMasonry, onKeyDown: (e) => {
-    const evt = e;
-    if (evt.key === "Enter" || evt.key === " ") {
-      evt.preventDefault();
-      onSetViewMasonry();
-    }
-  }, tabIndex: 0, role: "menuitem" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("rect", { width: "18", height: "18", x: "3", y: "3", rx: "2" }), /* @__PURE__ */ h("path", { d: "M3 15h12" }), /* @__PURE__ */ h("path", { d: "M15 3v18" })), /* @__PURE__ */ h("span", null, "Masonry")), /* @__PURE__ */ h("div", { className: "view-option", onClick: onSetViewList, onKeyDown: (e) => {
-    const evt = e;
-    if (evt.key === "Enter" || evt.key === " ") {
-      evt.preventDefault();
-      onSetViewList();
-    }
-  }, tabIndex: 0, role: "menuitem" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("line", { x1: "8", y1: "6", x2: "21", y2: "6" }), /* @__PURE__ */ h("line", { x1: "8", y1: "12", x2: "21", y2: "12" }), /* @__PURE__ */ h("line", { x1: "8", y1: "18", x2: "21", y2: "18" }), /* @__PURE__ */ h("line", { x1: "3", y1: "6", x2: "3.01", y2: "6" }), /* @__PURE__ */ h("line", { x1: "3", y1: "12", x2: "3.01", y2: "12" }), /* @__PURE__ */ h("line", { x1: "3", y1: "18", x2: "3.01", y2: "18" })), /* @__PURE__ */ h("span", null, "List"))) : null), /* @__PURE__ */ h("div", { className: "sort-dropdown-wrapper" }, /* @__PURE__ */ h(
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      viewMode === "list" ? /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("line", { x1: "8", y1: "6", x2: "21", y2: "6" }), /* @__PURE__ */ h("line", { x1: "8", y1: "12", x2: "21", y2: "12" }), /* @__PURE__ */ h("line", { x1: "8", y1: "18", x2: "21", y2: "18" }), /* @__PURE__ */ h("line", { x1: "3", y1: "6", x2: "3.01", y2: "6" }), /* @__PURE__ */ h("line", { x1: "3", y1: "12", x2: "3.01", y2: "12" }), /* @__PURE__ */ h("line", { x1: "3", y1: "18", x2: "3.01", y2: "18" })) : viewMode === "card" ? /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("path", { d: "M12 3v18" }), /* @__PURE__ */ h("path", { d: "M3 12h18" }), /* @__PURE__ */ h("rect", { x: "3", y: "3", width: "18", height: "18", rx: "2" })) : /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("rect", { width: "18", height: "18", x: "3", y: "3", rx: "2" }), /* @__PURE__ */ h("path", { d: "M3 15h12" }), /* @__PURE__ */ h("path", { d: "M15 3v18" }))
+    ),
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        className: "chevron",
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "12",
+        height: "12",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "m6 9 6 6 6-6" })
+    )
+  ), showViewDropdown ? /* @__PURE__ */ h("div", { ref: viewMenuRef, className: "view-dropdown-menu" }, /* @__PURE__ */ h(
+    "div",
+    {
+      className: "view-option",
+      onClick: onSetViewCard,
+      onKeyDown: (e) => {
+        const evt = e;
+        if (evt.key === "Enter" || evt.key === " ") {
+          evt.preventDefault();
+          onSetViewCard();
+        }
+      },
+      tabIndex: 0,
+      role: "menuitem"
+    },
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "M12 3v18" }),
+      /* @__PURE__ */ h("path", { d: "M3 12h18" }),
+      /* @__PURE__ */ h("rect", { x: "3", y: "3", width: "18", height: "18", rx: "2" })
+    ),
+    /* @__PURE__ */ h("span", null, "Grid")
+  ), /* @__PURE__ */ h(
+    "div",
+    {
+      className: "view-option",
+      onClick: onSetViewMasonry,
+      onKeyDown: (e) => {
+        const evt = e;
+        if (evt.key === "Enter" || evt.key === " ") {
+          evt.preventDefault();
+          onSetViewMasonry();
+        }
+      },
+      tabIndex: 0,
+      role: "menuitem"
+    },
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("rect", { width: "18", height: "18", x: "3", y: "3", rx: "2" }),
+      /* @__PURE__ */ h("path", { d: "M3 15h12" }),
+      /* @__PURE__ */ h("path", { d: "M15 3v18" })
+    ),
+    /* @__PURE__ */ h("span", null, "Masonry")
+  ), /* @__PURE__ */ h(
+    "div",
+    {
+      className: "view-option",
+      onClick: onSetViewList,
+      onKeyDown: (e) => {
+        const evt = e;
+        if (evt.key === "Enter" || evt.key === " ") {
+          evt.preventDefault();
+          onSetViewList();
+        }
+      },
+      tabIndex: 0,
+      role: "menuitem"
+    },
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("line", { x1: "8", y1: "6", x2: "21", y2: "6" }),
+      /* @__PURE__ */ h("line", { x1: "8", y1: "12", x2: "21", y2: "12" }),
+      /* @__PURE__ */ h("line", { x1: "8", y1: "18", x2: "21", y2: "18" }),
+      /* @__PURE__ */ h("line", { x1: "3", y1: "6", x2: "3.01", y2: "6" }),
+      /* @__PURE__ */ h("line", { x1: "3", y1: "12", x2: "3.01", y2: "12" }),
+      /* @__PURE__ */ h("line", { x1: "3", y1: "18", x2: "3.01", y2: "18" })
+    ),
+    /* @__PURE__ */ h("span", null, "List")
+  )) : null), /* @__PURE__ */ h("div", { className: "sort-dropdown-wrapper" }, /* @__PURE__ */ h(
     "button",
     {
       ref: sortButtonRef,
@@ -6506,45 +8382,360 @@ function Toolbar({
       "aria-label": "Change sort order",
       tabIndex: 0
     },
-    isShuffled ? /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "m3 8 4-4 4 4" }), /* @__PURE__ */ h("path", { d: "M7 4v16" }), /* @__PURE__ */ h("path", { d: "M11 12h4" }), /* @__PURE__ */ h("path", { d: "M11 16h7" }), /* @__PURE__ */ h("path", { d: "M11 20h10" })) : /* @__PURE__ */ h(Fragment, null, sortMethod === "name-asc" ? /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "m3 16 4 4 4-4" }), /* @__PURE__ */ h("path", { d: "M7 20V4" }), /* @__PURE__ */ h("path", { d: "M20 8h-5" }), /* @__PURE__ */ h("path", { d: "M15 10V6.5a2.5 2.5 0 0 1 5 0V10" }), /* @__PURE__ */ h("path", { d: "M15 14h5l-5 6h5" })) : sortMethod === "name-desc" ? /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "m3 8 4-4 4 4" }), /* @__PURE__ */ h("path", { d: "M7 4v16" }), /* @__PURE__ */ h("path", { d: "M15 4h5l-5 6h5" }), /* @__PURE__ */ h("path", { d: "M15 20v-3.5a2.5 2.5 0 0 1 5 0V20" }), /* @__PURE__ */ h("path", { d: "M20 20h-5" })) : sortMethod === "mtime-desc" ? /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M12.338 21.994A10 10 0 1 1 21.925 13.227" }), /* @__PURE__ */ h("path", { d: "M12 6v6l2 1" }), /* @__PURE__ */ h("path", { d: "m14 18 4-4 4 4" }), /* @__PURE__ */ h("path", { d: "M18 14v8" })) : sortMethod === "mtime-asc" ? /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M13.228 21.925A10 10 0 1 1 21.994 12.338" }), /* @__PURE__ */ h("path", { d: "M12 6v6l1.562.781" }), /* @__PURE__ */ h("path", { d: "m14 18 4 4 4-4" }), /* @__PURE__ */ h("path", { d: "M18 22v-8" })) : sortMethod === "ctime-desc" ? /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M8 2v4" }), /* @__PURE__ */ h("path", { d: "M16 2v4" }), /* @__PURE__ */ h("rect", { width: "18", height: "18", x: "3", y: "4", rx: "2" }), /* @__PURE__ */ h("path", { d: "M3 10h18" }), /* @__PURE__ */ h("path", { d: "M12 14 8 18" }), /* @__PURE__ */ h("path", { d: "M12 14 16 18" })) : sortMethod === "ctime-asc" ? /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M8 2v4" }), /* @__PURE__ */ h("path", { d: "M16 2v4" }), /* @__PURE__ */ h("rect", { width: "18", height: "18", x: "3", y: "4", rx: "2" }), /* @__PURE__ */ h("path", { d: "M3 10h18" }), /* @__PURE__ */ h("path", { d: "M12 18 8 14" }), /* @__PURE__ */ h("path", { d: "M12 18 16 14" })) : null),
-    /* @__PURE__ */ h("svg", { className: "chevron", xmlns: "http://www.w3.org/2000/svg", width: "12", height: "12", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "m6 9 6 6 6-6" }))
-  ), showSortDropdown ? /* @__PURE__ */ h("div", { ref: sortMenuRef, className: "sort-dropdown-menu" }, /* @__PURE__ */ h("div", { className: "sort-option", onClick: onSetSortNameAsc, onKeyDown: (e) => {
-    const evt = e;
-    if (evt.key === "Enter" || evt.key === " ") {
-      evt.preventDefault();
-      onSetSortNameAsc();
-    }
-  }, tabIndex: 0, role: "menuitem" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "m3 16 4 4 4-4" }), /* @__PURE__ */ h("path", { d: "M7 20V4" }), /* @__PURE__ */ h("path", { d: "M20 8h-5" }), /* @__PURE__ */ h("path", { d: "M15 10V6.5a2.5 2.5 0 0 1 5 0V10" }), /* @__PURE__ */ h("path", { d: "M15 14h5l-5 6h5" })), /* @__PURE__ */ h("span", null, "File name (A to Z)")), /* @__PURE__ */ h("div", { className: "sort-option", onClick: onSetSortNameDesc, onKeyDown: (e) => {
-    const evt = e;
-    if (evt.key === "Enter" || evt.key === " ") {
-      evt.preventDefault();
-      onSetSortNameDesc();
-    }
-  }, tabIndex: 0, role: "menuitem" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "m3 8 4-4 4 4" }), /* @__PURE__ */ h("path", { d: "M7 4v16" }), /* @__PURE__ */ h("path", { d: "M15 4h5l-5 6h5" }), /* @__PURE__ */ h("path", { d: "M15 20v-3.5a2.5 2.5 0 0 1 5 0V20" }), /* @__PURE__ */ h("path", { d: "M20 20h-5" })), /* @__PURE__ */ h("span", null, "File name (Z to A)")), /* @__PURE__ */ h("div", { className: "sort-option", onClick: onSetSortMtimeDesc, onKeyDown: (e) => {
-    const evt = e;
-    if (evt.key === "Enter" || evt.key === " ") {
-      evt.preventDefault();
-      onSetSortMtimeDesc();
-    }
-  }, tabIndex: 0, role: "menuitem" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M12.338 21.994A10 10 0 1 1 21.925 13.227" }), /* @__PURE__ */ h("path", { d: "M12 6v6l2 1" }), /* @__PURE__ */ h("path", { d: "m14 18 4-4 4 4" }), /* @__PURE__ */ h("path", { d: "M18 14v8" })), /* @__PURE__ */ h("span", null, "Modified time (new to old)")), /* @__PURE__ */ h("div", { className: "sort-option", onClick: onSetSortMtimeAsc, onKeyDown: (e) => {
-    const evt = e;
-    if (evt.key === "Enter" || evt.key === " ") {
-      evt.preventDefault();
-      onSetSortMtimeAsc();
-    }
-  }, tabIndex: 0, role: "menuitem" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M13.228 21.925A10 10 0 1 1 21.994 12.338" }), /* @__PURE__ */ h("path", { d: "M12 6v6l1.562.781" }), /* @__PURE__ */ h("path", { d: "m14 18 4 4 4-4" }), /* @__PURE__ */ h("path", { d: "M18 22v-8" })), /* @__PURE__ */ h("span", null, "Modified time (old to new)")), /* @__PURE__ */ h("div", { className: "sort-option", onClick: onSetSortCtimeDesc, onKeyDown: (e) => {
-    const evt = e;
-    if (evt.key === "Enter" || evt.key === " ") {
-      evt.preventDefault();
-      onSetSortCtimeDesc();
-    }
-  }, tabIndex: 0, role: "menuitem" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M8 2v4" }), /* @__PURE__ */ h("path", { d: "M16 2v4" }), /* @__PURE__ */ h("rect", { width: "18", height: "18", x: "3", y: "4", rx: "2" }), /* @__PURE__ */ h("path", { d: "M3 10h18" }), /* @__PURE__ */ h("path", { d: "M12 14 8 18" }), /* @__PURE__ */ h("path", { d: "M12 14 16 18" })), /* @__PURE__ */ h("span", null, "Created time (new to old)")), /* @__PURE__ */ h("div", { className: "sort-option", onClick: onSetSortCtimeAsc, onKeyDown: (e) => {
-    const evt = e;
-    if (evt.key === "Enter" || evt.key === " ") {
-      evt.preventDefault();
-      onSetSortCtimeAsc();
-    }
-  }, tabIndex: 0, role: "menuitem" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M8 2v4" }), /* @__PURE__ */ h("path", { d: "M16 2v4" }), /* @__PURE__ */ h("rect", { width: "18", height: "18", x: "3", y: "4", rx: "2" }), /* @__PURE__ */ h("path", { d: "M3 10h18" }), /* @__PURE__ */ h("path", { d: "M12 18 8 14" }), /* @__PURE__ */ h("path", { d: "M12 18 16 14" })), /* @__PURE__ */ h("span", null, "Created time (old to new)"))) : null)), /* @__PURE__ */ h("div", { className: "search-controls" }, /* @__PURE__ */ h("div", { className: "search-input-container" }, /* @__PURE__ */ h(
+    isShuffled ? /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "m3 8 4-4 4 4" }),
+      /* @__PURE__ */ h("path", { d: "M7 4v16" }),
+      /* @__PURE__ */ h("path", { d: "M11 12h4" }),
+      /* @__PURE__ */ h("path", { d: "M11 16h7" }),
+      /* @__PURE__ */ h("path", { d: "M11 20h10" })
+    ) : /* @__PURE__ */ h(Fragment, null, sortMethod === "name-asc" ? /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "m3 16 4 4 4-4" }),
+      /* @__PURE__ */ h("path", { d: "M7 20V4" }),
+      /* @__PURE__ */ h("path", { d: "M20 8h-5" }),
+      /* @__PURE__ */ h("path", { d: "M15 10V6.5a2.5 2.5 0 0 1 5 0V10" }),
+      /* @__PURE__ */ h("path", { d: "M15 14h5l-5 6h5" })
+    ) : sortMethod === "name-desc" ? /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "m3 8 4-4 4 4" }),
+      /* @__PURE__ */ h("path", { d: "M7 4v16" }),
+      /* @__PURE__ */ h("path", { d: "M15 4h5l-5 6h5" }),
+      /* @__PURE__ */ h("path", { d: "M15 20v-3.5a2.5 2.5 0 0 1 5 0V20" }),
+      /* @__PURE__ */ h("path", { d: "M20 20h-5" })
+    ) : sortMethod === "mtime-desc" ? /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "M12.338 21.994A10 10 0 1 1 21.925 13.227" }),
+      /* @__PURE__ */ h("path", { d: "M12 6v6l2 1" }),
+      /* @__PURE__ */ h("path", { d: "m14 18 4-4 4 4" }),
+      /* @__PURE__ */ h("path", { d: "M18 14v8" })
+    ) : sortMethod === "mtime-asc" ? /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "M13.228 21.925A10 10 0 1 1 21.994 12.338" }),
+      /* @__PURE__ */ h("path", { d: "M12 6v6l1.562.781" }),
+      /* @__PURE__ */ h("path", { d: "m14 18 4 4 4-4" }),
+      /* @__PURE__ */ h("path", { d: "M18 22v-8" })
+    ) : sortMethod === "ctime-desc" ? /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "M8 2v4" }),
+      /* @__PURE__ */ h("path", { d: "M16 2v4" }),
+      /* @__PURE__ */ h("rect", { width: "18", height: "18", x: "3", y: "4", rx: "2" }),
+      /* @__PURE__ */ h("path", { d: "M3 10h18" }),
+      /* @__PURE__ */ h("path", { d: "M12 14 8 18" }),
+      /* @__PURE__ */ h("path", { d: "M12 14 16 18" })
+    ) : sortMethod === "ctime-asc" ? /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "M8 2v4" }),
+      /* @__PURE__ */ h("path", { d: "M16 2v4" }),
+      /* @__PURE__ */ h("rect", { width: "18", height: "18", x: "3", y: "4", rx: "2" }),
+      /* @__PURE__ */ h("path", { d: "M3 10h18" }),
+      /* @__PURE__ */ h("path", { d: "M12 18 8 14" }),
+      /* @__PURE__ */ h("path", { d: "M12 18 16 14" })
+    ) : null),
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        className: "chevron",
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "12",
+        height: "12",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "m6 9 6 6 6-6" })
+    )
+  ), showSortDropdown ? /* @__PURE__ */ h("div", { ref: sortMenuRef, className: "sort-dropdown-menu" }, /* @__PURE__ */ h(
+    "div",
+    {
+      className: "sort-option",
+      onClick: onSetSortNameAsc,
+      onKeyDown: (e) => {
+        const evt = e;
+        if (evt.key === "Enter" || evt.key === " ") {
+          evt.preventDefault();
+          onSetSortNameAsc();
+        }
+      },
+      tabIndex: 0,
+      role: "menuitem"
+    },
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "m3 16 4 4 4-4" }),
+      /* @__PURE__ */ h("path", { d: "M7 20V4" }),
+      /* @__PURE__ */ h("path", { d: "M20 8h-5" }),
+      /* @__PURE__ */ h("path", { d: "M15 10V6.5a2.5 2.5 0 0 1 5 0V10" }),
+      /* @__PURE__ */ h("path", { d: "M15 14h5l-5 6h5" })
+    ),
+    /* @__PURE__ */ h("span", null, "File name (A to Z)")
+  ), /* @__PURE__ */ h(
+    "div",
+    {
+      className: "sort-option",
+      onClick: onSetSortNameDesc,
+      onKeyDown: (e) => {
+        const evt = e;
+        if (evt.key === "Enter" || evt.key === " ") {
+          evt.preventDefault();
+          onSetSortNameDesc();
+        }
+      },
+      tabIndex: 0,
+      role: "menuitem"
+    },
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "m3 8 4-4 4 4" }),
+      /* @__PURE__ */ h("path", { d: "M7 4v16" }),
+      /* @__PURE__ */ h("path", { d: "M15 4h5l-5 6h5" }),
+      /* @__PURE__ */ h("path", { d: "M15 20v-3.5a2.5 2.5 0 0 1 5 0V20" }),
+      /* @__PURE__ */ h("path", { d: "M20 20h-5" })
+    ),
+    /* @__PURE__ */ h("span", null, "File name (Z to A)")
+  ), /* @__PURE__ */ h(
+    "div",
+    {
+      className: "sort-option",
+      onClick: onSetSortMtimeDesc,
+      onKeyDown: (e) => {
+        const evt = e;
+        if (evt.key === "Enter" || evt.key === " ") {
+          evt.preventDefault();
+          onSetSortMtimeDesc();
+        }
+      },
+      tabIndex: 0,
+      role: "menuitem"
+    },
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "M12.338 21.994A10 10 0 1 1 21.925 13.227" }),
+      /* @__PURE__ */ h("path", { d: "M12 6v6l2 1" }),
+      /* @__PURE__ */ h("path", { d: "m14 18 4-4 4 4" }),
+      /* @__PURE__ */ h("path", { d: "M18 14v8" })
+    ),
+    /* @__PURE__ */ h("span", null, "Modified time (new to old)")
+  ), /* @__PURE__ */ h(
+    "div",
+    {
+      className: "sort-option",
+      onClick: onSetSortMtimeAsc,
+      onKeyDown: (e) => {
+        const evt = e;
+        if (evt.key === "Enter" || evt.key === " ") {
+          evt.preventDefault();
+          onSetSortMtimeAsc();
+        }
+      },
+      tabIndex: 0,
+      role: "menuitem"
+    },
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "M13.228 21.925A10 10 0 1 1 21.994 12.338" }),
+      /* @__PURE__ */ h("path", { d: "M12 6v6l1.562.781" }),
+      /* @__PURE__ */ h("path", { d: "m14 18 4 4 4-4" }),
+      /* @__PURE__ */ h("path", { d: "M18 22v-8" })
+    ),
+    /* @__PURE__ */ h("span", null, "Modified time (old to new)")
+  ), /* @__PURE__ */ h(
+    "div",
+    {
+      className: "sort-option",
+      onClick: onSetSortCtimeDesc,
+      onKeyDown: (e) => {
+        const evt = e;
+        if (evt.key === "Enter" || evt.key === " ") {
+          evt.preventDefault();
+          onSetSortCtimeDesc();
+        }
+      },
+      tabIndex: 0,
+      role: "menuitem"
+    },
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "M8 2v4" }),
+      /* @__PURE__ */ h("path", { d: "M16 2v4" }),
+      /* @__PURE__ */ h("rect", { width: "18", height: "18", x: "3", y: "4", rx: "2" }),
+      /* @__PURE__ */ h("path", { d: "M3 10h18" }),
+      /* @__PURE__ */ h("path", { d: "M12 14 8 18" }),
+      /* @__PURE__ */ h("path", { d: "M12 14 16 18" })
+    ),
+    /* @__PURE__ */ h("span", null, "Created time (new to old)")
+  ), /* @__PURE__ */ h(
+    "div",
+    {
+      className: "sort-option",
+      onClick: onSetSortCtimeAsc,
+      onKeyDown: (e) => {
+        const evt = e;
+        if (evt.key === "Enter" || evt.key === " ") {
+          evt.preventDefault();
+          onSetSortCtimeAsc();
+        }
+      },
+      tabIndex: 0,
+      role: "menuitem"
+    },
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "M8 2v4" }),
+      /* @__PURE__ */ h("path", { d: "M16 2v4" }),
+      /* @__PURE__ */ h("rect", { width: "18", height: "18", x: "3", y: "4", rx: "2" }),
+      /* @__PURE__ */ h("path", { d: "M3 10h18" }),
+      /* @__PURE__ */ h("path", { d: "M12 18 8 14" }),
+      /* @__PURE__ */ h("path", { d: "M12 18 16 14" })
+    ),
+    /* @__PURE__ */ h("span", null, "Created time (old to new)")
+  )) : null)), /* @__PURE__ */ h("div", { className: "search-controls" }, /* @__PURE__ */ h("div", { className: "search-input-container" }, /* @__PURE__ */ h(
     "svg",
     {
       className: "search-input-loupe-icon",
@@ -6590,8 +8781,30 @@ function Toolbar({
       viewBox: "0 0 16 16"
     },
     /* @__PURE__ */ h("circle", { cx: "8", cy: "8", r: "7", fill: "currentColor" }),
-    /* @__PURE__ */ h("line", { x1: "5", y1: "5", x2: "11", y2: "11", stroke: "white", strokeWidth: "1.5", strokeLinecap: "round" }),
-    /* @__PURE__ */ h("line", { x1: "11", y1: "5", x2: "5", y2: "11", stroke: "white", strokeWidth: "1.5", strokeLinecap: "round" })
+    /* @__PURE__ */ h(
+      "line",
+      {
+        x1: "5",
+        y1: "5",
+        x2: "11",
+        y2: "11",
+        stroke: "white",
+        strokeWidth: "1.5",
+        strokeLinecap: "round"
+      }
+    ),
+    /* @__PURE__ */ h(
+      "line",
+      {
+        x1: "11",
+        y1: "5",
+        x2: "5",
+        y2: "11",
+        stroke: "white",
+        strokeWidth: "1.5",
+        strokeLinecap: "round"
+      }
+    )
   ) : null)), /* @__PURE__ */ h(
     "div",
     {
@@ -6609,16 +8822,22 @@ function Toolbar({
       role: "button",
       "aria-expanded": showLimitDropdown
     },
-    /* @__PURE__ */ h("span", { className: `results-count${(() => {
-      const limit = parseInt(resultLimit);
-      return limit > 0 && totalCount > limit ? " limited" : "";
-    })()}` }, (() => {
-      const limit = parseInt(resultLimit);
-      if (limit > 0 && totalCount > limit) {
-        return `${limit.toLocaleString()} result${limit === 1 ? "" : "s"}`;
-      }
-      return `${totalCount.toLocaleString()} result${totalCount === 1 ? "" : "s"}`;
-    })()),
+    /* @__PURE__ */ h(
+      "span",
+      {
+        className: `results-count${(() => {
+          const limit = parseInt(resultLimit);
+          return limit > 0 && totalCount > limit ? " limited" : "";
+        })()}`
+      },
+      (() => {
+        const limit = parseInt(resultLimit);
+        if (limit > 0 && totalCount > limit) {
+          return `${limit.toLocaleString()} result${limit === 1 ? "" : "s"}`;
+        }
+        return `${totalCount.toLocaleString()} result${totalCount === 1 ? "" : "s"}`;
+      })()
+    ),
     /* @__PURE__ */ h(
       "svg",
       {
@@ -6635,10 +8854,17 @@ function Toolbar({
       },
       /* @__PURE__ */ h("polyline", { points: "6 9 12 15 18 9" })
     ),
-    showLimitDropdown ? /* @__PURE__ */ h("div", { ref: limitMenuRef, className: "limit-dropdown-menu" }, /* @__PURE__ */ h("div", { className: "limit-dropdown-label", onClick: (e) => {
-      const evt = e;
-      evt.stopPropagation();
-    } }, "Limit number of results"), /* @__PURE__ */ h(
+    showLimitDropdown ? /* @__PURE__ */ h("div", { ref: limitMenuRef, className: "limit-dropdown-menu" }, /* @__PURE__ */ h(
+      "div",
+      {
+        className: "limit-dropdown-label",
+        onClick: (e) => {
+          const evt = e;
+          evt.stopPropagation();
+        }
+      },
+      "Limit number of results"
+    ), /* @__PURE__ */ h(
       "input",
       {
         type: "text",
@@ -6694,7 +8920,22 @@ function Toolbar({
         tabIndex: 0,
         role: "menuitem"
       },
-      /* @__PURE__ */ h("div", { className: "limit-reset-button-icon" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" }), /* @__PURE__ */ h("path", { d: "M3 3v5h5" }))),
+      /* @__PURE__ */ h("div", { className: "limit-reset-button-icon" }, /* @__PURE__ */ h(
+        "svg",
+        {
+          xmlns: "http://www.w3.org/2000/svg",
+          width: "16",
+          height: "16",
+          viewBox: "0 0 24 24",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "2",
+          strokeLinecap: "round",
+          strokeLinejoin: "round"
+        },
+        /* @__PURE__ */ h("path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" }),
+        /* @__PURE__ */ h("path", { d: "M3 3v5h5" })
+      )),
       /* @__PURE__ */ h("div", { className: "limit-reset-button-text" }, resultLimit.trim() && parseInt(resultLimit) > 0 ? `Show all (${totalCount.toLocaleString()})` : "Show all")
     ), copyMenuItem) : null
   ), /* @__PURE__ */ h(
@@ -6705,7 +8946,22 @@ function Toolbar({
       onClick: (e) => onCreateNote(e),
       "aria-label": "Create new note"
     },
-    /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("line", { x1: "12", y1: "5", x2: "12", y2: "19" }), /* @__PURE__ */ h("line", { x1: "5", y1: "12", x2: "19", y2: "12" }))
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("line", { x1: "12", y1: "5", x2: "12", y2: "19" }),
+      /* @__PURE__ */ h("line", { x1: "5", y1: "12", x2: "19", y2: "12" })
+    )
   ), /* @__PURE__ */ h("div", { className: "meta-controls" }, /* @__PURE__ */ h(
     "button",
     {
@@ -6714,7 +8970,25 @@ function Toolbar({
       "aria-label": "Shuffle",
       tabIndex: 0
     },
-    /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22" }), /* @__PURE__ */ h("path", { d: "m18 2 4 4-4 4" }), /* @__PURE__ */ h("path", { d: "M2 6h1.9c1.5 0 2.9.9 3.6 2.2" }), /* @__PURE__ */ h("path", { d: "M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8" }), /* @__PURE__ */ h("path", { d: "m18 14 4 4-4 4" }))
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22" }),
+      /* @__PURE__ */ h("path", { d: "m18 2 4 4-4 4" }),
+      /* @__PURE__ */ h("path", { d: "M2 6h1.9c1.5 0 2.9.9 3.6 2.2" }),
+      /* @__PURE__ */ h("path", { d: "M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8" }),
+      /* @__PURE__ */ h("path", { d: "m18 14 4 4-4 4" })
+    )
   ), /* @__PURE__ */ h(
     "button",
     {
@@ -6723,7 +8997,24 @@ function Toolbar({
       "aria-label": "Open random file",
       tabIndex: 0
     },
-    /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" }), /* @__PURE__ */ h("path", { d: "M17 16C17 16.5523 16.5523 17 16 17C15.4477 17 15 16.5523 15 16C15 15.4477 15.4477 15 16 15C16.5523 15 17 15.4477 17 16Z" }), /* @__PURE__ */ h("path", { d: "M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12Z" }), /* @__PURE__ */ h("path", { d: "M9 8C9 8.55228 8.55228 9 8 9C7.44772 9 7 8.55228 7 8C7 7.44772 7.44772 7 8 7C8.55228 7 9 7.44772 9 8Z" }))
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z" }),
+      /* @__PURE__ */ h("path", { d: "M17 16C17 16.5523 16.5523 17 16 17C15.4477 17 15 16.5523 15 16C15 15.4477 15.4477 15 16 15C16.5523 15 17 15.4477 17 16Z" }),
+      /* @__PURE__ */ h("path", { d: "M13 12C13 12.5523 12.5523 13 12 13C11.4477 13 11 12.5523 11 12C11 11.4477 11.4477 11 12 11C12.5523 11 13 11.4477 13 12Z" }),
+      /* @__PURE__ */ h("path", { d: "M9 8C9 8.55228 8.55228 9 8 9C7.44772 9 7 8.55228 7 8C7 7.44772 7.44772 7 8 7C8.55228 7 9 7.44772 9 8Z" })
+    )
   ), /* @__PURE__ */ h("div", { className: "query-dropdown-wrapper" }, /* @__PURE__ */ h(
     "button",
     {
@@ -6733,7 +9024,24 @@ function Toolbar({
       "aria-label": showQueryEditor ? "Hide query" : "Edit query",
       tabIndex: 0
     },
-    /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: "lucide lucide-code-xml-icon lucide-code-xml" }, /* @__PURE__ */ h("path", { d: "m18 16 4-4-4-4" }), /* @__PURE__ */ h("path", { d: "m6 8-4 4 4 4" }), /* @__PURE__ */ h("path", { d: "m14.5 4-5 16" }))
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        className: "lucide lucide-code-xml-icon lucide-code-xml"
+      },
+      /* @__PURE__ */ h("path", { d: "m18 16 4-4-4-4" }),
+      /* @__PURE__ */ h("path", { d: "m6 8-4 4 4 4" }),
+      /* @__PURE__ */ h("path", { d: "m14.5 4-5 16" })
+    )
   ), showQueryEditor ? /* @__PURE__ */ h("div", { ref: queryMenuRef, className: "query-dropdown-menu" }, /* @__PURE__ */ h(
     "textarea",
     {
@@ -6753,7 +9061,15 @@ function Toolbar({
         }
       }
     }
-  ), /* @__PURE__ */ h("div", { className: "query-footer" }, /* @__PURE__ */ h("div", { className: "query-tip" }, /* @__PURE__ */ h("a", { href: "https://deepwiki.com/blacksmithgu/datacore/4.1-query-language", target: "_blank", rel: "noopener noreferrer" }, "Datacore Query Language reference")), /* @__PURE__ */ h(
+  ), /* @__PURE__ */ h("div", { className: "query-footer" }, /* @__PURE__ */ h("div", { className: "query-tip" }, /* @__PURE__ */ h(
+    "a",
+    {
+      href: "https://deepwiki.com/blacksmithgu/datacore/4.1-query-language",
+      target: "_blank",
+      rel: "noopener noreferrer"
+    },
+    "Datacore Query Language reference"
+  )), /* @__PURE__ */ h(
     "button",
     {
       className: "query-btn query-apply-btn",
@@ -6777,7 +9093,21 @@ function Toolbar({
       "aria-label": isPinned ? "Unpin toolbar" : "Pin toolbar",
       tabIndex: 0
     },
-    /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, isPinned ? /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("path", { d: "M12 17v5" }), /* @__PURE__ */ h("path", { d: "M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89" }), /* @__PURE__ */ h("path", { d: "m2 2 20 20" }), /* @__PURE__ */ h("path", { d: "M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11" })) : /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("line", { x1: "12", y1: "17", x2: "12", y2: "22" }), /* @__PURE__ */ h("path", { d: "M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z" })))
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      isPinned ? /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("path", { d: "M12 17v5" }), /* @__PURE__ */ h("path", { d: "M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89" }), /* @__PURE__ */ h("path", { d: "m2 2 20 20" }), /* @__PURE__ */ h("path", { d: "M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11" })) : /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("line", { x1: "12", y1: "17", x2: "12", y2: "22" }), /* @__PURE__ */ h("path", { d: "M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z" }))
+    )
   ) : null, /* @__PURE__ */ h("div", { ref: settingsWrapperRef, className: "settings-dropdown-wrapper" }, /* @__PURE__ */ h(
     "button",
     {
@@ -6820,7 +9150,41 @@ function Toolbar({
       "aria-label": widthMode === "max" ? "Shrink width" : "Expand width",
       tabIndex: 0
     },
-    widthMode === "max" ? /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M8 3v3a2 2 0 0 1-2 2H3" }), /* @__PURE__ */ h("path", { d: "M21 8h-3a2 2 0 0 1-2-2V3" }), /* @__PURE__ */ h("path", { d: "M3 16h3a2 2 0 0 1 2 2v3" }), /* @__PURE__ */ h("path", { d: "M16 21v-3a2 2 0 0 1 2-2h3" })) : /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M8 3H5a2 2 0 0 0-2 2v3" }), /* @__PURE__ */ h("path", { d: "M21 8V5a2 2 0 0 0-2-2h-3" }), /* @__PURE__ */ h("path", { d: "M3 16v3a2 2 0 0 0 2 2h3" }), /* @__PURE__ */ h("path", { d: "M16 21h3a2 2 0 0 0 2-2v-3" }))
+    widthMode === "max" ? /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "M8 3v3a2 2 0 0 1-2 2H3" }),
+      /* @__PURE__ */ h("path", { d: "M21 8h-3a2 2 0 0 1-2-2V3" }),
+      /* @__PURE__ */ h("path", { d: "M3 16h3a2 2 0 0 1 2 2v3" }),
+      /* @__PURE__ */ h("path", { d: "M16 21v-3a2 2 0 0 1 2-2h3" })
+    ) : /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("path", { d: "M8 3H5a2 2 0 0 0-2 2v3" }),
+      /* @__PURE__ */ h("path", { d: "M21 8V5a2 2 0 0 0-2-2h-3" }),
+      /* @__PURE__ */ h("path", { d: "M3 16v3a2 2 0 0 0 2 2h3" }),
+      /* @__PURE__ */ h("path", { d: "M16 21h3a2 2 0 0 0 2-2v-3" })
+    )
   ))), /* @__PURE__ */ h("div", { className: "search-controls-compact" }, /* @__PURE__ */ h("div", { className: "search-input-container" }, /* @__PURE__ */ h(
     "svg",
     {
@@ -6867,8 +9231,30 @@ function Toolbar({
       viewBox: "0 0 16 16"
     },
     /* @__PURE__ */ h("circle", { cx: "8", cy: "8", r: "7", fill: "currentColor" }),
-    /* @__PURE__ */ h("line", { x1: "5", y1: "5", x2: "11", y2: "11", stroke: "white", strokeWidth: "1.5", strokeLinecap: "round" }),
-    /* @__PURE__ */ h("line", { x1: "11", y1: "5", x2: "5", y2: "11", stroke: "white", strokeWidth: "1.5", strokeLinecap: "round" })
+    /* @__PURE__ */ h(
+      "line",
+      {
+        x1: "5",
+        y1: "5",
+        x2: "11",
+        y2: "11",
+        stroke: "white",
+        strokeWidth: "1.5",
+        strokeLinecap: "round"
+      }
+    ),
+    /* @__PURE__ */ h(
+      "line",
+      {
+        x1: "11",
+        y1: "5",
+        x2: "5",
+        y2: "11",
+        stroke: "white",
+        strokeWidth: "1.5",
+        strokeLinecap: "round"
+      }
+    )
   ) : null), /* @__PURE__ */ h("div", { className: "compact-bottom-row" }, /* @__PURE__ */ h(
     "div",
     {
@@ -6885,16 +9271,22 @@ function Toolbar({
       role: "button",
       "aria-expanded": showLimitDropdown
     },
-    /* @__PURE__ */ h("span", { className: `results-count${(() => {
-      const limit = parseInt(resultLimit);
-      return limit > 0 && totalCount > limit ? " limited" : "";
-    })()}` }, (() => {
-      const limit = parseInt(resultLimit);
-      if (limit > 0 && totalCount > limit) {
-        return `${limit.toLocaleString()} result${limit === 1 ? "" : "s"}`;
-      }
-      return `${totalCount.toLocaleString()} result${totalCount === 1 ? "" : "s"}`;
-    })()),
+    /* @__PURE__ */ h(
+      "span",
+      {
+        className: `results-count${(() => {
+          const limit = parseInt(resultLimit);
+          return limit > 0 && totalCount > limit ? " limited" : "";
+        })()}`
+      },
+      (() => {
+        const limit = parseInt(resultLimit);
+        if (limit > 0 && totalCount > limit) {
+          return `${limit.toLocaleString()} result${limit === 1 ? "" : "s"}`;
+        }
+        return `${totalCount.toLocaleString()} result${totalCount === 1 ? "" : "s"}`;
+      })()
+    ),
     /* @__PURE__ */ h(
       "svg",
       {
@@ -6911,10 +9303,17 @@ function Toolbar({
       },
       /* @__PURE__ */ h("polyline", { points: "6 9 12 15 18 9" })
     ),
-    showLimitDropdown ? /* @__PURE__ */ h("div", { className: "limit-dropdown-menu" }, /* @__PURE__ */ h("div", { className: "limit-dropdown-label", onClick: (e) => {
-      const evt = e;
-      evt.stopPropagation();
-    } }, "Limit number of results"), /* @__PURE__ */ h(
+    showLimitDropdown ? /* @__PURE__ */ h("div", { className: "limit-dropdown-menu" }, /* @__PURE__ */ h(
+      "div",
+      {
+        className: "limit-dropdown-label",
+        onClick: (e) => {
+          const evt = e;
+          evt.stopPropagation();
+        }
+      },
+      "Limit number of results"
+    ), /* @__PURE__ */ h(
       "input",
       {
         type: "text",
@@ -6970,7 +9369,22 @@ function Toolbar({
         tabIndex: 0,
         role: "menuitem"
       },
-      /* @__PURE__ */ h("div", { className: "limit-reset-button-icon" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" }), /* @__PURE__ */ h("path", { d: "M3 3v5h5" }))),
+      /* @__PURE__ */ h("div", { className: "limit-reset-button-icon" }, /* @__PURE__ */ h(
+        "svg",
+        {
+          xmlns: "http://www.w3.org/2000/svg",
+          width: "16",
+          height: "16",
+          viewBox: "0 0 24 24",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "2",
+          strokeLinecap: "round",
+          strokeLinejoin: "round"
+        },
+        /* @__PURE__ */ h("path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" }),
+        /* @__PURE__ */ h("path", { d: "M3 3v5h5" })
+      )),
       /* @__PURE__ */ h("div", { className: "limit-reset-button-text" }, resultLimit.trim() && parseInt(resultLimit) > 0 ? `Show all (${totalCount.toLocaleString()})` : "Show all")
     ), copyMenuItem) : null
   ), /* @__PURE__ */ h(
@@ -6981,12 +9395,27 @@ function Toolbar({
       onClick: (e) => onCreateNote(e),
       "aria-label": "Create new note"
     },
-    /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, /* @__PURE__ */ h("line", { x1: "12", y1: "5", x2: "12", y2: "19" }), /* @__PURE__ */ h("line", { x1: "5", y1: "12", x2: "19", y2: "12" }))
+    /* @__PURE__ */ h(
+      "svg",
+      {
+        xmlns: "http://www.w3.org/2000/svg",
+        width: "16",
+        height: "16",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "2",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      },
+      /* @__PURE__ */ h("line", { x1: "12", y1: "5", x2: "12", y2: "19" }),
+      /* @__PURE__ */ h("line", { x1: "5", y1: "12", x2: "19", y2: "12" })
+    )
   ))));
 }
 
 // src/utils/file.ts
-var import_obsidian2 = require("obsidian");
+var import_obsidian4 = require("obsidian");
 function getFileCtime(file) {
   var _a;
   if (!((_a = file == null ? void 0 : file.stat) == null ? void 0 : _a.ctime))
@@ -6999,11 +9428,11 @@ function getCurrentFile(app) {
 function getAvailablePath(app, folderPath, baseName) {
   const name = baseName.replace(/\.md$/, "");
   let filePath = folderPath ? `${folderPath}/${name}.md` : `${name}.md`;
-  filePath = (0, import_obsidian2.normalizePath)(filePath);
+  filePath = (0, import_obsidian4.normalizePath)(filePath);
   let counter = 1;
   while (app.vault.getFileByPath(filePath)) {
     const unnormalizedPath = folderPath ? `${folderPath}/${name} ${counter}.md` : `${name} ${counter}.md`;
-    filePath = (0, import_obsidian2.normalizePath)(unnormalizedPath);
+    filePath = (0, import_obsidian4.normalizePath)(unnormalizedPath);
     counter++;
   }
   return filePath;
@@ -7047,7 +9476,17 @@ ${newQuery}
 }
 
 // src/utils/image.ts
-var import_obsidian3 = require("obsidian");
+var import_obsidian5 = require("obsidian");
+var VALID_IMAGE_EXTENSIONS = [
+  "avif",
+  "bmp",
+  "gif",
+  "jpeg",
+  "jpg",
+  "png",
+  "svg",
+  "webp"
+];
 function isExternalUrl(url) {
   return /^https?:\/\//i.test(url);
 }
@@ -7064,6 +9503,8 @@ function validateImageUrl(url) {
   });
 }
 function stripWikilinkSyntax(path) {
+  if (!path)
+    return "";
   const wikilinkMatch = path.match(/^!?\[\[([^\]|]+)(?:\|[^\]]*)?\]\]$/);
   return wikilinkMatch ? wikilinkMatch[1].trim() : path;
 }
@@ -7090,11 +9531,13 @@ async function processImagePaths(imagePaths) {
   return { internalPaths, externalUrls };
 }
 function resolveInternalImagePaths(internalPaths, sourcePath, app) {
-  const validImageExtensions = ["avif", "bmp", "gif", "jpeg", "jpg", "png", "svg", "webp"];
   const resourcePaths = [];
   for (const propPath of internalPaths) {
-    const imageFile = app.metadataCache.getFirstLinkpathDest(propPath, sourcePath);
-    if (imageFile && validImageExtensions.includes(imageFile.extension)) {
+    const imageFile = app.metadataCache.getFirstLinkpathDest(
+      propPath,
+      sourcePath
+    );
+    if (imageFile && VALID_IMAGE_EXTENSIONS.includes(imageFile.extension)) {
       const resourcePath = app.vault.getResourcePath(imageFile);
       resourcePaths.push(resourcePath);
     }
@@ -7102,7 +9545,6 @@ function resolveInternalImagePaths(internalPaths, sourcePath, app) {
   return resourcePaths;
 }
 async function extractEmbedImages(file, app) {
-  const validImageExtensions = ["avif", "bmp", "gif", "jpeg", "jpg", "png", "svg", "webp"];
   const metadata = app.metadataCache.getFileCache(file);
   if (!(metadata == null ? void 0 : metadata.embeds))
     return [];
@@ -7115,8 +9557,11 @@ async function extractEmbedImages(file, app) {
         bodyExternalUrls.push(embedLink);
       }
     } else {
-      const targetFile = app.metadataCache.getFirstLinkpathDest(embedLink, file.path);
-      if (targetFile && validImageExtensions.includes(targetFile.extension)) {
+      const targetFile = app.metadataCache.getFirstLinkpathDest(
+        embedLink,
+        file.path
+      );
+      if (targetFile && VALID_IMAGE_EXTENSIONS.includes(targetFile.extension)) {
         const resourcePath = app.vault.getResourcePath(targetFile);
         bodyResourcePaths.push(resourcePath);
       }
@@ -7216,7 +9661,10 @@ function removeCodeBlocks(text) {
     const fenceLength = openMatch[1].length;
     const openIndex = openMatch.index;
     const escapedChar = fenceChar.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const closePattern = new RegExp(`^${escapedChar}{${fenceLength}}\\s*$`, "m");
+    const closePattern = new RegExp(
+      `^${escapedChar}{${fenceLength}}\\s*$`,
+      "m"
+    );
     const afterOpen = result.substring(openIndex + openMatch[1].length);
     const closeMatch = afterOpen.match(closePattern);
     if (closeMatch) {
@@ -7300,7 +9748,9 @@ async function loadImageForEntry(path, file, app, imagePropertyValues, fallbackT
     return;
   }
   try {
-    const { internalPaths, externalUrls } = await processImagePaths(imagePropertyValues);
+    const { internalPaths, externalUrls } = await processImagePaths(
+      imagePropertyValues
+    );
     let validImages = [
       ...resolveInternalImagePaths(internalPaths, path, app),
       ...externalUrls
@@ -7382,6 +9832,7 @@ async function loadSnippetsForEntries(entries, fallbackToContent, omitFirstLine,
 }
 
 // src/components/view.tsx
+init_property();
 init_style_settings();
 
 // src/utils/masonry-layout.ts
@@ -7413,7 +9864,10 @@ function calculateMasonryLayout(params) {
 }
 function applyMasonryLayout(container, cards, result) {
   container.classList.add("masonry-container");
-  container.style.setProperty("--masonry-height", `${result.containerHeight}px`);
+  container.style.setProperty(
+    "--masonry-height",
+    `${result.containerHeight}px`
+  );
   cards.forEach((card, index) => {
     const pos = result.positions[index];
     card.classList.add("masonry-positioned");
@@ -7424,7 +9878,12 @@ function applyMasonryLayout(container, cards, result) {
 }
 
 // src/components/view.tsx
-function View({ plugin, app, dc, USER_QUERY = "" }) {
+function View({
+  plugin,
+  app,
+  dc,
+  USER_QUERY = ""
+}) {
   const currentFile = dc.useMemo(() => {
     const file = getCurrentFile(app);
     return file;
@@ -7432,81 +9891,90 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
   const currentFilePath = currentFile == null ? void 0 : currentFile.path;
   const ctime = getFileCtime(currentFile);
   const persistenceManager = plugin.persistenceManager;
-  const markdownPatterns2 = dc.useMemo(() => [
-    /```[\s\S]*?```/g,
-    // Code blocks
-    /%%[\s\S]*?%%/g,
-    // Obsidian comments
-    /`[^`]+`/g,
-    // Inline code
-    /!\[.*?\]\([^)]+\)/g,
-    // Images
-    /!\[\[.*?\]\]/g,
-    // Wiki embeds
-    /#[\w\-/]+(?=\s|$)/g,
-    // Tags
-    /\*\*\*((?:(?!\*\*\*).)+)\*\*\*/g,
-    // Bold italic
-    /\*\*((?:(?!\*\*).)+)\*\*/g,
-    // Bold
-    /\*((?:(?!\*).)+)\*/g,
-    // Italic
-    /__((?:(?!__).)+)__/g,
-    // Bold underscores
-    /_((?:(?!_).)+)_/g,
-    // Italic underscores
-    /~~((?:(?!~~).)+)~~/g,
-    // Strikethrough
-    /==((?:(?!==).)+)==/g,
-    // Highlight
-    /\[([^\]]+)\]\([^)]+\)/g,
-    // Links
-    /\[\[[^\]|]+\|([^\]]+)\]\]/g,
-    // Wiki links with display
-    /\[\[([^\]]+)\]\]/g,
-    // Wiki links
-    /^[-*+]\s+/gm,
-    // Bullet list markers
-    /^#{1,6}\s+.+$/gm,
-    // Heading lines (full removal)
-    /^\s*(?:[-_*])\s*(?:[-_*])\s*(?:[-_*])[\s\-_*]*$/gm,
-    // Horizontal rules
-    /^\s*\|.*\|.*$/gm,
-    // Tables
-    /\^\[[^\]]*?]/g,
-    // Inline footnotes
-    /\[\^[^\]]+]/g,
-    // Footnote references
-    /^\s*\[\^[^\]]+]:.*$/gm,
-    // Footnote definitions
-    /<([a-z][a-z0-9]*)\b[^>]*>(.*?)<\/\1>/gi,
-    // HTML tag pairs
-    /<[^>]+>/g
-    // Remaining HTML tags
-  ], []);
-  const stripMarkdownSyntax2 = dc.useCallback((text) => {
-    if (!text || text.trim().length === 0)
-      return "";
-    text = text.replace(/^>\s*\[![\w-]+\][+-]?.*$/gm, "");
-    text = text.replace(/^>\s?/gm, "");
-    let result = text;
-    markdownPatterns2.forEach((pattern) => {
-      result = result.replace(pattern, (match, ...groups) => {
-        if (match.match(/<[a-z][a-z0-9]*\b[^>]*>.*?<\//i)) {
-          return groups[1] || "";
-        }
-        if (groups.length > 0 && groups[0] !== void 0) {
-          for (let i = 0; i < groups.length - 2; i++) {
-            if (groups[i] !== void 0) {
-              return groups[i];
-            }
-          }
-        }
+  const markdownPatterns2 = dc.useMemo(
+    () => [
+      /```[\s\S]*?```/g,
+      // Code blocks
+      /%%[\s\S]*?%%/g,
+      // Obsidian comments
+      /`[^`]+`/g,
+      // Inline code
+      /!\[.*?\]\([^)]+\)/g,
+      // Images
+      /!\[\[.*?\]\]/g,
+      // Wiki embeds
+      /#[\w\-/]+(?=\s|$)/g,
+      // Tags
+      /\*\*\*((?:(?!\*\*\*).)+)\*\*\*/g,
+      // Bold italic
+      /\*\*((?:(?!\*\*).)+)\*\*/g,
+      // Bold
+      /\*((?:(?!\*).)+)\*/g,
+      // Italic
+      /__((?:(?!__).)+)__/g,
+      // Bold underscores
+      /_((?:(?!_).)+)_/g,
+      // Italic underscores
+      /~~((?:(?!~~).)+)~~/g,
+      // Strikethrough
+      /==((?:(?!==).)+)==/g,
+      // Highlight
+      /\[([^\]]+)\]\([^)]+\)/g,
+      // Links
+      /\[\[[^\]|]+\|([^\]]+)\]\]/g,
+      // Wiki links with display
+      /\[\[([^\]]+)\]\]/g,
+      // Wiki links
+      /^[-*+]\s+/gm,
+      // Bullet list markers
+      /^#{1,6}\s+.+$/gm,
+      // Heading lines (full removal)
+      /^\s*(?:[-_*])\s*(?:[-_*])\s*(?:[-_*])[\s\-_*]*$/gm,
+      // Horizontal rules
+      /^\s*\|.*\|.*$/gm,
+      // Tables
+      /\^\[[^\]]*?]/g,
+      // Inline footnotes
+      /\[\^[^\]]+]/g,
+      // Footnote references
+      /^\s*\[\^[^\]]+]:.*$/gm,
+      // Footnote definitions
+      /<([a-z][a-z0-9]*)\b[^>]*>(.*?)<\/\1>/gi,
+      // HTML tag pairs
+      /<[^>]+>/g
+      // Remaining HTML tags
+    ],
+    []
+  );
+  const stripMarkdownSyntax2 = dc.useCallback(
+    (text) => {
+      if (!text || text.trim().length === 0)
         return "";
+      text = text.replace(/^>\s*\[![\w-]+\][+-]?.*$/gm, "");
+      text = text.replace(/^>\s?/gm, "");
+      let result = text;
+      markdownPatterns2.forEach((pattern) => {
+        result = result.replace(
+          pattern,
+          (match, ...groups) => {
+            if (match.match(/<[a-z][a-z0-9]*\b[^>]*>.*?<\//i)) {
+              return groups[1] || "";
+            }
+            if (groups.length > 0 && groups[0] !== void 0) {
+              for (let i = 0; i < groups.length - 2; i++) {
+                if (groups[i] !== void 0) {
+                  return groups[i];
+                }
+              }
+            }
+            return "";
+          }
+        );
       });
-    });
-    return result;
-  }, [markdownPatterns2]);
+      return result;
+    },
+    [markdownPatterns2]
+  );
   const getPersistedSettings = dc.useCallback(() => {
     var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n;
     if (!ctime || !persistenceManager)
@@ -7531,13 +9999,16 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
     baseSettings.listMarker = (_n = viewSettings.listMarker) != null ? _n : defaultViewSettings.listMarker;
     return baseSettings;
   }, [ctime, persistenceManager]);
-  const getFilePersistedValue = dc.useCallback((key, defaultValue) => {
-    var _a;
-    if (!ctime || !persistenceManager)
-      return defaultValue;
-    const state = persistenceManager.getUIState(ctime);
-    return (_a = state[key]) != null ? _a : defaultValue;
-  }, [ctime, persistenceManager]);
+  const getFilePersistedValue = dc.useCallback(
+    (key, defaultValue) => {
+      var _a;
+      if (!ctime || !persistenceManager)
+        return defaultValue;
+      const state = persistenceManager.getUIState(ctime);
+      return (_a = state[key]) != null ? _a : defaultValue;
+    },
+    [ctime, persistenceManager]
+  );
   const [sortMethod, setSortMethod] = dc.useState(
     getFilePersistedValue("sortMethod", "mtime-desc")
   );
@@ -7553,7 +10024,9 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
   const [resultLimit, setResultLimit] = dc.useState(
     getFilePersistedValue("resultLimit", "")
   );
-  const cleanQuery = (USER_QUERY || "").split("\n").filter((line) => !line.includes("QUERY START") && !line.includes("QUERY END")).join("\n").trim();
+  const cleanQuery = (USER_QUERY || "").split("\n").filter(
+    (line) => !line.includes("QUERY START") && !line.includes("QUERY END")
+  ).join("\n").trim();
   const [_query, setQuery] = dc.useState(cleanQuery);
   const [draftQuery, setDraftQuery] = dc.useState(cleanQuery);
   const [appliedQuery, setAppliedQuery] = dc.useState(cleanQuery);
@@ -7566,7 +10039,9 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
   const [showViewDropdown, setShowViewDropdown] = dc.useState(false);
   const [isPinned, setIsPinned] = dc.useState(false);
   const [queryError, setQueryError] = dc.useState(null);
-  const [displayedCount, setDisplayedCount] = dc.useState(app.isMobile ? 25 : 50);
+  const [displayedCount, setDisplayedCount] = dc.useState(
+    app.isMobile ? 25 : 50
+  );
   const [focusableCardIndex, setFocusableCardIndex] = dc.useState(0);
   const [isResultsScrolled, setIsResultsScrolled] = dc.useState(false);
   const [isScrolledToBottom, setIsScrolledToBottom] = dc.useState(true);
@@ -7580,10 +10055,16 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
   const columnCountRef = dc.useRef(null);
   const displayedCountRef = dc.useRef(displayedCount);
   const sortedLengthRef = dc.useRef(0);
-  const settingsTimeoutRef = dc.useRef(null);
+  const settingsTimeoutRef = dc.useRef(
+    null
+  );
   const isSyncing = dc.useRef(false);
   const [stickyTop, setStickyTop] = dc.useState(0);
-  const [toolbarDimensions, setToolbarDimensions] = dc.useState({ width: 0, height: 0, left: 0 });
+  const [toolbarDimensions, setToolbarDimensions] = dc.useState({
+    width: 0,
+    height: 0,
+    left: 0
+  });
   dc.useEffect(() => {
     if (ctime && persistenceManager) {
       void persistenceManager.setUIState(ctime, { sortMethod });
@@ -7643,7 +10124,9 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
   }, [settings, ctime, persistenceManager]);
   dc.useEffect(() => {
     if (isPinned && toolbarRef.current) {
-      const scrollContainer = toolbarRef.current.closest(".markdown-preview-view, .markdown-reading-view, .markdown-source-view");
+      const scrollContainer = toolbarRef.current.closest(
+        ".markdown-preview-view, .markdown-reading-view, .markdown-source-view"
+      );
       if (!scrollContainer) {
         setStickyTop(0);
         return;
@@ -7724,11 +10207,15 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
       filtered = filtered.filter((p) => {
         const fileName = (p.$name || "").toLowerCase();
         const fileTags = (p.$tags || []).map((t) => t.toLowerCase());
-        const posNameMatch = posNameTerms.every((term) => fileName.includes(term));
+        const posNameMatch = posNameTerms.every(
+          (term) => fileName.includes(term)
+        );
         const posTagMatch = posTagTerms.every(
           (term) => fileTags.some((fileTag) => fileTag === term)
         );
-        const negNameMatch = negNameTerms.some((term) => fileName.includes(term));
+        const negNameMatch = negNameTerms.some(
+          (term) => fileName.includes(term)
+        );
         const negTagMatch = negTagTerms.some(
           (term) => fileTags.some((fileTag) => fileTag === term)
         );
@@ -7745,40 +10232,54 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
     } else {
       switch (sortMethod) {
         case "name-asc":
-          sorted2 = filtered.sort((a, b) => (a.$name || "").localeCompare(b.$name || ""));
+          sorted2 = filtered.sort(
+            (a, b) => (a.$name || "").localeCompare(b.$name || "")
+          );
           break;
         case "name-desc":
-          sorted2 = filtered.sort((a, b) => (b.$name || "").localeCompare(a.$name || ""));
+          sorted2 = filtered.sort(
+            (a, b) => (b.$name || "").localeCompare(a.$name || "")
+          );
           break;
         case "mtime-asc":
-          sorted2 = filtered.sort((a, b) => {
-            var _a, _b;
-            return (((_a = a.$mtime) == null ? void 0 : _a.toMillis()) || 0) - (((_b = b.$mtime) == null ? void 0 : _b.toMillis()) || 0);
-          });
+          sorted2 = filtered.sort(
+            (a, b) => {
+              var _a, _b;
+              return (((_a = a.$mtime) == null ? void 0 : _a.toMillis()) || 0) - (((_b = b.$mtime) == null ? void 0 : _b.toMillis()) || 0);
+            }
+          );
           break;
         case "mtime-desc":
-          sorted2 = filtered.sort((a, b) => {
-            var _a, _b;
-            return (((_a = b.$mtime) == null ? void 0 : _a.toMillis()) || 0) - (((_b = a.$mtime) == null ? void 0 : _b.toMillis()) || 0);
-          });
+          sorted2 = filtered.sort(
+            (a, b) => {
+              var _a, _b;
+              return (((_a = b.$mtime) == null ? void 0 : _a.toMillis()) || 0) - (((_b = a.$mtime) == null ? void 0 : _b.toMillis()) || 0);
+            }
+          );
           break;
         case "ctime-asc":
-          sorted2 = filtered.sort((a, b) => {
-            var _a, _b;
-            return (((_a = a.$ctime) == null ? void 0 : _a.toMillis()) || 0) - (((_b = b.$ctime) == null ? void 0 : _b.toMillis()) || 0);
-          });
+          sorted2 = filtered.sort(
+            (a, b) => {
+              var _a, _b;
+              return (((_a = a.$ctime) == null ? void 0 : _a.toMillis()) || 0) - (((_b = b.$ctime) == null ? void 0 : _b.toMillis()) || 0);
+            }
+          );
           break;
         case "ctime-desc":
-          sorted2 = filtered.sort((a, b) => {
-            var _a, _b;
-            return (((_a = b.$ctime) == null ? void 0 : _a.toMillis()) || 0) - (((_b = a.$ctime) == null ? void 0 : _b.toMillis()) || 0);
-          });
+          sorted2 = filtered.sort(
+            (a, b) => {
+              var _a, _b;
+              return (((_a = b.$ctime) == null ? void 0 : _a.toMillis()) || 0) - (((_b = a.$ctime) == null ? void 0 : _b.toMillis()) || 0);
+            }
+          );
           break;
         default:
-          sorted2 = filtered.sort((a, b) => {
-            var _a, _b;
-            return (((_a = b.$mtime) == null ? void 0 : _a.toMillis()) || 0) - (((_b = a.$mtime) == null ? void 0 : _b.toMillis()) || 0);
-          });
+          sorted2 = filtered.sort(
+            (a, b) => {
+              var _a, _b;
+              return (((_a = b.$mtime) == null ? void 0 : _a.toMillis()) || 0) - (((_b = a.$mtime) == null ? void 0 : _b.toMillis()) || 0);
+            }
+          );
       }
     }
     const totalCount2 = sorted2.length;
@@ -7787,7 +10288,15 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
       return { sorted: sorted2.slice(0, limit), totalCount: totalCount2 };
     }
     return { sorted: sorted2, totalCount: totalCount2 };
-  }, [pages, sortMethod, parsedSearchTerms, isShuffled, shuffledOrder, resultLimit, currentFilePath]);
+  }, [
+    pages,
+    sortMethod,
+    parsedSearchTerms,
+    isShuffled,
+    shuffledOrder,
+    resultLimit,
+    currentFilePath
+  ]);
   const [snippets, setSnippets] = dc.useState({});
   const [images, setImages] = dc.useState({});
   const [hasImageAvailable, setHasImageAvailable] = dc.useState({});
@@ -7806,11 +10315,14 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
         const snippetEntries = sorted.slice(0, displayedCount).map((p) => {
           try {
             const file = app.vault.getAbstractFileByPath(p.$path);
-            if (!(file instanceof import_obsidian4.TFile)) {
+            if (!(file instanceof import_obsidian6.TFile)) {
               newSnippets[p.$path] = "(File not found)";
               return null;
             }
-            const descFromProp = getFirstDatacorePropertyValue(p, settings.descriptionProperty);
+            const descFromProp = getFirstDatacorePropertyValue(
+              p,
+              settings.descriptionProperty
+            );
             const descAsString = typeof descFromProp === "string" || typeof descFromProp === "number" ? String(descFromProp) : null;
             let titleValue = p.value(settings.titleProperty);
             if (Array.isArray(titleValue))
@@ -7824,7 +10336,11 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
               titleString
             };
           } catch (e) {
-            console.error("Error reading file:", p.$path, e instanceof Error ? e.message : e);
+            console.error(
+              "Error reading file:",
+              p.$path,
+              e instanceof Error ? e.message : e
+            );
             newSnippets[p.$path] = "(Error reading file)";
             return null;
           }
@@ -7841,16 +10357,23 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
         const imageEntries = sorted.slice(0, displayedCount).map((p) => {
           try {
             const file = app.vault.getAbstractFileByPath(p.$path);
-            if (!(file instanceof import_obsidian4.TFile))
+            if (!(file instanceof import_obsidian6.TFile))
               return null;
-            const imagePropertyValues = getAllDatacoreImagePropertyValues(p, settings.imageProperty);
+            const imagePropertyValues = getAllDatacoreImagePropertyValues(
+              p,
+              settings.imageProperty
+            );
             return {
               path: p.$path,
               file,
               imagePropertyValues
             };
           } catch (e) {
-            console.error("Error reading file:", p.$path, e instanceof Error ? e.message : e);
+            console.error(
+              "Error reading file:",
+              p.$path,
+              e instanceof Error ? e.message : e
+            );
             return null;
           }
         }).filter((e) => e !== null);
@@ -7867,7 +10390,16 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
       setHasImageAvailable(newHasImageAvailable);
     };
     void loadSnippets();
-  }, [sorted, displayedCount, stripMarkdownSyntax2, settings.showTextPreview, settings.imageFormat, settings, app, dc]);
+  }, [
+    sorted,
+    displayedCount,
+    stripMarkdownSyntax2,
+    settings.showTextPreview,
+    settings.imageFormat,
+    settings,
+    app,
+    dc
+  ]);
   dc.useEffect(() => {
     if (viewMode !== "masonry") {
       const container = containerRef.current;
@@ -7889,7 +10421,9 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
       const container = containerRef.current;
       if (!container)
         return;
-      const cards = Array.from(container.querySelectorAll(".card"));
+      const cards = Array.from(
+        container.querySelectorAll(".card")
+      );
       if (cards.length === 0)
         return;
       const containerWidth = container.clientWidth;
@@ -7943,10 +10477,16 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
       const cardSize = settings.cardSize;
       const minColumns = getMinGridColumns();
       const gap = getCardSpacing();
-      const cols = Math.max(minColumns, Math.floor((containerWidth + gap) / (cardSize + gap)));
+      const cols = Math.max(
+        minColumns,
+        Math.floor((containerWidth + gap) / (cardSize + gap))
+      );
       container.style.setProperty("--grid-columns", String(cols));
       const imageAspectRatio = plugin.persistenceManager.getGlobalSettings().imageAspectRatio;
-      container.style.setProperty("--dynamic-views-image-aspect-ratio", String(imageAspectRatio));
+      container.style.setProperty(
+        "--dynamic-views-image-aspect-ratio",
+        String(imageAspectRatio)
+      );
     };
     updateGrid();
     const resizeObserver = new ResizeObserver(updateGrid);
@@ -7982,7 +10522,10 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
       return;
     }
     const DESKTOP_VIEWPORT_MULTIPLIER = 2;
-    const MOBILE_VIEWPORT_MULTIPLIER = Math.max(1, DESKTOP_VIEWPORT_MULTIPLIER * 0.5);
+    const MOBILE_VIEWPORT_MULTIPLIER = Math.max(
+      1,
+      DESKTOP_VIEWPORT_MULTIPLIER * 0.5
+    );
     let element = containerRef.current;
     let scrollableElement = null;
     while (element && !scrollableElement) {
@@ -8030,7 +10573,10 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
       isLoadingRef.current = true;
       const currentCols = columnCountRef.current || 2;
       const rowsPerColumn = 10;
-      const batchSize = Math.min(currentCols * rowsPerColumn, 7 * rowsPerColumn);
+      const batchSize = Math.min(
+        currentCols * rowsPerColumn,
+        7 * rowsPerColumn
+      );
       const newCount = Math.min(currentCount + batchSize, totalLength);
       displayedCountRef.current = newCount;
       setDisplayedCount(newCount);
@@ -8057,7 +10603,9 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
         scrollTimer = null;
       }, 100);
     };
-    scrollableElement.addEventListener("scroll", handleScroll, { passive: true });
+    scrollableElement.addEventListener("scroll", handleScroll, {
+      passive: true
+    });
     return () => {
       resizeObserver.disconnect();
       window.removeEventListener("resize", handleWindowResize);
@@ -8068,7 +10616,9 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
     };
   }, []);
   dc.useEffect(() => {
-    const newCleanQuery = (USER_QUERY || "").split("\n").filter((line) => !line.includes("QUERY START") && !line.includes("QUERY END")).join("\n").trim();
+    const newCleanQuery = (USER_QUERY || "").split("\n").filter(
+      (line) => !line.includes("QUERY START") && !line.includes("QUERY END")
+    ).join("\n").trim();
     if (newCleanQuery !== appliedQuery) {
       setQuery(newCleanQuery);
       setDraftQuery(newCleanQuery);
@@ -8083,7 +10633,9 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
     const currentIndex = modes.indexOf(widthMode);
     const nextMode = modes[(currentIndex + 1) % modes.length];
     setWidthMode(nextMode);
-    const sections = document.querySelectorAll(".markdown-source-view, .markdown-preview-view, .markdown-reading-view");
+    const sections = document.querySelectorAll(
+      ".markdown-source-view, .markdown-preview-view, .markdown-reading-view"
+    );
     sections.forEach((section) => {
       if (section.querySelector(".dynamic-views")) {
         section.classList.remove("dc-wide", "dc-max");
@@ -8141,10 +10693,13 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
     setShowSortDropdown(false);
     setIsShuffled(false);
   }, []);
-  const handleSearchChange = dc.useCallback((query) => {
-    setSearchQuery(query);
-    setDisplayedCount(app.isMobile ? 25 : 50);
-  }, [app.isMobile]);
+  const handleSearchChange = dc.useCallback(
+    (query) => {
+      setSearchQuery(query);
+      setDisplayedCount(app.isMobile ? 25 : 50);
+    },
+    [app.isMobile]
+  );
   const handleSearchFocus = dc.useCallback(() => {
     setShowViewDropdown(false);
     setShowSortDropdown(false);
@@ -8158,7 +10713,9 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
     if (!container)
       return;
     if (viewMode === "masonry") {
-      const cards = Array.from(container.querySelectorAll(".card"));
+      const cards = Array.from(
+        container.querySelectorAll(".card")
+      );
       const shuffled2 = [...cards];
       for (let i = shuffled2.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -8181,17 +10738,20 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
     setIsShuffled(true);
     setShowSortDropdown(false);
   }, [sorted, viewMode]);
-  const handleOpenRandom = dc.useCallback((event) => {
-    if (sorted.length === 0)
-      return;
-    const randomIndex = Math.floor(Math.random() * sorted.length);
-    const randomPath = sorted[randomIndex].$path;
-    const file = app.vault.getAbstractFileByPath(randomPath);
-    if (file instanceof import_obsidian4.TFile) {
-      const newLeaf = import_obsidian4.Keymap.isModEvent(event);
-      void app.workspace.getLeaf(newLeaf).openFile(file);
-    }
-  }, [sorted, app]);
+  const handleOpenRandom = dc.useCallback(
+    (event) => {
+      if (sorted.length === 0)
+        return;
+      const randomIndex = Math.floor(Math.random() * sorted.length);
+      const randomPath = sorted[randomIndex].$path;
+      const file = app.vault.getAbstractFileByPath(randomPath);
+      if (file instanceof import_obsidian6.TFile) {
+        const newLeaf = import_obsidian6.Keymap.isModEvent(event);
+        void app.workspace.getLeaf(newLeaf).openFile(file);
+      }
+    },
+    [sorted, app]
+  );
   const handleToggleCode = dc.useCallback(() => {
     setShowQueryEditor(!showQueryEditor);
     if (!showQueryEditor) {
@@ -8204,25 +10764,28 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
   const handleDraftQueryChange = dc.useCallback((query) => {
     setDraftQuery(query);
   }, []);
-  const syncQueryToCodeBlock = dc.useCallback(async (queryToSave) => {
-    if (isSyncing.current || !currentFile)
-      return;
-    isSyncing.current = true;
-    try {
-      const currentContent = await app.vault.read(currentFile);
-      const currentQueryMatch = findQueryInBlock(currentContent);
-      const currentQuery = (currentQueryMatch == null ? void 0 : currentQueryMatch.query) || "";
-      if (currentQuery !== queryToSave) {
-        await app.vault.process(currentFile, (content) => {
-          return updateQueryInBlock(content, queryToSave);
-        });
+  const syncQueryToCodeBlock = dc.useCallback(
+    async (queryToSave) => {
+      if (isSyncing.current || !currentFile)
+        return;
+      isSyncing.current = true;
+      try {
+        const currentContent = await app.vault.read(currentFile);
+        const currentQueryMatch = findQueryInBlock(currentContent);
+        const currentQuery = (currentQueryMatch == null ? void 0 : currentQueryMatch.query) || "";
+        if (currentQuery !== queryToSave) {
+          await app.vault.process(currentFile, (content) => {
+            return updateQueryInBlock(content, queryToSave);
+          });
+        }
+      } catch (error) {
+        console.error("Failed to sync query to code block:", error);
+      } finally {
+        isSyncing.current = false;
       }
-    } catch (error) {
-      console.error("Failed to sync query to code block:", error);
-    } finally {
-      isSyncing.current = false;
-    }
-  }, [currentFile, app]);
+    },
+    [currentFile, app]
+  );
   const handleApplyQuery = dc.useCallback(() => {
     void (async () => {
       const processedQuery = ensurePageSelector(draftQuery.trim());
@@ -8260,54 +10823,85 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
     setResultLimit("");
     setShowLimitDropdown(false);
   }, []);
-  const handleCreateNote = dc.useCallback((event) => {
-    void (async () => {
-      var _a;
-      const folderPath = ((_a = currentFile == null ? void 0 : currentFile.parent) == null ? void 0 : _a.path) || "";
-      const filePath = getAvailablePath(app, folderPath, "Untitled");
-      const file = await app.vault.create(filePath, "");
-      const newLeaf = import_obsidian4.Keymap.isModEvent(event);
-      void app.workspace.getLeaf(newLeaf).openFile(file);
-    })();
-  }, [app, currentFile]);
-  const handleCardClick = dc.useCallback((path, newLeaf) => {
-    const file = app.vault.getAbstractFileByPath(path);
-    if (file instanceof import_obsidian4.TFile) {
-      if (settings.openFileAction === "card") {
+  const handleCreateNote = dc.useCallback(
+    (event) => {
+      void (async () => {
+        var _a;
+        const folderPath = ((_a = currentFile == null ? void 0 : currentFile.parent) == null ? void 0 : _a.path) || "";
+        const filePath = getAvailablePath(app, folderPath, "Untitled");
+        const file = await app.vault.create(filePath, "");
+        const newLeaf = import_obsidian6.Keymap.isModEvent(event);
         void app.workspace.getLeaf(newLeaf).openFile(file);
-      } else if (settings.openFileAction === "title") {
-      }
-    }
-  }, [app, settings.openFileAction]);
-  const handleCopyToClipboard = dc.useCallback((e) => {
-    e.stopPropagation();
-    const limit = parseInt(resultLimit);
-    const count = limit > 0 && totalCount > limit ? limit : totalCount;
-    const text = `Copied ${count} result${count === 1 ? "" : "s"} to clipboard`;
-    const links = sorted.slice(0, limit > 0 ? limit : sorted.length).map((p) => `[[${p.$name}]]`).join("\n");
-    void navigator.clipboard.writeText(links);
-    console.log(text);
-  }, [resultLimit, totalCount, sorted]);
-  const handleSettingsChange = dc.useCallback((newSettings) => {
-    setSettings((prev) => ({ ...prev, ...newSettings }));
-  }, []);
-  const copyMenuItem = dc.useMemo(() => /* @__PURE__ */ h(
-    "div",
-    {
-      className: "bases-toolbar-menu-item",
-      onClick: handleCopyToClipboard,
-      onKeyDown: (e) => {
-        const evt = e;
-        if (evt.key === "Enter" || evt.key === " ") {
-          evt.preventDefault();
-          handleCopyToClipboard(evt);
-        }
-      },
-      tabIndex: 0,
-      role: "menuitem"
+      })();
     },
-    /* @__PURE__ */ h("div", { className: "bases-toolbar-menu-item-info" }, /* @__PURE__ */ h("div", { className: "bases-toolbar-menu-item-info-icon" }, /* @__PURE__ */ h("svg", { xmlns: "http://www.w3.org/2000/svg", width: "24", height: "24", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className: "svg-icon lucide-copy" }, /* @__PURE__ */ h("rect", { x: "8", y: "8", width: "14", height: "14", rx: "2", ry: "2" }), /* @__PURE__ */ h("path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" }))), /* @__PURE__ */ h("div", { className: "bases-toolbar-menu-item-name" }, "Copy to clipboard"))
-  ), [handleCopyToClipboard]);
+    [app, currentFile]
+  );
+  const handleCardClick = dc.useCallback(
+    (path, newLeaf) => {
+      const file = app.vault.getAbstractFileByPath(path);
+      if (file instanceof import_obsidian6.TFile) {
+        if (settings.openFileAction === "card") {
+          void app.workspace.getLeaf(newLeaf).openFile(file);
+        } else if (settings.openFileAction === "title") {
+        }
+      }
+    },
+    [app, settings.openFileAction]
+  );
+  const handleCopyToClipboard = dc.useCallback(
+    (e) => {
+      e.stopPropagation();
+      const limit = parseInt(resultLimit);
+      const count = limit > 0 && totalCount > limit ? limit : totalCount;
+      const text = `Copied ${count} result${count === 1 ? "" : "s"} to clipboard`;
+      const links = sorted.slice(0, limit > 0 ? limit : sorted.length).map((p) => `[[${p.$name}]]`).join("\n");
+      void navigator.clipboard.writeText(links);
+      console.log(text);
+    },
+    [resultLimit, totalCount, sorted]
+  );
+  const handleSettingsChange = dc.useCallback(
+    (newSettings) => {
+      setSettings((prev) => ({ ...prev, ...newSettings }));
+    },
+    []
+  );
+  const copyMenuItem = dc.useMemo(
+    () => /* @__PURE__ */ h(
+      "div",
+      {
+        className: "bases-toolbar-menu-item",
+        onClick: handleCopyToClipboard,
+        onKeyDown: (e) => {
+          const evt = e;
+          if (evt.key === "Enter" || evt.key === " ") {
+            evt.preventDefault();
+            handleCopyToClipboard(evt);
+          }
+        },
+        tabIndex: 0,
+        role: "menuitem"
+      },
+      /* @__PURE__ */ h("div", { className: "bases-toolbar-menu-item-info" }, /* @__PURE__ */ h("div", { className: "bases-toolbar-menu-item-info-icon" }, /* @__PURE__ */ h(
+        "svg",
+        {
+          xmlns: "http://www.w3.org/2000/svg",
+          width: "24",
+          height: "24",
+          viewBox: "0 0 24 24",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "2",
+          strokeLinecap: "round",
+          strokeLinejoin: "round",
+          className: "svg-icon lucide-copy"
+        },
+        /* @__PURE__ */ h("rect", { x: "8", y: "8", width: "14", height: "14", rx: "2", ry: "2" }),
+        /* @__PURE__ */ h("path", { d: "M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" })
+      )), /* @__PURE__ */ h("div", { className: "bases-toolbar-menu-item-name" }, "Copy to clipboard"))
+    ),
+    [handleCopyToClipboard]
+  );
   const renderView = () => {
     const commonProps = {
       results: sorted,
@@ -8336,89 +10930,79 @@ function View({ plugin, app, dc, USER_QUERY = "" }) {
     }
   };
   const widthClass = widthMode === "max" ? "max-width" : widthMode === "wide" ? "wide-width" : "";
-  return /* @__PURE__ */ h(
+  return /* @__PURE__ */ h("div", { ref: explorerRef, className: `dynamic-views ${widthClass}` }, /* @__PURE__ */ h(
     "div",
     {
-      ref: explorerRef,
-      className: `dynamic-views ${widthClass}`
+      ref: toolbarRef,
+      className: `controls-wrapper${isPinned ? " pinned" : ""}${isResultsScrolled ? " scrolled" : ""}`,
+      style: isPinned ? {
+        position: "fixed",
+        top: `${stickyTop}px`,
+        width: `${toolbarDimensions.width}px`,
+        left: `${toolbarDimensions.left}px`
+      } : {}
     },
     /* @__PURE__ */ h(
-      "div",
+      Toolbar,
       {
-        ref: toolbarRef,
-        className: `controls-wrapper${isPinned ? " pinned" : ""}${isResultsScrolled ? " scrolled" : ""}`,
-        style: isPinned ? {
-          position: "fixed",
-          top: `${stickyTop}px`,
-          width: `${toolbarDimensions.width}px`,
-          left: `${toolbarDimensions.left}px`
-        } : {}
-      },
-      /* @__PURE__ */ h(
-        Toolbar,
-        {
-          dc,
-          app,
-          viewMode,
-          showViewDropdown,
-          onToggleViewDropdown: handleToggleViewDropdown,
-          onSetViewCard: () => handleSetViewMode("card"),
-          onSetViewMasonry: () => handleSetViewMode("masonry"),
-          onSetViewList: () => handleSetViewMode("list"),
-          sortMethod,
-          isShuffled,
-          showSortDropdown,
-          onToggleSortDropdown: handleToggleSortDropdown,
-          onSetSortNameAsc: () => handleSetSortMethod("name-asc"),
-          onSetSortNameDesc: () => handleSetSortMethod("name-desc"),
-          onSetSortMtimeDesc: () => handleSetSortMethod("mtime-desc"),
-          onSetSortMtimeAsc: () => handleSetSortMethod("mtime-asc"),
-          onSetSortCtimeDesc: () => handleSetSortMethod("ctime-desc"),
-          onSetSortCtimeAsc: () => handleSetSortMethod("ctime-asc"),
-          searchQuery,
-          onSearchChange: handleSearchChange,
-          onSearchFocus: handleSearchFocus,
-          onClearSearch: handleClearSearch,
-          settings,
-          onShuffle: handleShuffle,
-          onOpenRandom: handleOpenRandom,
-          showQueryEditor,
-          draftQuery,
-          onToggleCode: handleToggleCode,
-          onDraftQueryChange: handleDraftQueryChange,
-          onApplyQuery: handleApplyQuery,
-          onClearQuery: handleClearQuery,
-          totalCount,
-          displayedCount: Math.min(displayedCount, sorted.length),
-          resultLimit,
-          showLimitDropdown,
-          onToggleLimitDropdown: handleToggleLimitDropdown,
-          onResultLimitChange: handleResultLimitChange,
-          onResetLimit: handleResetLimit,
-          copyMenuItem,
-          onCreateNote: handleCreateNote,
-          isPinned,
-          widthMode,
-          queryHeight: settings.queryHeight,
-          onTogglePin: handleTogglePin,
-          onToggleWidth: handleToggleWidth,
-          onToggleSettings: handleToggleSettings,
-          showSettings,
-          onSettingsChange: handleSettingsChange
-        }
-      )
-    ),
-    queryError && /* @__PURE__ */ h("div", { className: "query-error" }, queryError),
-    /* @__PURE__ */ h(
-      "div",
-      {
-        className: `results-container${settings.queryHeight > 0 && !isScrolledToBottom ? " with-fade" : ""}`,
-        style: settings.queryHeight > 0 ? { maxHeight: `${settings.queryHeight}px`, overflowY: "auto" } : {}
-      },
-      renderView()
-    ),
-    /* @__PURE__ */ h("div", { ref: loadMoreRef, style: { height: "1px", width: "100%" } })
-  );
+        dc,
+        app,
+        viewMode,
+        showViewDropdown,
+        onToggleViewDropdown: handleToggleViewDropdown,
+        onSetViewCard: () => handleSetViewMode("card"),
+        onSetViewMasonry: () => handleSetViewMode("masonry"),
+        onSetViewList: () => handleSetViewMode("list"),
+        sortMethod,
+        isShuffled,
+        showSortDropdown,
+        onToggleSortDropdown: handleToggleSortDropdown,
+        onSetSortNameAsc: () => handleSetSortMethod("name-asc"),
+        onSetSortNameDesc: () => handleSetSortMethod("name-desc"),
+        onSetSortMtimeDesc: () => handleSetSortMethod("mtime-desc"),
+        onSetSortMtimeAsc: () => handleSetSortMethod("mtime-asc"),
+        onSetSortCtimeDesc: () => handleSetSortMethod("ctime-desc"),
+        onSetSortCtimeAsc: () => handleSetSortMethod("ctime-asc"),
+        searchQuery,
+        onSearchChange: handleSearchChange,
+        onSearchFocus: handleSearchFocus,
+        onClearSearch: handleClearSearch,
+        settings,
+        onShuffle: handleShuffle,
+        onOpenRandom: handleOpenRandom,
+        showQueryEditor,
+        draftQuery,
+        onToggleCode: handleToggleCode,
+        onDraftQueryChange: handleDraftQueryChange,
+        onApplyQuery: handleApplyQuery,
+        onClearQuery: handleClearQuery,
+        totalCount,
+        displayedCount: Math.min(displayedCount, sorted.length),
+        resultLimit,
+        showLimitDropdown,
+        onToggleLimitDropdown: handleToggleLimitDropdown,
+        onResultLimitChange: handleResultLimitChange,
+        onResetLimit: handleResetLimit,
+        copyMenuItem,
+        onCreateNote: handleCreateNote,
+        isPinned,
+        widthMode,
+        queryHeight: settings.queryHeight,
+        onTogglePin: handleTogglePin,
+        onToggleWidth: handleToggleWidth,
+        onToggleSettings: handleToggleSettings,
+        showSettings,
+        onSettingsChange: handleSettingsChange
+      }
+    )
+  ), queryError && /* @__PURE__ */ h("div", { className: "query-error" }, queryError), /* @__PURE__ */ h(
+    "div",
+    {
+      className: `results-container${settings.queryHeight > 0 && !isScrolledToBottom ? " with-fade" : ""}`,
+      style: settings.queryHeight > 0 ? { maxHeight: `${settings.queryHeight}px`, overflowY: "auto" } : {}
+    },
+    renderView()
+  ), /* @__PURE__ */ h("div", { ref: loadMoreRef, style: { height: "1px", width: "100%" } }));
 }
 
 // src/jsx-runtime.ts
@@ -8448,7 +11032,7 @@ if (typeof globalThis !== "undefined") {
 }
 
 // src/bases/card-view.ts
-var import_obsidian6 = require("obsidian");
+var import_obsidian8 = require("obsidian");
 
 // src/shared/settings-schema.ts
 var _pluginInstance = null;
@@ -8467,147 +11051,397 @@ function getBasesViewOptions() {
       default: DEFAULT_VIEW_SETTINGS.cardSize
     },
     {
-      type: "toggle",
-      displayName: "Show title",
-      key: "showTitle",
-      default: DEFAULT_VIEW_SETTINGS.showTitle
+      type: "group",
+      displayName: "Title",
+      items: [
+        {
+          type: "toggle",
+          displayName: "Show title",
+          key: "showTitle",
+          default: DEFAULT_VIEW_SETTINGS.showTitle
+        },
+        {
+          type: "text",
+          displayName: "Title property",
+          key: "titleProperty",
+          placeholder: "Comma-separated if multiple",
+          default: DEFAULT_VIEW_SETTINGS.titleProperty
+        }
+      ]
     },
     {
-      type: "text",
-      displayName: "Title property",
-      key: "titleProperty",
-      placeholder: "Comma-separated if multiple",
-      default: DEFAULT_VIEW_SETTINGS.titleProperty
+      type: "group",
+      displayName: "Text preview",
+      items: [
+        {
+          type: "toggle",
+          displayName: "Show text preview",
+          key: "showTextPreview",
+          default: DEFAULT_VIEW_SETTINGS.showTextPreview
+        },
+        {
+          type: "text",
+          displayName: "Text preview property",
+          key: "descriptionProperty",
+          placeholder: "Comma-separated if multiple",
+          default: DEFAULT_VIEW_SETTINGS.descriptionProperty
+        },
+        {
+          type: "toggle",
+          displayName: "Use note content if text preview property missing or empty",
+          key: "fallbackToContent",
+          default: DEFAULT_VIEW_SETTINGS.fallbackToContent
+        }
+      ]
     },
     {
-      type: "toggle",
-      displayName: "Show text preview",
-      key: "showTextPreview",
-      default: DEFAULT_VIEW_SETTINGS.showTextPreview
+      type: "group",
+      displayName: "Image",
+      items: [
+        {
+          type: "dropdown",
+          displayName: "Image format",
+          key: "imageFormat",
+          options: {
+            thumbnail: "Thumbnail",
+            cover: "Cover",
+            none: "No image"
+          },
+          default: "thumbnail"
+        },
+        {
+          type: "dropdown",
+          displayName: "Image position",
+          key: "imagePosition",
+          options: {
+            left: "Left",
+            right: "Right",
+            top: "Top",
+            bottom: "Bottom"
+          },
+          default: "right"
+        },
+        {
+          type: "text",
+          displayName: "Image property",
+          key: "imageProperty",
+          placeholder: "Comma-separated if multiple",
+          default: DEFAULT_VIEW_SETTINGS.imageProperty
+        },
+        {
+          type: "dropdown",
+          displayName: "Show image embeds",
+          key: "fallbackToEmbeds",
+          options: {
+            always: "Always",
+            "if-empty": "If image property missing or empty",
+            never: "Never"
+          },
+          default: "always"
+        },
+        {
+          type: "dropdown",
+          displayName: "Image fit",
+          key: "coverFitMode",
+          options: {
+            crop: "Crop",
+            contain: "Contain"
+          },
+          default: "crop"
+        },
+        {
+          type: "slider",
+          displayName: "Image ratio",
+          key: "imageAspectRatio",
+          min: 0.25,
+          max: 2.5,
+          step: 0.05,
+          default: DEFAULT_VIEW_SETTINGS.imageAspectRatio
+        }
+      ]
     },
     {
-      type: "text",
-      displayName: "Text preview property",
-      key: "descriptionProperty",
-      placeholder: "Comma-separated if multiple",
-      default: DEFAULT_VIEW_SETTINGS.descriptionProperty
+      type: "group",
+      displayName: "Properties",
+      items: [
+        {
+          type: "text",
+          displayName: "Subtitle property",
+          key: "subtitleProperty",
+          placeholder: "Comma-separated if multiple",
+          default: ""
+        },
+        {
+          type: "text",
+          displayName: "URL property",
+          key: "urlProperty",
+          placeholder: "Comma-separated if multiple",
+          default: ""
+        },
+        {
+          type: "dropdown",
+          displayName: "Show property labels",
+          key: "propertyLabels",
+          options: {
+            inline: "Inline",
+            above: "On top",
+            hide: "Hide"
+          },
+          default: DEFAULT_VIEW_SETTINGS.propertyLabels
+        }
+      ]
     },
     {
-      type: "toggle",
-      displayName: "Use note content if text preview property missing or empty",
-      key: "fallbackToContent",
-      default: DEFAULT_VIEW_SETTINGS.fallbackToContent
+      type: "group",
+      displayName: "Property group 1",
+      items: [
+        {
+          type: "property",
+          displayName: "First property",
+          key: "propertyDisplay1",
+          placeholder: "Select property",
+          default: ""
+        },
+        {
+          type: "property",
+          displayName: "Second property",
+          key: "propertyDisplay2",
+          placeholder: "Select property",
+          default: ""
+        },
+        {
+          type: "toggle",
+          displayName: "Show side-by-side",
+          key: "propertyLayout12SideBySide",
+          default: DEFAULT_VIEW_SETTINGS.propertyLayout12SideBySide
+        },
+        {
+          type: "dropdown",
+          displayName: "Position",
+          key: "propertyGroup1Position",
+          options: {
+            top: "Top",
+            bottom: "Bottom"
+          },
+          default: DEFAULT_VIEW_SETTINGS.propertyGroup1Position
+        }
+      ]
     },
     {
-      type: "dropdown",
-      displayName: "Image format",
-      key: "imageFormat",
-      options: {
-        "thumbnail": "Thumbnail",
-        "cover": "Cover",
-        "none": "None"
-      },
-      default: "thumbnail"
+      type: "group",
+      displayName: "Property group 2",
+      items: [
+        {
+          type: "property",
+          displayName: "First property",
+          key: "propertyDisplay3",
+          placeholder: "Select property",
+          default: ""
+        },
+        {
+          type: "property",
+          displayName: "Second property",
+          key: "propertyDisplay4",
+          placeholder: "Select property",
+          default: ""
+        },
+        {
+          type: "toggle",
+          displayName: "Show side-by-side",
+          key: "propertyLayout34SideBySide",
+          default: DEFAULT_VIEW_SETTINGS.propertyLayout34SideBySide
+        },
+        {
+          type: "dropdown",
+          displayName: "Position",
+          key: "propertyGroup2Position",
+          options: {
+            top: "Top",
+            bottom: "Bottom"
+          },
+          default: DEFAULT_VIEW_SETTINGS.propertyGroup2Position
+        }
+      ]
     },
     {
-      type: "dropdown",
-      displayName: "Image position",
-      key: "imagePosition",
-      options: {
-        "left": "Left",
-        "right": "Right",
-        "top": "Top",
-        "bottom": "Bottom"
-      },
-      default: "right"
+      type: "group",
+      displayName: "Property group 3",
+      items: [
+        {
+          type: "property",
+          displayName: "First property",
+          key: "propertyDisplay5",
+          placeholder: "Select property",
+          default: ""
+        },
+        {
+          type: "property",
+          displayName: "Second property",
+          key: "propertyDisplay6",
+          placeholder: "Select property",
+          default: ""
+        },
+        {
+          type: "toggle",
+          displayName: "Show side-by-side",
+          key: "propertyLayout56SideBySide",
+          default: DEFAULT_VIEW_SETTINGS.propertyLayout56SideBySide
+        },
+        {
+          type: "dropdown",
+          displayName: "Position",
+          key: "propertyGroup3Position",
+          options: {
+            top: "Top",
+            bottom: "Bottom"
+          },
+          default: DEFAULT_VIEW_SETTINGS.propertyGroup3Position
+        }
+      ]
     },
     {
-      type: "text",
-      displayName: "Image property",
-      key: "imageProperty",
-      placeholder: "Comma-separated if multiple",
-      default: DEFAULT_VIEW_SETTINGS.imageProperty
+      type: "group",
+      displayName: "Property group 4",
+      items: [
+        {
+          type: "property",
+          displayName: "First property",
+          key: "propertyDisplay7",
+          placeholder: "Select property",
+          default: ""
+        },
+        {
+          type: "property",
+          displayName: "Second property",
+          key: "propertyDisplay8",
+          placeholder: "Select property",
+          default: ""
+        },
+        {
+          type: "toggle",
+          displayName: "Show side-by-side",
+          key: "propertyLayout78SideBySide",
+          default: DEFAULT_VIEW_SETTINGS.propertyLayout78SideBySide
+        },
+        {
+          type: "dropdown",
+          displayName: "Position",
+          key: "propertyGroup4Position",
+          options: {
+            top: "Top",
+            bottom: "Bottom"
+          },
+          default: DEFAULT_VIEW_SETTINGS.propertyGroup4Position
+        }
+      ]
     },
     {
-      type: "dropdown",
-      displayName: "Show image embeds",
-      key: "fallbackToEmbeds",
-      options: {
-        "always": "Always",
-        "if-empty": "If image property missing or empty",
-        "never": "Never"
-      },
-      default: "always"
+      type: "group",
+      displayName: "Property group 5",
+      items: [
+        {
+          type: "property",
+          displayName: "First property",
+          key: "propertyDisplay9",
+          placeholder: "Select property",
+          default: ""
+        },
+        {
+          type: "property",
+          displayName: "Second property",
+          key: "propertyDisplay10",
+          placeholder: "Select property",
+          default: ""
+        },
+        {
+          type: "toggle",
+          displayName: "Show side-by-side",
+          key: "propertyLayout910SideBySide",
+          default: DEFAULT_VIEW_SETTINGS.propertyLayout910SideBySide
+        },
+        {
+          type: "dropdown",
+          displayName: "Position",
+          key: "propertyGroup5Position",
+          options: {
+            top: "Top",
+            bottom: "Bottom"
+          },
+          default: DEFAULT_VIEW_SETTINGS.propertyGroup5Position
+        }
+      ]
     },
     {
-      type: "dropdown",
-      displayName: "Image fit",
-      key: "coverFitMode",
-      options: {
-        "crop": "Crop",
-        "contain": "Contain"
-      },
-      default: "crop"
+      type: "group",
+      displayName: "Property group 6",
+      items: [
+        {
+          type: "property",
+          displayName: "First property",
+          key: "propertyDisplay11",
+          placeholder: "Select property",
+          default: ""
+        },
+        {
+          type: "property",
+          displayName: "Second property",
+          key: "propertyDisplay12",
+          placeholder: "Select property",
+          default: ""
+        },
+        {
+          type: "toggle",
+          displayName: "Show side-by-side",
+          key: "propertyLayout1112SideBySide",
+          default: DEFAULT_VIEW_SETTINGS.propertyLayout1112SideBySide
+        },
+        {
+          type: "dropdown",
+          displayName: "Position",
+          key: "propertyGroup6Position",
+          options: {
+            top: "Top",
+            bottom: "Bottom"
+          },
+          default: DEFAULT_VIEW_SETTINGS.propertyGroup6Position
+        }
+      ]
     },
     {
-      type: "slider",
-      displayName: "Image ratio",
-      key: "imageAspectRatio",
-      min: 0.25,
-      max: 2.5,
-      step: 0.05,
-      default: DEFAULT_VIEW_SETTINGS.imageAspectRatio
-    },
-    {
-      type: "property",
-      displayName: "First property",
-      key: "propertyDisplay1",
-      placeholder: "Select property",
-      default: ""
-    },
-    {
-      type: "property",
-      displayName: "Second property",
-      key: "propertyDisplay2",
-      placeholder: "Select property",
-      default: ""
-    },
-    {
-      type: "toggle",
-      displayName: "Pair first and second properties",
-      key: "propertyLayout12SideBySide",
-      default: DEFAULT_VIEW_SETTINGS.propertyLayout12SideBySide
-    },
-    {
-      type: "property",
-      displayName: "Third property",
-      key: "propertyDisplay3",
-      placeholder: "Select property",
-      default: ""
-    },
-    {
-      type: "property",
-      displayName: "Fourth property",
-      key: "propertyDisplay4",
-      placeholder: "Select property",
-      default: ""
-    },
-    {
-      type: "toggle",
-      displayName: "Pair third and fourth properties",
-      key: "propertyLayout34SideBySide",
-      default: DEFAULT_VIEW_SETTINGS.propertyLayout34SideBySide
-    },
-    {
-      type: "dropdown",
-      displayName: "Show property labels",
-      key: "propertyLabels",
-      options: {
-        "inline": "Inline",
-        "above": "On top",
-        "hide": "Hide"
-      },
-      default: DEFAULT_VIEW_SETTINGS.propertyLabels
+      type: "group",
+      displayName: "Property group 7",
+      items: [
+        {
+          type: "property",
+          displayName: "First property",
+          key: "propertyDisplay13",
+          placeholder: "Select property",
+          default: ""
+        },
+        {
+          type: "property",
+          displayName: "Second property",
+          key: "propertyDisplay14",
+          placeholder: "Select property",
+          default: ""
+        },
+        {
+          type: "toggle",
+          displayName: "Show side-by-side",
+          key: "propertyLayout1314SideBySide",
+          default: DEFAULT_VIEW_SETTINGS.propertyLayout1314SideBySide
+        },
+        {
+          type: "dropdown",
+          displayName: "Position",
+          key: "propertyGroup7Position",
+          options: {
+            top: "Top",
+            bottom: "Bottom"
+          },
+          default: DEFAULT_VIEW_SETTINGS.propertyGroup7Position
+        }
+      ]
     }
   ];
 }
@@ -8615,19 +11449,34 @@ function getMasonryViewOptions() {
   return getBasesViewOptions();
 }
 function readBasesSettings(config, globalSettings, defaultViewSettings) {
-  var _a, _b, _c, _d, _e;
+  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
   const titlePropertyValue = config.get("titleProperty");
   const descriptionPropertyValue = config.get("descriptionProperty");
   const imagePropertyValue = config.get("imageProperty");
+  const urlPropertyValue = config.get("urlProperty");
   return {
     titleProperty: typeof titlePropertyValue === "string" ? titlePropertyValue : defaultViewSettings.titleProperty,
     descriptionProperty: typeof descriptionPropertyValue === "string" ? descriptionPropertyValue : defaultViewSettings.descriptionProperty,
     imageProperty: typeof imagePropertyValue === "string" ? imagePropertyValue : defaultViewSettings.imageProperty,
+    urlProperty: typeof urlPropertyValue === "string" ? urlPropertyValue : defaultViewSettings.urlProperty,
     omitFirstLine: globalSettings.omitFirstLine,
     // From global settings
-    showTitle: Boolean((_a = config.get("showTitle")) != null ? _a : defaultViewSettings.showTitle),
-    showTextPreview: Boolean((_b = config.get("showTextPreview")) != null ? _b : defaultViewSettings.showTextPreview),
-    fallbackToContent: Boolean((_c = config.get("fallbackToContent")) != null ? _c : defaultViewSettings.fallbackToContent),
+    showTitle: Boolean(
+      (_a = config.get("showTitle")) != null ? _a : defaultViewSettings.showTitle
+    ),
+    subtitleProperty: (() => {
+      const value = config.get("subtitleProperty");
+      if (value !== void 0 && value !== null) {
+        return typeof value === "string" ? value : "";
+      }
+      return "";
+    })(),
+    showTextPreview: Boolean(
+      (_b = config.get("showTextPreview")) != null ? _b : defaultViewSettings.showTextPreview
+    ),
+    fallbackToContent: Boolean(
+      (_c = config.get("fallbackToContent")) != null ? _c : defaultViewSettings.fallbackToContent
+    ),
     fallbackToEmbeds: (() => {
       const value = config.get("fallbackToEmbeds");
       return value === "always" || value === "if-empty" || value === "never" ? value : defaultViewSettings.fallbackToEmbeds;
@@ -8660,32 +11509,132 @@ function readBasesSettings(config, globalSettings, defaultViewSettings) {
       }
       return "";
     })(),
-    propertyLayout12SideBySide: Boolean((_d = config.get("propertyLayout12SideBySide")) != null ? _d : defaultViewSettings.propertyLayout12SideBySide),
-    propertyLayout34SideBySide: Boolean((_e = config.get("propertyLayout34SideBySide")) != null ? _e : defaultViewSettings.propertyLayout34SideBySide),
+    propertyLayout12SideBySide: Boolean(
+      (_d = config.get("propertyLayout12SideBySide")) != null ? _d : defaultViewSettings.propertyLayout12SideBySide
+    ),
+    propertyLayout34SideBySide: Boolean(
+      (_e = config.get("propertyLayout34SideBySide")) != null ? _e : defaultViewSettings.propertyLayout34SideBySide
+    ),
+    propertyDisplay5: (() => {
+      const value = config.get("propertyDisplay5");
+      if (value !== void 0 && value !== null) {
+        return typeof value === "string" ? value : "";
+      }
+      return "";
+    })(),
+    propertyDisplay6: (() => {
+      const value = config.get("propertyDisplay6");
+      if (value !== void 0 && value !== null) {
+        return typeof value === "string" ? value : "";
+      }
+      return "";
+    })(),
+    propertyLayout56SideBySide: Boolean(
+      (_f = config.get("propertyLayout56SideBySide")) != null ? _f : defaultViewSettings.propertyLayout56SideBySide
+    ),
+    propertyDisplay7: (() => {
+      const value = config.get("propertyDisplay7");
+      if (value !== void 0 && value !== null) {
+        return typeof value === "string" ? value : "";
+      }
+      return "";
+    })(),
+    propertyDisplay8: (() => {
+      const value = config.get("propertyDisplay8");
+      if (value !== void 0 && value !== null) {
+        return typeof value === "string" ? value : "";
+      }
+      return "";
+    })(),
+    propertyLayout78SideBySide: Boolean(
+      (_g = config.get("propertyLayout78SideBySide")) != null ? _g : defaultViewSettings.propertyLayout78SideBySide
+    ),
+    propertyDisplay9: (() => {
+      const value = config.get("propertyDisplay9");
+      if (value !== void 0 && value !== null) {
+        return typeof value === "string" ? value : "";
+      }
+      return "";
+    })(),
+    propertyDisplay10: (() => {
+      const value = config.get("propertyDisplay10");
+      if (value !== void 0 && value !== null) {
+        return typeof value === "string" ? value : "";
+      }
+      return "";
+    })(),
+    propertyLayout910SideBySide: Boolean(
+      (_h = config.get("propertyLayout910SideBySide")) != null ? _h : defaultViewSettings.propertyLayout910SideBySide
+    ),
+    propertyDisplay11: (() => {
+      const value = config.get("propertyDisplay11");
+      if (value !== void 0 && value !== null) {
+        return typeof value === "string" ? value : "";
+      }
+      return "";
+    })(),
+    propertyDisplay12: (() => {
+      const value = config.get("propertyDisplay12");
+      if (value !== void 0 && value !== null) {
+        return typeof value === "string" ? value : "";
+      }
+      return "";
+    })(),
+    propertyLayout1112SideBySide: Boolean(
+      (_i = config.get("propertyLayout1112SideBySide")) != null ? _i : defaultViewSettings.propertyLayout1112SideBySide
+    ),
+    propertyDisplay13: (() => {
+      const value = config.get("propertyDisplay13");
+      if (value !== void 0 && value !== null) {
+        return typeof value === "string" ? value : "";
+      }
+      return "";
+    })(),
+    propertyDisplay14: (() => {
+      const value = config.get("propertyDisplay14");
+      if (value !== void 0 && value !== null) {
+        return typeof value === "string" ? value : "";
+      }
+      return "";
+    })(),
+    propertyLayout1314SideBySide: Boolean(
+      (_j = config.get("propertyLayout1314SideBySide")) != null ? _j : defaultViewSettings.propertyLayout1314SideBySide
+    ),
+    propertyGroup1Position: (() => {
+      const value = config.get("propertyGroup1Position");
+      return value === "top" || value === "bottom" ? value : defaultViewSettings.propertyGroup1Position;
+    })(),
+    propertyGroup2Position: (() => {
+      const value = config.get("propertyGroup2Position");
+      return value === "top" || value === "bottom" ? value : defaultViewSettings.propertyGroup2Position;
+    })(),
+    propertyGroup3Position: (() => {
+      const value = config.get("propertyGroup3Position");
+      return value === "top" || value === "bottom" ? value : defaultViewSettings.propertyGroup3Position;
+    })(),
+    propertyGroup4Position: (() => {
+      const value = config.get("propertyGroup4Position");
+      return value === "top" || value === "bottom" ? value : defaultViewSettings.propertyGroup4Position;
+    })(),
+    propertyGroup5Position: (() => {
+      const value = config.get("propertyGroup5Position");
+      return value === "top" || value === "bottom" ? value : defaultViewSettings.propertyGroup5Position;
+    })(),
+    propertyGroup6Position: (() => {
+      const value = config.get("propertyGroup6Position");
+      return value === "top" || value === "bottom" ? value : defaultViewSettings.propertyGroup6Position;
+    })(),
+    propertyGroup7Position: (() => {
+      const value = config.get("propertyGroup7Position");
+      return value === "top" || value === "bottom" ? value : defaultViewSettings.propertyGroup7Position;
+    })(),
     propertyLabels: (() => {
       const value = config.get("propertyLabels");
       return value === "hide" || value === "inline" || value === "above" ? value : defaultViewSettings.propertyLabels;
     })(),
     imageFormat: (() => {
-      const rawFormat = config.get("imageFormat");
-      const rawPosition = config.get("imagePosition");
-      let format = "thumbnail";
-      let position = "right";
-      if (rawFormat === "thumbnail" || rawFormat === "cover" || rawFormat === "none") {
-        format = rawFormat;
-      } else if (typeof rawFormat === "string" && rawFormat.includes("-")) {
-        const parts = rawFormat.split("-");
-        const formatPart = parts[0];
-        format = formatPart === "thumbnail" || formatPart === "cover" || formatPart === "none" ? formatPart : "thumbnail";
-        const oldPosition = parts[1];
-        position = rawPosition === "left" || rawPosition === "right" || rawPosition === "top" || rawPosition === "bottom" ? rawPosition : oldPosition === "left" || oldPosition === "right" || oldPosition === "top" || oldPosition === "bottom" ? oldPosition : "right";
-      }
-      if (format === "none")
-        return "none";
-      if (rawPosition === "left" || rawPosition === "right" || rawPosition === "top" || rawPosition === "bottom") {
-        position = rawPosition;
-      }
-      return `${format}-${position}`;
+      const value = config.get("imageFormat");
+      return value === "thumbnail-left" || value === "thumbnail-right" || value === "thumbnail-top" || value === "thumbnail-bottom" || value === "cover-left" || value === "cover-right" || value === "cover-top" || value === "cover-bottom" || value === "none" ? value : defaultViewSettings.imageFormat;
     })(),
     coverFitMode: (() => {
       const value = config.get("coverFitMode");
@@ -8721,8 +11670,6 @@ function readBasesSettings(config, globalSettings, defaultViewSettings) {
     // From global settings
     fallbackToFileMetadata: globalSettings.fallbackToFileMetadata,
     // From global settings
-    expandImagesOnClick: globalSettings.expandImagesOnClick,
-    // From global settings
     cardSize: (() => {
       const value = config.get("cardSize");
       return typeof value === "number" ? value : defaultViewSettings.cardSize;
@@ -8735,50 +11682,63 @@ function readBasesSettings(config, globalSettings, defaultViewSettings) {
 }
 
 // src/bases/card-view.ts
+init_property();
 init_style_settings();
 
 // src/bases/shared-renderer.ts
-var import_obsidian5 = require("obsidian");
+var import_obsidian7 = require("obsidian");
 
 // src/shared/scroll-gradient-manager.ts
+function updateElementScrollGradient(element) {
+  const isScrollable = element.scrollWidth > element.clientWidth;
+  if (!isScrollable) {
+    element.removeClass("scroll-gradient-left");
+    element.removeClass("scroll-gradient-right");
+    element.removeClass("scroll-gradient-both");
+    return;
+  }
+  const scrollLeft = element.scrollLeft;
+  const scrollWidth = element.scrollWidth;
+  const clientWidth = element.clientWidth;
+  const atStart = scrollLeft <= SCROLL_TOLERANCE;
+  const atEnd = scrollLeft + clientWidth >= scrollWidth - SCROLL_TOLERANCE;
+  element.removeClass("scroll-gradient-left");
+  element.removeClass("scroll-gradient-right");
+  element.removeClass("scroll-gradient-both");
+  if (atStart && !atEnd) {
+    element.addClass("scroll-gradient-right");
+  } else if (atEnd && !atStart) {
+    element.addClass("scroll-gradient-left");
+  } else if (!atStart && !atEnd) {
+    element.addClass("scroll-gradient-both");
+  }
+}
 function updateScrollGradient(element) {
-  const wrapper = element.querySelector(".property-content-wrapper");
+  const wrapper = element.querySelector(
+    ".property-content-wrapper"
+  );
   const content = element.querySelector(".property-content");
   if (!wrapper || !content) {
     return;
   }
-  const scrollingElement = wrapper;
-  const gradientTarget = wrapper;
   const isScrollable = content.scrollWidth > wrapper.clientWidth;
   if (!isScrollable) {
-    gradientTarget.removeClass("scroll-gradient-left");
-    gradientTarget.removeClass("scroll-gradient-right");
-    gradientTarget.removeClass("scroll-gradient-both");
+    wrapper.removeClass("scroll-gradient-left");
+    wrapper.removeClass("scroll-gradient-right");
+    wrapper.removeClass("scroll-gradient-both");
     element.removeClass("is-scrollable");
     return;
   }
   element.addClass("is-scrollable");
-  const scrollLeft = scrollingElement.scrollLeft;
-  const scrollWidth = scrollingElement.scrollWidth;
-  const clientWidth = scrollingElement.clientWidth;
-  const atStart = scrollLeft <= SCROLL_TOLERANCE;
-  const atEnd = scrollLeft + clientWidth >= scrollWidth - SCROLL_TOLERANCE;
-  gradientTarget.removeClass("scroll-gradient-left");
-  gradientTarget.removeClass("scroll-gradient-right");
-  gradientTarget.removeClass("scroll-gradient-both");
-  if (atStart && !atEnd) {
-    gradientTarget.addClass("scroll-gradient-right");
-  } else if (atEnd && !atStart) {
-    gradientTarget.addClass("scroll-gradient-left");
-  } else if (!atStart && !atEnd) {
-    gradientTarget.addClass("scroll-gradient-both");
-  }
+  updateElementScrollGradient(wrapper);
 }
-function setupScrollGradients(container, propertyObservers, updateGradientFn) {
+function setupScrollGradients(container, updateGradientFn) {
   const scrollables = container.querySelectorAll(".property-field");
   scrollables.forEach((el) => {
     const element = el;
-    const wrapper = element.querySelector(".property-content-wrapper");
+    const wrapper = element.querySelector(
+      ".property-content-wrapper"
+    );
     if (!wrapper)
       return;
     requestAnimationFrame(() => {
@@ -8792,12 +11752,111 @@ function setupScrollGradients(container, propertyObservers, updateGradientFn) {
 
 // src/bases/shared-renderer.ts
 init_style_settings();
+init_property();
 var SharedCardRenderer = class {
-  constructor(app, plugin, propertyObservers, updateLayoutRef) {
+  constructor(app, plugin, updateLayoutRef) {
     this.app = app;
     this.plugin = plugin;
-    this.propertyObservers = propertyObservers;
     this.updateLayoutRef = updateLayoutRef;
+    this.propertyObservers = [];
+    this.zoomCleanupFns = /* @__PURE__ */ new Map();
+    this.zoomedOriginalParents = /* @__PURE__ */ new Map();
+  }
+  /**
+   * Cleanup observers and zoom state when renderer is destroyed
+   */
+  cleanup() {
+    this.propertyObservers.forEach((obs) => obs.disconnect());
+    this.propertyObservers = [];
+    this.zoomCleanupFns.forEach((cleanup, embedEl) => {
+      embedEl.classList.remove("is-zoomed");
+      const originalParent = this.zoomedOriginalParents.get(embedEl);
+      if (originalParent && embedEl.parentElement !== originalParent) {
+        originalParent.appendChild(embedEl);
+      }
+      cleanup();
+    });
+    this.zoomCleanupFns.clear();
+    this.zoomedOriginalParents.clear();
+  }
+  /**
+   * Render text with link detection
+   * Uses parseLink utility for comprehensive link detection
+   */
+  renderTextWithLinks(container, text) {
+    const segments = findLinksInText(text);
+    for (const segment of segments) {
+      if (segment.type === "text") {
+        container.createSpan({ text: segment.content });
+      } else {
+        this.renderLink(container, segment.link);
+      }
+    }
+  }
+  renderLink(container, link) {
+    if (link.type === "internal") {
+      if (link.isEmbed) {
+        const embed = container.createSpan({ cls: "internal-embed" });
+        embed.dataset.src = link.url;
+        embed.setText(link.caption);
+        embed.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const newLeaf = e.metaKey || e.ctrlKey;
+          void this.app.workspace.openLinkText(link.url, "", newLeaf);
+        });
+        return;
+      }
+      const el2 = container.createEl("a", {
+        cls: "internal-link",
+        text: link.caption,
+        href: link.url
+      });
+      el2.dataset.href = link.url;
+      el2.draggable = true;
+      el2.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const newLeaf = e.metaKey || e.ctrlKey;
+        void this.app.workspace.openLinkText(link.url, "", newLeaf);
+      });
+      el2.addEventListener("dragstart", (e) => {
+        const file = this.app.metadataCache.getFirstLinkpathDest(link.url, "");
+        if (!(file instanceof import_obsidian7.TFile))
+          return;
+        const dragData = this.app.dragManager.dragFile(e, file);
+        this.app.dragManager.onDragStart(e, dragData);
+      });
+      return;
+    }
+    if (link.isEmbed) {
+      const img = container.createEl("img", {
+        cls: "external-embed",
+        attr: { src: link.url, alt: link.caption }
+      });
+      img.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+      return;
+    }
+    const el = container.createEl("a", {
+      cls: "external-link",
+      text: link.caption,
+      href: link.url
+    });
+    if (link.isWebUrl) {
+      el.target = "_blank";
+      el.rel = "noopener noreferrer";
+    }
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+    el.addEventListener("dragstart", (e) => {
+      var _a, _b;
+      (_a = e.dataTransfer) == null ? void 0 : _a.clearData();
+      const dragText = link.caption === link.url ? link.url : `[${link.caption}](${link.url})`;
+      (_b = e.dataTransfer) == null ? void 0 : _b.setData("text/plain", dragText);
+    });
   }
   /**
    * Renders a complete card with all sub-components
@@ -8836,19 +11895,21 @@ var SharedCardRenderer = class {
     if (settings.openFileAction === "card") {
       cardEl.setAttribute("draggable", "true");
     }
-    cardEl.classList.toggle("clickable-card", settings.openFileAction === "card");
+    cardEl.classList.toggle(
+      "clickable-card",
+      settings.openFileAction === "card"
+    );
     cardEl.addEventListener("click", (e) => {
       if (settings.openFileAction === "card") {
         const target = e.target;
         const isLink = target.tagName === "A" || target.closest("a");
         const isTag = target.classList.contains("tag") || target.closest(".tag");
+        const isPathSegment = target.classList.contains("path-segment") || target.closest(".path-segment");
         const isImage = target.tagName === "IMG";
-        const expandOnClick = document.body.classList.contains("dynamic-views-thumbnail-expand-click-hold") || document.body.classList.contains("dynamic-views-thumbnail-expand-click-toggle");
-        const shouldBlockImageClick = isImage && expandOnClick;
-        if (!isLink && !isTag && !shouldBlockImageClick) {
+        if (!isLink && !isTag && !isPathSegment && !isImage) {
           const newLeaf = e.metaKey || e.ctrlKey;
           const file = this.app.vault.getAbstractFileByPath(card.path);
-          if (file instanceof import_obsidian5.TFile) {
+          if (file instanceof import_obsidian7.TFile) {
             void this.app.workspace.getLeaf(newLeaf).openFile(file);
           }
         }
@@ -8866,34 +11927,102 @@ var SharedCardRenderer = class {
     cardEl.addEventListener("contextmenu", (e) => {
       e.stopPropagation();
       e.preventDefault();
-      const menu = new import_obsidian5.Menu();
-      this.app.workspace.trigger("file-menu", menu, entry.file, "file-explorer");
+      const menu = new import_obsidian7.Menu();
+      this.app.workspace.trigger(
+        "file-menu",
+        menu,
+        entry.file,
+        "file-explorer"
+      );
       menu.showAtMouseEvent(e);
     });
     const handleDrag = (e) => {
       const file = this.app.vault.getAbstractFileByPath(card.path);
-      if (!(file instanceof import_obsidian5.TFile))
+      if (!(file instanceof import_obsidian7.TFile))
         return;
       const dragData = this.app.dragManager.dragFile(e, file);
       this.app.dragManager.onDragStart(e, dragData);
     };
-    if (settings.showTitle) {
-      const titleEl = cardEl.createDiv("card-title");
-      if (settings.openFileAction === "title") {
-        const link = titleEl.createEl("a", {
-          cls: "internal-link",
-          text: card.title,
-          attr: { "data-href": card.path, href: card.path, draggable: "true" }
-        });
-        link.addEventListener("click", (e) => {
+    if (settings.showTitle || card.hasValidUrl) {
+      const containerEl = cardEl.createDiv(
+        card.hasValidUrl ? "card-title-container" : "card-title"
+      );
+      if (settings.showTitle) {
+        const titleEl = card.hasValidUrl ? containerEl.createDiv("card-title") : containerEl;
+        if (settings.openFileAction === "title") {
+          const link = titleEl.createEl("a", {
+            cls: "internal-link",
+            text: card.title,
+            attr: {
+              "data-href": card.path,
+              href: card.path,
+              draggable: "true"
+            }
+          });
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const newLeaf = e.metaKey || e.ctrlKey;
+            void this.app.workspace.openLinkText(card.path, "", newLeaf);
+          });
+          link.addEventListener("dragstart", handleDrag);
+        } else {
+          titleEl.appendText(card.title);
+        }
+        if (document.body.classList.contains(
+          "dynamic-views-title-overflow-scroll"
+        )) {
+          requestAnimationFrame(() => {
+            updateElementScrollGradient(titleEl);
+          });
+          titleEl.addEventListener("scroll", () => {
+            updateElementScrollGradient(titleEl);
+          });
+        }
+      }
+      if (card.hasValidUrl && card.urlValue) {
+        const iconEl = containerEl.createDiv(
+          "card-title-url-icon text-icon-button svg-icon"
+        );
+        iconEl.setAttribute("title", "Open URL");
+        (0, import_obsidian7.setIcon)(iconEl, "square-arrow-out-up-right");
+        iconEl.addEventListener("click", (e) => {
           e.preventDefault();
           e.stopPropagation();
-          const newLeaf = e.metaKey || e.ctrlKey;
-          void this.app.workspace.openLinkText(card.path, "", newLeaf);
+          window.open(card.urlValue, "_blank", "noopener,noreferrer");
         });
-        link.addEventListener("dragstart", handleDrag);
-      } else {
-        titleEl.appendText(card.title);
+      }
+    }
+    if (settings.subtitleProperty && card.subtitle) {
+      const subtitleEl = cardEl.createDiv("card-subtitle");
+      this.renderPropertyContent(
+        subtitleEl,
+        settings.subtitleProperty,
+        card.subtitle,
+        card,
+        entry,
+        { ...settings, propertyLabels: "hide" }
+      );
+      if (document.body.classList.contains(
+        "dynamic-views-subtitle-overflow-scroll"
+      )) {
+        requestAnimationFrame(() => {
+          updateElementScrollGradient(subtitleEl);
+        });
+        subtitleEl.addEventListener("scroll", () => {
+          updateElementScrollGradient(subtitleEl);
+        });
+      }
+      const subtitleWrapper = subtitleEl.querySelector(
+        ".property-content-wrapper"
+      );
+      if (subtitleWrapper) {
+        requestAnimationFrame(() => {
+          updateElementScrollGradient(subtitleWrapper);
+        });
+        subtitleWrapper.addEventListener("scroll", () => {
+          updateElementScrollGradient(subtitleWrapper);
+        });
       }
     }
     if (settings.openFileAction === "card") {
@@ -8901,26 +12030,51 @@ var SharedCardRenderer = class {
     }
     const rawUrls = card.imageUrl ? Array.isArray(card.imageUrl) ? card.imageUrl : [card.imageUrl] : [];
     if (rawUrls.length > 1) {
-      console.log("// [Debug] Raw URLs from card.imageUrl:", rawUrls.length, "items");
+      console.log(
+        "// [Debug] Raw URLs from card.imageUrl:",
+        rawUrls.length,
+        "items"
+      );
       rawUrls.forEach((url, i) => {
         console.log(`//   [${i}]:`, url);
       });
     }
-    const imageUrls = Array.from(new Set(
-      rawUrls.filter((url) => url && typeof url === "string" && url.trim().length > 0)
-    ));
+    const imageUrls = Array.from(
+      new Set(
+        rawUrls.filter(
+          (url) => url && typeof url === "string" && url.trim().length > 0
+        )
+      )
+    );
     const hasImage = format !== "none" && imageUrls.length > 0;
     const hasImageAvailable = format !== "none" && card.hasImageAvailable;
     if (format === "cover") {
-      const coverWrapper = cardEl.createDiv(hasImage ? "card-cover-wrapper" : "card-cover-wrapper card-cover-wrapper-placeholder");
+      const coverWrapper = cardEl.createDiv(
+        hasImage ? "card-cover-wrapper" : "card-cover-wrapper card-cover-wrapper-placeholder"
+      );
       if (hasImage) {
         const shouldShowCarousel = (position === "top" || position === "bottom") && imageUrls.length >= 2;
         if (shouldShowCarousel) {
-          const carouselEl = coverWrapper.createDiv("card-cover card-cover-carousel");
-          this.renderCarousel(carouselEl, imageUrls, format, position, settings);
+          const carouselEl = coverWrapper.createDiv(
+            "card-cover card-cover-carousel"
+          );
+          this.renderCarousel(
+            carouselEl,
+            imageUrls,
+            format,
+            position,
+            settings
+          );
         } else {
           const imageEl = coverWrapper.createDiv("card-cover");
-          this.renderImage(imageEl, imageUrls, format, position, settings);
+          this.renderImage(
+            imageEl,
+            imageUrls,
+            format,
+            position,
+            settings,
+            cardEl
+          );
         }
       } else {
         coverWrapper.createDiv("card-cover-placeholder");
@@ -8929,17 +12083,30 @@ var SharedCardRenderer = class {
         const aspectRatio = typeof settings.imageAspectRatio === "string" ? parseFloat(settings.imageAspectRatio) : settings.imageAspectRatio || 1;
         const wrapperRatio = aspectRatio / (aspectRatio + 1);
         const elementSpacing = 8;
-        cardEl.style.setProperty("--dynamic-views-wrapper-ratio", wrapperRatio.toString());
+        cardEl.style.setProperty(
+          "--dynamic-views-wrapper-ratio",
+          wrapperRatio.toString()
+        );
         const updateWrapperDimensions = () => {
           const cardWidth = cardEl.offsetWidth;
           const targetWidth = Math.floor(wrapperRatio * cardWidth);
           const paddingValue = targetWidth + elementSpacing;
-          cardEl.style.setProperty("--dynamic-views-side-cover-width", `${targetWidth}px`);
-          cardEl.style.setProperty("--dynamic-views-side-cover-content-padding", `${paddingValue}px`);
+          cardEl.style.setProperty(
+            "--dynamic-views-side-cover-width",
+            `${targetWidth}px`
+          );
+          cardEl.style.setProperty(
+            "--dynamic-views-side-cover-content-padding",
+            `${paddingValue}px`
+          );
           return { cardWidth, targetWidth, paddingValue };
         };
         requestAnimationFrame(() => {
-          const { cardWidth: _cardWidth, targetWidth, paddingValue } = updateWrapperDimensions();
+          const {
+            cardWidth: _cardWidth,
+            targetWidth,
+            paddingValue
+          } = updateWrapperDimensions();
           const cardComputed = getComputedStyle(cardEl);
           console.log(
             "[CSS Variable Check]",
@@ -8971,7 +12138,9 @@ var SharedCardRenderer = class {
             paddingValue
           );
           setTimeout(() => {
-            const wrapper = cardEl.querySelector(".card-cover-wrapper");
+            const wrapper = cardEl.querySelector(
+              ".card-cover-wrapper"
+            );
             const cover = cardEl.querySelector(".card-cover");
             const img = cardEl.querySelector(".card-cover img");
             if (wrapper && cover && img) {
@@ -8987,7 +12156,9 @@ var SharedCardRenderer = class {
                 "wrapper CSS width value:",
                 wrapperComputed.getPropertyValue("width"),
                 "wrapper resolves variable:",
-                wrapperComputed.getPropertyValue("--dynamic-views-side-cover-width")
+                wrapperComputed.getPropertyValue(
+                  "--dynamic-views-side-cover-width"
+                )
               );
               console.log(
                 "[Side Cover Rendered]",
@@ -9018,8 +12189,14 @@ var SharedCardRenderer = class {
               }
               const newTargetWidth = Math.floor(wrapperRatio * newCardWidth);
               const newPaddingValue = newTargetWidth + elementSpacing;
-              cardEl.style.setProperty("--dynamic-views-side-cover-width", `${newTargetWidth}px`);
-              cardEl.style.setProperty("--dynamic-views-side-cover-content-padding", `${newPaddingValue}px`);
+              cardEl.style.setProperty(
+                "--dynamic-views-side-cover-width",
+                `${newTargetWidth}px`
+              );
+              cardEl.style.setProperty(
+                "--dynamic-views-side-cover-content-padding",
+                `${newPaddingValue}px`
+              );
               console.log(
                 "[Side Cover Resize]",
                 "newCardWidth:",
@@ -9038,7 +12215,14 @@ var SharedCardRenderer = class {
     if (format === "thumbnail" && position === "top" && (hasImage || hasImageAvailable)) {
       if (hasImage) {
         const imageEl = cardEl.createDiv("card-thumbnail");
-        this.renderImage(imageEl, imageUrls, format, position, settings);
+        this.renderImage(
+          imageEl,
+          imageUrls,
+          format,
+          position,
+          settings,
+          cardEl
+        );
       } else {
         cardEl.createDiv("card-thumbnail-placeholder");
       }
@@ -9048,12 +12232,22 @@ var SharedCardRenderer = class {
     if (hasTextPreview || hasThumbnailInContent) {
       const contentContainer = cardEl.createDiv("card-content");
       if (hasTextPreview) {
-        contentContainer.createDiv({ cls: "card-text-preview", text: card.snippet });
+        contentContainer.createDiv({
+          cls: "card-text-preview",
+          text: card.snippet
+        });
       }
       if (hasThumbnailInContent && format === "thumbnail") {
         if (hasImage) {
           const imageEl = contentContainer.createDiv("card-thumbnail");
-          this.renderImage(imageEl, imageUrls, format, position, settings);
+          this.renderImage(
+            imageEl,
+            imageUrls,
+            format,
+            position,
+            settings,
+            cardEl
+          );
         } else {
           contentContainer.createDiv("card-thumbnail-placeholder");
         }
@@ -9062,7 +12256,14 @@ var SharedCardRenderer = class {
     if (format === "thumbnail" && position === "bottom" && (hasImage || hasImageAvailable)) {
       if (hasImage) {
         const imageEl = cardEl.createDiv("card-thumbnail");
-        this.renderImage(imageEl, imageUrls, format, position, settings);
+        this.renderImage(
+          imageEl,
+          imageUrls,
+          format,
+          position,
+          settings,
+          cardEl
+        );
       } else {
         cardEl.createDiv("card-thumbnail-placeholder");
       }
@@ -9074,7 +12275,10 @@ var SharedCardRenderer = class {
    */
   renderCarousel(carouselEl, imageUrls, format, position, settings) {
     let currentSlide = 0;
-    console.log("// CAROUSEL INIT:", { totalSlides: imageUrls.length, urls: imageUrls });
+    console.log("// CAROUSEL INIT:", {
+      totalSlides: imageUrls.length,
+      urls: imageUrls
+    });
     const slidesContainer = carouselEl.createDiv("carousel-slides");
     const slideElements = imageUrls.map((url, index) => {
       const slideEl = slidesContainer.createDiv("carousel-slide");
@@ -9084,12 +12288,15 @@ var SharedCardRenderer = class {
       const imageEmbedContainer = slideEl.createDiv("image-embed");
       if (index === 0) {
         const indicator = imageEmbedContainer.createDiv("carousel-indicator");
-        (0, import_obsidian5.setIcon)(indicator, "lucide-images");
+        (0, import_obsidian7.setIcon)(indicator, "lucide-images");
       }
       const imgEl = imageEmbedContainer.createEl("img", {
         attr: { src: url, alt: "" }
       });
-      imageEmbedContainer.style.setProperty("--cover-image-url", `url("${url}")`);
+      imageEmbedContainer.style.setProperty(
+        "--cover-image-url",
+        `url("${url}")`
+      );
       const cardEl = carouselEl.closest(".card");
       if (cardEl && index === 0) {
         setupImageLoadHandler(
@@ -9128,9 +12335,9 @@ var SharedCardRenderer = class {
       currentSlide = newIndex;
     };
     const leftArrow = carouselEl.createDiv("carousel-nav-left");
-    (0, import_obsidian5.setIcon)(leftArrow, "lucide-chevron-left");
+    (0, import_obsidian7.setIcon)(leftArrow, "lucide-chevron-left");
     const rightArrow = carouselEl.createDiv("carousel-nav-right");
-    (0, import_obsidian5.setIcon)(rightArrow, "lucide-chevron-right");
+    (0, import_obsidian7.setIcon)(rightArrow, "lucide-chevron-right");
     leftArrow.addEventListener("click", (e) => {
       e.stopPropagation();
       const newIndex = currentSlide === 0 ? imageUrls.length - 1 : currentSlide - 1;
@@ -9147,51 +12354,24 @@ var SharedCardRenderer = class {
   /**
    * Renders image (cover or thumbnail) with all necessary handlers
    */
-  renderImage(imageEl, imageUrls, format, position, settings) {
+  renderImage(imageEl, imageUrls, format, position, settings, cardEl) {
     const imageEmbedContainer = imageEl.createDiv("image-embed");
     imageEmbedContainer.addEventListener("click", (e) => {
-      const isToggleMode = document.body.classList.contains("dynamic-views-thumbnail-expand-click-toggle");
-      const isHoldMode = document.body.classList.contains("dynamic-views-thumbnail-expand-click-hold");
-      if (isToggleMode || isHoldMode) {
-        e.stopPropagation();
-        if (isToggleMode) {
-          const embedEl = e.currentTarget;
-          const isZoomed = embedEl.classList.contains("is-zoomed");
-          if (isZoomed) {
-            embedEl.classList.remove("is-zoomed");
-          } else {
-            document.querySelectorAll(".image-embed.is-zoomed").forEach((el) => {
-              el.classList.remove("is-zoomed");
-            });
-            embedEl.classList.add("is-zoomed");
-            const closeZoom = (evt) => {
-              const target = evt.target;
-              if (!embedEl.contains(target)) {
-                embedEl.classList.remove("is-zoomed");
-                document.removeEventListener("click", closeZoom);
-                document.removeEventListener("keydown", handleEscape);
-              }
-            };
-            const handleEscape = (evt) => {
-              if (evt.key === "Escape") {
-                embedEl.classList.remove("is-zoomed");
-                document.removeEventListener("click", closeZoom);
-                document.removeEventListener("keydown", handleEscape);
-              }
-            };
-            setTimeout(() => {
-              document.addEventListener("click", closeZoom);
-              document.addEventListener("keydown", handleEscape);
-            }, 0);
-          }
-        }
-      }
+      handleImageZoomClick(
+        e,
+        cardEl.getAttribute("data-path") || "",
+        this.app,
+        this.zoomCleanupFns,
+        this.zoomedOriginalParents
+      );
     });
     const imgEl = imageEmbedContainer.createEl("img", {
       attr: { src: imageUrls[0], alt: "" }
     });
-    imageEmbedContainer.style.setProperty("--cover-image-url", `url("${imageUrls[0]}")`);
-    const cardEl = imageEl.closest(".card");
+    imageEmbedContainer.style.setProperty(
+      "--cover-image-url",
+      `url("${imageUrls[0]}")`
+    );
     if (cardEl) {
       setupImageLoadHandler(
         imgEl,
@@ -9205,12 +12385,22 @@ var SharedCardRenderer = class {
    * Renders property fields for a card
    */
   renderProperties(cardEl, card, entry, settings) {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n;
     const props = [
       settings.propertyDisplay1,
       settings.propertyDisplay2,
       settings.propertyDisplay3,
-      settings.propertyDisplay4
+      settings.propertyDisplay4,
+      settings.propertyDisplay5,
+      settings.propertyDisplay6,
+      settings.propertyDisplay7,
+      settings.propertyDisplay8,
+      settings.propertyDisplay9,
+      settings.propertyDisplay10,
+      settings.propertyDisplay11,
+      settings.propertyDisplay12,
+      settings.propertyDisplay13,
+      settings.propertyDisplay14
     ];
     const seen = /* @__PURE__ */ new Set();
     const effectiveProps = props.map((prop) => {
@@ -9226,20 +12416,66 @@ var SharedCardRenderer = class {
     );
     const row1HasContent = settings.propertyLabels !== "hide" ? effectiveProps[0] !== "" || effectiveProps[1] !== "" : values[0] !== null || values[1] !== null;
     const row2HasContent = settings.propertyLabels !== "hide" ? effectiveProps[2] !== "" || effectiveProps[3] !== "" : values[2] !== null || values[3] !== null;
-    if (!row1HasContent && !row2HasContent)
+    const row3HasContent = settings.propertyLabels !== "hide" ? effectiveProps[4] !== "" || effectiveProps[5] !== "" : values[4] !== null || values[5] !== null;
+    const row4HasContent = settings.propertyLabels !== "hide" ? effectiveProps[6] !== "" || effectiveProps[7] !== "" : values[6] !== null || values[7] !== null;
+    const row5HasContent = settings.propertyLabels !== "hide" ? effectiveProps[8] !== "" || effectiveProps[9] !== "" : values[8] !== null || values[9] !== null;
+    const row6HasContent = settings.propertyLabels !== "hide" ? effectiveProps[10] !== "" || effectiveProps[11] !== "" : values[10] !== null || values[11] !== null;
+    const row7HasContent = settings.propertyLabels !== "hide" ? effectiveProps[12] !== "" || effectiveProps[13] !== "" : values[12] !== null || values[13] !== null;
+    if (!row1HasContent && !row2HasContent && !row3HasContent && !row4HasContent && !row5HasContent && !row6HasContent && !row7HasContent)
       return;
-    const metaEl = cardEl.createDiv("card-properties properties-4field");
+    const row1IsTop = row1HasContent && settings.propertyGroup1Position === "top";
+    const row2IsTop = row2HasContent && settings.propertyGroup2Position === "top";
+    const row3IsTop = row3HasContent && settings.propertyGroup3Position === "top";
+    const row4IsTop = row4HasContent && settings.propertyGroup4Position === "top";
+    const row5IsTop = row5HasContent && settings.propertyGroup5Position === "top";
+    const row6IsTop = row6HasContent && settings.propertyGroup6Position === "top";
+    const row7IsTop = row7HasContent && settings.propertyGroup7Position === "top";
+    const hasTopRows = row1IsTop || row2IsTop || row3IsTop || row4IsTop || row5IsTop || row6IsTop || row7IsTop;
+    const hasBottomRows = row1HasContent && !row1IsTop || row2HasContent && !row2IsTop || row3HasContent && !row3IsTop || row4HasContent && !row4IsTop || row5HasContent && !row5IsTop || row6HasContent && !row6IsTop || row7HasContent && !row7IsTop;
+    const topPropertiesEl = hasTopRows ? cardEl.createDiv(
+      "card-properties card-properties-top properties-4field"
+    ) : null;
+    const bottomPropertiesEl = hasBottomRows ? cardEl.createDiv(
+      "card-properties card-properties-bottom properties-4field"
+    ) : null;
+    const getContainer = (rowNum) => {
+      const positions = [
+        row1IsTop,
+        row2IsTop,
+        row3IsTop,
+        row4IsTop,
+        row5IsTop,
+        row6IsTop,
+        row7IsTop
+      ];
+      const isTop = positions[rowNum - 1];
+      return isTop ? topPropertiesEl : bottomPropertiesEl;
+    };
     if (row1HasContent) {
-      const row1El = metaEl.createDiv("property-row property-row-1");
+      const row1El = getContainer(1).createDiv("property-row property-row-1");
       if (settings.propertyLayout12SideBySide) {
         row1El.addClass("property-row-sidebyside");
       }
       const field1El = row1El.createDiv("property-field property-field-1");
       if (effectiveProps[0])
-        this.renderPropertyContent(field1El, effectiveProps[0], values[0], card, entry, settings);
+        this.renderPropertyContent(
+          field1El,
+          effectiveProps[0],
+          values[0],
+          card,
+          entry,
+          settings
+        );
       const field2El = row1El.createDiv("property-field property-field-2");
       if (effectiveProps[1])
-        this.renderPropertyContent(field2El, effectiveProps[1], values[1], card, entry, settings);
+        this.renderPropertyContent(
+          field2El,
+          effectiveProps[1],
+          values[1],
+          card,
+          entry,
+          settings
+        );
       const has1 = field1El.children.length > 0 || ((_a = field1El.textContent) == null ? void 0 : _a.trim().length) > 0;
       const has2 = field2El.children.length > 0 || ((_b = field2El.textContent) == null ? void 0 : _b.trim().length) > 0;
       const prop1Set = effectiveProps[0] !== "";
@@ -9267,16 +12503,30 @@ var SharedCardRenderer = class {
       }
     }
     if (row2HasContent) {
-      const row2El = metaEl.createDiv("property-row property-row-2");
+      const row2El = getContainer(2).createDiv("property-row property-row-2");
       if (settings.propertyLayout34SideBySide) {
         row2El.addClass("property-row-sidebyside");
       }
       const field3El = row2El.createDiv("property-field property-field-3");
       if (effectiveProps[2])
-        this.renderPropertyContent(field3El, effectiveProps[2], values[2], card, entry, settings);
+        this.renderPropertyContent(
+          field3El,
+          effectiveProps[2],
+          values[2],
+          card,
+          entry,
+          settings
+        );
       const field4El = row2El.createDiv("property-field property-field-4");
       if (effectiveProps[3])
-        this.renderPropertyContent(field4El, effectiveProps[3], values[3], card, entry, settings);
+        this.renderPropertyContent(
+          field4El,
+          effectiveProps[3],
+          values[3],
+          card,
+          entry,
+          settings
+        );
       const has3 = field3El.children.length > 0 || ((_c = field3El.textContent) == null ? void 0 : _c.trim().length) > 0;
       const has4 = field4El.children.length > 0 || ((_d = field4El.textContent) == null ? void 0 : _d.trim().length) > 0;
       const prop3Set = effectiveProps[2] !== "";
@@ -9303,11 +12553,270 @@ var SharedCardRenderer = class {
         }
       }
     }
-    if (metaEl.children.length === 0) {
-      metaEl.remove();
-    } else {
+    if (row3HasContent) {
+      const row3El = getContainer(3).createDiv("property-row property-row-3");
+      if (settings.propertyLayout56SideBySide) {
+        row3El.addClass("property-row-sidebyside");
+      }
+      const field5El = row3El.createDiv("property-field property-field-5");
+      if (effectiveProps[4])
+        this.renderPropertyContent(
+          field5El,
+          effectiveProps[4],
+          values[4],
+          card,
+          entry,
+          settings
+        );
+      const field6El = row3El.createDiv("property-field property-field-6");
+      if (effectiveProps[5])
+        this.renderPropertyContent(
+          field6El,
+          effectiveProps[5],
+          values[5],
+          card,
+          entry,
+          settings
+        );
+      const has5 = field5El.children.length > 0 || ((_e = field5El.textContent) == null ? void 0 : _e.trim().length) > 0;
+      const has6 = field6El.children.length > 0 || ((_f = field6El.textContent) == null ? void 0 : _f.trim().length) > 0;
+      const prop5Set = effectiveProps[4] !== "";
+      const prop6Set = effectiveProps[5] !== "";
+      if (!has5 && !has6) {
+        row3El.remove();
+      } else if (has5 && !has6) {
+        if (prop6Set) {
+          const shouldHide = values[5] === null && shouldHideMissingProperties() || values[5] === "" && shouldHideEmptyProperties();
+          if (!shouldHide) {
+            const placeholderContent = field6El.createDiv("property-content");
+            const markerSpan = placeholderContent.createSpan("empty-value-marker");
+            markerSpan.textContent = getEmptyValueMarker();
+          }
+        }
+      } else if (!has5 && has6) {
+        if (prop5Set) {
+          const shouldHide = values[4] === null && shouldHideMissingProperties() || values[4] === "" && shouldHideEmptyProperties();
+          if (!shouldHide) {
+            const placeholderContent = field5El.createDiv("property-content");
+            const markerSpan = placeholderContent.createSpan("empty-value-marker");
+            markerSpan.textContent = getEmptyValueMarker();
+          }
+        }
+      }
+    }
+    if (row4HasContent) {
+      const row4El = getContainer(4).createDiv("property-row property-row-4");
+      if (settings.propertyLayout78SideBySide) {
+        row4El.addClass("property-row-sidebyside");
+      }
+      const field7El = row4El.createDiv("property-field property-field-7");
+      if (effectiveProps[6])
+        this.renderPropertyContent(
+          field7El,
+          effectiveProps[6],
+          values[6],
+          card,
+          entry,
+          settings
+        );
+      const field8El = row4El.createDiv("property-field property-field-8");
+      if (effectiveProps[7])
+        this.renderPropertyContent(
+          field8El,
+          effectiveProps[7],
+          values[7],
+          card,
+          entry,
+          settings
+        );
+      const has7 = field7El.children.length > 0 || ((_g = field7El.textContent) == null ? void 0 : _g.trim().length) > 0;
+      const has8 = field8El.children.length > 0 || ((_h = field8El.textContent) == null ? void 0 : _h.trim().length) > 0;
+      const prop7Set = effectiveProps[6] !== "";
+      const prop8Set = effectiveProps[7] !== "";
+      if (!has7 && !has8) {
+        row4El.remove();
+      } else if (has7 && !has8) {
+        if (prop8Set) {
+          const shouldHide = values[7] === null && shouldHideMissingProperties() || values[7] === "" && shouldHideEmptyProperties();
+          if (!shouldHide) {
+            const placeholderContent = field8El.createDiv("property-content");
+            const markerSpan = placeholderContent.createSpan("empty-value-marker");
+            markerSpan.textContent = getEmptyValueMarker();
+          }
+        }
+      } else if (!has7 && has8) {
+        if (prop7Set) {
+          const shouldHide = values[6] === null && shouldHideMissingProperties() || values[6] === "" && shouldHideEmptyProperties();
+          if (!shouldHide) {
+            const placeholderContent = field7El.createDiv("property-content");
+            const markerSpan = placeholderContent.createSpan("empty-value-marker");
+            markerSpan.textContent = getEmptyValueMarker();
+          }
+        }
+      }
+    }
+    if (row5HasContent) {
+      const row5El = getContainer(5).createDiv("property-row property-row-5");
+      if (settings.propertyLayout910SideBySide) {
+        row5El.addClass("property-row-sidebyside");
+      }
+      const field9El = row5El.createDiv("property-field property-field-9");
+      if (effectiveProps[8])
+        this.renderPropertyContent(
+          field9El,
+          effectiveProps[8],
+          values[8],
+          card,
+          entry,
+          settings
+        );
+      const field10El = row5El.createDiv("property-field property-field-10");
+      if (effectiveProps[9])
+        this.renderPropertyContent(
+          field10El,
+          effectiveProps[9],
+          values[9],
+          card,
+          entry,
+          settings
+        );
+      const has9 = field9El.children.length > 0 || ((_i = field9El.textContent) == null ? void 0 : _i.trim().length) > 0;
+      const has10 = field10El.children.length > 0 || ((_j = field10El.textContent) == null ? void 0 : _j.trim().length) > 0;
+      const prop9Set = effectiveProps[8] !== "";
+      const prop10Set = effectiveProps[9] !== "";
+      if (!has9 && !has10) {
+        row5El.remove();
+      } else if (has9 && !has10) {
+        if (prop10Set) {
+          const shouldHide = values[9] === null && shouldHideMissingProperties() || values[9] === "" && shouldHideEmptyProperties();
+          if (!shouldHide) {
+            const placeholderContent = field10El.createDiv("property-content");
+            const markerSpan = placeholderContent.createSpan("empty-value-marker");
+            markerSpan.textContent = getEmptyValueMarker();
+          }
+        }
+      } else if (!has9 && has10) {
+        if (prop9Set) {
+          const shouldHide = values[8] === null && shouldHideMissingProperties() || values[8] === "" && shouldHideEmptyProperties();
+          if (!shouldHide) {
+            const placeholderContent = field9El.createDiv("property-content");
+            const markerSpan = placeholderContent.createSpan("empty-value-marker");
+            markerSpan.textContent = getEmptyValueMarker();
+          }
+        }
+      }
+    }
+    if (row6HasContent) {
+      const row6El = getContainer(6).createDiv("property-row property-row-6");
+      if (settings.propertyLayout1112SideBySide) {
+        row6El.addClass("property-row-sidebyside");
+      }
+      const field11El = row6El.createDiv("property-field property-field-11");
+      if (effectiveProps[10])
+        this.renderPropertyContent(
+          field11El,
+          effectiveProps[10],
+          values[10],
+          card,
+          entry,
+          settings
+        );
+      const field12El = row6El.createDiv("property-field property-field-12");
+      if (effectiveProps[11])
+        this.renderPropertyContent(
+          field12El,
+          effectiveProps[11],
+          values[11],
+          card,
+          entry,
+          settings
+        );
+      const has11 = field11El.children.length > 0 || ((_k = field11El.textContent) == null ? void 0 : _k.trim().length) > 0;
+      const has12 = field12El.children.length > 0 || ((_l = field12El.textContent) == null ? void 0 : _l.trim().length) > 0;
+      const prop11Set = effectiveProps[10] !== "";
+      const prop12Set = effectiveProps[11] !== "";
+      if (!has11 && !has12) {
+        row6El.remove();
+      } else if (has11 && !has12) {
+        if (prop12Set) {
+          const shouldHide = values[11] === null && shouldHideMissingProperties() || values[11] === "" && shouldHideEmptyProperties();
+          if (!shouldHide) {
+            const placeholderContent = field12El.createDiv("property-content");
+            const markerSpan = placeholderContent.createSpan("empty-value-marker");
+            markerSpan.textContent = getEmptyValueMarker();
+          }
+        }
+      } else if (!has11 && has12) {
+        if (prop11Set) {
+          const shouldHide = values[10] === null && shouldHideMissingProperties() || values[10] === "" && shouldHideEmptyProperties();
+          if (!shouldHide) {
+            const placeholderContent = field11El.createDiv("property-content");
+            const markerSpan = placeholderContent.createSpan("empty-value-marker");
+            markerSpan.textContent = getEmptyValueMarker();
+          }
+        }
+      }
+    }
+    if (row7HasContent) {
+      const row7El = getContainer(7).createDiv("property-row property-row-7");
+      if (settings.propertyLayout1314SideBySide) {
+        row7El.addClass("property-row-sidebyside");
+      }
+      const field13El = row7El.createDiv("property-field property-field-13");
+      if (effectiveProps[12])
+        this.renderPropertyContent(
+          field13El,
+          effectiveProps[12],
+          values[12],
+          card,
+          entry,
+          settings
+        );
+      const field14El = row7El.createDiv("property-field property-field-14");
+      if (effectiveProps[13])
+        this.renderPropertyContent(
+          field14El,
+          effectiveProps[13],
+          values[13],
+          card,
+          entry,
+          settings
+        );
+      const has13 = field13El.children.length > 0 || ((_m = field13El.textContent) == null ? void 0 : _m.trim().length) > 0;
+      const has14 = field14El.children.length > 0 || ((_n = field14El.textContent) == null ? void 0 : _n.trim().length) > 0;
+      const prop13Set = effectiveProps[12] !== "";
+      const prop14Set = effectiveProps[13] !== "";
+      if (!has13 && !has14) {
+        row7El.remove();
+      } else if (has13 && !has14) {
+        if (prop14Set) {
+          const shouldHide = values[13] === null && shouldHideMissingProperties() || values[13] === "" && shouldHideEmptyProperties();
+          if (!shouldHide) {
+            const placeholderContent = field14El.createDiv("property-content");
+            const markerSpan = placeholderContent.createSpan("empty-value-marker");
+            markerSpan.textContent = getEmptyValueMarker();
+          }
+        }
+      } else if (!has13 && has14) {
+        if (prop13Set) {
+          const shouldHide = values[12] === null && shouldHideMissingProperties() || values[12] === "" && shouldHideEmptyProperties();
+          if (!shouldHide) {
+            const placeholderContent = field13El.createDiv("property-content");
+            const markerSpan = placeholderContent.createSpan("empty-value-marker");
+            markerSpan.textContent = getEmptyValueMarker();
+          }
+        }
+      }
+    }
+    if (topPropertiesEl && topPropertiesEl.children.length === 0) {
+      topPropertiesEl.remove();
+    }
+    if (bottomPropertiesEl && bottomPropertiesEl.children.length === 0) {
+      bottomPropertiesEl.remove();
+    }
+    if (topPropertiesEl && topPropertiesEl.children.length > 0 || bottomPropertiesEl && bottomPropertiesEl.children.length > 0) {
       this.measurePropertyFields(cardEl);
-      setupScrollGradients(cardEl, this.propertyObservers, updateScrollGradient);
+      setupScrollGradients(cardEl, updateScrollGradient);
     }
   }
   /**
@@ -9317,13 +12826,14 @@ var SharedCardRenderer = class {
     if (propertyName === "") {
       return;
     }
-    if (!resolvedValue && settings.propertyLabels === "hide") {
+    const stringValue = typeof resolvedValue === "string" ? resolvedValue : null;
+    if (!stringValue && settings.propertyLabels === "hide") {
       return;
     }
-    if (resolvedValue === null && shouldHideMissingProperties()) {
+    if (stringValue === null && shouldHideMissingProperties()) {
       return;
     }
-    if (resolvedValue === "" && shouldHideEmptyProperties()) {
+    if (stringValue === "" && shouldHideEmptyProperties()) {
       return;
     }
     if (settings.propertyLabels === "hide") {
@@ -9347,20 +12857,21 @@ var SharedCardRenderer = class {
     }
     const contentWrapper = container.createDiv("property-content-wrapper");
     const metaContent = contentWrapper.createDiv("property-content");
-    if (!resolvedValue) {
+    if (!stringValue) {
       const markerSpan = metaContent.createSpan("empty-value-marker");
       markerSpan.textContent = getEmptyValueMarker();
       return;
     }
-    if (resolvedValue.startsWith('{"type":"array","items":[')) {
+    if (stringValue.startsWith('{"type":"array","items":[')) {
       try {
-        const arrayData = JSON.parse(resolvedValue);
+        const arrayData = JSON.parse(stringValue);
         if (arrayData.type === "array" && Array.isArray(arrayData.items)) {
           const listWrapper = metaContent.createSpan("list-wrapper");
           const separator = getListSeparator();
           arrayData.items.forEach((item, idx) => {
             const span = listWrapper.createSpan();
-            span.createSpan({ cls: "list-item", text: item });
+            const listItem = span.createSpan({ cls: "list-item" });
+            this.renderTextWithLinks(listItem, item);
             if (idx < arrayData.items.length - 1) {
               span.createSpan({ cls: "list-separator", text: separator });
             }
@@ -9376,12 +12887,11 @@ var SharedCardRenderer = class {
       if (showTimestampIcon() && settings.propertyLabels === "hide") {
         const iconName = getTimestampIcon(propertyName, settings);
         const iconEl = timestampWrapper.createSpan("timestamp-icon");
-        (0, import_obsidian5.setIcon)(iconEl, iconName);
+        (0, import_obsidian7.setIcon)(iconEl, iconName);
       }
-      timestampWrapper.appendText(resolvedValue);
+      timestampWrapper.appendText(stringValue);
     } else if ((propertyName === "tags" || propertyName === "note.tags") && card.yamlTags.length > 0) {
-      const tagStyle = getTagStyle();
-      const showHashPrefix = tagStyle === "minimal";
+      const showHashPrefix = showTagHashPrefix();
       const tagsWrapper = metaContent.createDiv("tags-wrapper");
       card.yamlTags.forEach((tag) => {
         const tagEl = tagsWrapper.createEl("a", {
@@ -9399,8 +12909,7 @@ var SharedCardRenderer = class {
         });
       });
     } else if ((propertyName === "file.tags" || propertyName === "file tags") && card.tags.length > 0) {
-      const tagStyle = getTagStyle();
-      const showHashPrefix = tagStyle === "minimal";
+      const showHashPrefix = showTagHashPrefix();
       const tagsWrapper = metaContent.createDiv("tags-wrapper");
       card.tags.forEach((tag) => {
         const tagEl = tagsWrapper.createEl("a", {
@@ -9431,7 +12940,7 @@ var SharedCardRenderer = class {
           e.stopPropagation();
           if (isLastSegment) {
             const file = this.app.vault.getAbstractFileByPath(card.path);
-            if (file instanceof import_obsidian5.TFile) {
+            if (file instanceof import_obsidian7.TFile) {
               void this.app.workspace.getLeaf(false).openFile(file);
             }
           } else {
@@ -9449,9 +12958,14 @@ var SharedCardRenderer = class {
             e.stopPropagation();
             e.preventDefault();
             const folderFile = this.app.vault.getAbstractFileByPath(cumulativePath);
-            if (folderFile instanceof import_obsidian5.TFolder) {
-              const menu = new import_obsidian5.Menu();
-              this.app.workspace.trigger("file-menu", menu, folderFile, "file-explorer");
+            if (folderFile instanceof import_obsidian7.TFolder) {
+              const menu = new import_obsidian7.Menu();
+              this.app.workspace.trigger(
+                "file-menu",
+                menu,
+                folderFile,
+                "file-explorer"
+              );
               menu.showAtMouseEvent(e);
             }
           });
@@ -9465,7 +12979,10 @@ var SharedCardRenderer = class {
       const folders = card.folderPath.split("/").filter((f) => f);
       folders.forEach((folder, idx) => {
         const span = folderWrapper.createSpan();
-        const segmentEl = span.createSpan({ cls: "path-segment folder-segment", text: folder });
+        const segmentEl = span.createSpan({
+          cls: "path-segment folder-segment",
+          text: folder
+        });
         const cumulativePath = folders.slice(0, idx + 1).join("/");
         segmentEl.addEventListener("click", (e) => {
           var _a, _b, _c;
@@ -9482,9 +12999,14 @@ var SharedCardRenderer = class {
           e.stopPropagation();
           e.preventDefault();
           const folderFile = this.app.vault.getAbstractFileByPath(cumulativePath);
-          if (folderFile instanceof import_obsidian5.TFolder) {
-            const menu = new import_obsidian5.Menu();
-            this.app.workspace.trigger("file-menu", menu, folderFile, "file-explorer");
+          if (folderFile instanceof import_obsidian7.TFolder) {
+            const menu = new import_obsidian7.Menu();
+            this.app.workspace.trigger(
+              "file-menu",
+              menu,
+              folderFile,
+              "file-explorer"
+            );
             menu.showAtMouseEvent(e);
           }
         });
@@ -9494,7 +13016,7 @@ var SharedCardRenderer = class {
       });
     } else {
       const textWrapper = metaContent.createDiv("text-wrapper");
-      textWrapper.appendText(resolvedValue);
+      this.renderTextWithLinks(textWrapper, stringValue);
     }
     if (!metaContent.textContent || metaContent.textContent.trim().length === 0) {
       metaContent.remove();
@@ -9507,8 +13029,12 @@ var SharedCardRenderer = class {
     const rows = container.querySelectorAll(".property-row-sidebyside");
     rows.forEach((row) => {
       const rowEl = row;
-      const field1 = rowEl.querySelector(".property-field-1, .property-field-3");
-      const field2 = rowEl.querySelector(".property-field-2, .property-field-4");
+      const field1 = rowEl.querySelector(
+        ".property-field-1, .property-field-3"
+      );
+      const field2 = rowEl.querySelector(
+        ".property-field-2, .property-field-4"
+      );
       if (field1 && field2) {
         requestAnimationFrame(() => {
           this.measureSideBySideRow(rowEl, field1, field2);
@@ -9532,10 +13058,18 @@ var SharedCardRenderer = class {
       row.removeClass("property-measured");
       row.addClass("property-measuring");
       void row.offsetWidth;
-      const wrapper1 = field1.querySelector(".property-content-wrapper");
-      const wrapper2 = field2.querySelector(".property-content-wrapper");
-      const label1 = field1.querySelector(".property-label-inline");
-      const label2 = field2.querySelector(".property-label-inline");
+      const wrapper1 = field1.querySelector(
+        ".property-content-wrapper"
+      );
+      const wrapper2 = field2.querySelector(
+        ".property-content-wrapper"
+      );
+      const label1 = field1.querySelector(
+        ".property-label-inline"
+      );
+      const label2 = field2.querySelector(
+        ".property-label-inline"
+      );
       let width1 = wrapper1 ? wrapper1.scrollWidth : 0;
       let width2 = wrapper2 ? wrapper2.scrollWidth : 0;
       const inlineLabelGap = parseFloat(getComputedStyle(field1).gap) || 4;
@@ -9545,7 +13079,11 @@ var SharedCardRenderer = class {
       if (label2) {
         width2 += label2.scrollWidth + inlineLabelGap;
       }
-      const sideCoverPadding = parseFloat(getComputedStyle(card).getPropertyValue("--dynamic-views-side-cover-content-padding")) || 0;
+      const sideCoverPadding = parseFloat(
+        getComputedStyle(card).getPropertyValue(
+          "--dynamic-views-side-cover-content-padding"
+        )
+      ) || 0;
       let containerWidth;
       if (sideCoverPadding > 0) {
         const cardContentWidth = card.clientWidth;
@@ -9594,7 +13132,7 @@ var SharedCardRenderer = class {
 
 // src/bases/card-view.ts
 var GRID_VIEW_TYPE = "dynamic-views-grid";
-var DynamicViewsCardView = class extends import_obsidian6.BasesView {
+var DynamicViewsCardView = class extends import_obsidian8.BasesView {
   constructor(controller, scrollEl) {
     super(controller);
     this.type = GRID_VIEW_TYPE;
@@ -9608,7 +13146,6 @@ var DynamicViewsCardView = class extends import_obsidian6.BasesView {
     this.scrollListener = null;
     this.scrollThrottleTimeout = null;
     this.resizeObserver = null;
-    this.propertyObservers = [];
     this.isShuffled = false;
     this.shuffledOrder = [];
     this.lastSortMethod = null;
@@ -9622,7 +13159,6 @@ var DynamicViewsCardView = class extends import_obsidian6.BasesView {
     this.cardRenderer = new SharedCardRenderer(
       this.app,
       this.plugin,
-      this.propertyObservers,
       this.updateLayoutRef
     );
     this.displayedCount = this.app.isMobile ? 25 : BATCH_SIZE;
@@ -9667,9 +13203,15 @@ var DynamicViewsCardView = class extends import_obsidian6.BasesView {
       const cardSize = settings.cardSize;
       const minColumns = getMinGridColumns();
       const gap = getCardSpacing();
-      const cols = Math.max(minColumns, Math.floor((containerWidth + gap) / (cardSize + gap)));
+      const cols = Math.max(
+        minColumns,
+        Math.floor((containerWidth + gap) / (cardSize + gap))
+      );
       this.containerEl.style.setProperty("--grid-columns", String(cols));
-      this.containerEl.style.setProperty("--dynamic-views-image-aspect-ratio", String(settings.imageAspectRatio));
+      this.containerEl.style.setProperty(
+        "--dynamic-views-image-aspect-ratio",
+        String(settings.imageAspectRatio)
+      );
       const savedScrollTop = this.containerEl.scrollTop;
       const sortMethod = this.getSortMethod();
       if (this.lastSortMethod !== null && this.lastSortMethod !== sortMethod) {
@@ -9693,20 +13235,25 @@ var DynamicViewsCardView = class extends import_obsidian6.BasesView {
       for (const processedGroup of processedGroups) {
         if (remainingCount <= 0)
           break;
-        const entriesToTake = Math.min(processedGroup.entries.length, remainingCount);
+        const entriesToTake = Math.min(
+          processedGroup.entries.length,
+          remainingCount
+        );
         visibleEntries.push(...processedGroup.entries.slice(0, entriesToTake));
         remainingCount -= entriesToTake;
       }
       await this.loadContentForEntries(visibleEntries, settings);
       this.containerEl.empty();
-      this.propertyObservers.forEach((obs) => obs.disconnect());
-      this.propertyObservers = [];
+      this.cardRenderer.cleanup();
       const feedEl = this.containerEl.createDiv("dynamic-views-grid");
       let displayedSoFar = 0;
       for (const processedGroup of processedGroups) {
         if (displayedSoFar >= this.displayedCount)
           break;
-        const entriesToDisplay = Math.min(processedGroup.entries.length, this.displayedCount - displayedSoFar);
+        const entriesToDisplay = Math.min(
+          processedGroup.entries.length,
+          this.displayedCount - displayedSoFar
+        );
         if (entriesToDisplay === 0)
           continue;
         const groupEntries = processedGroup.entries.slice(0, entriesToDisplay);
@@ -9750,7 +13297,10 @@ var DynamicViewsCardView = class extends import_obsidian6.BasesView {
           const cardSize2 = settings.cardSize;
           const minColumns2 = getMinGridColumns();
           const gap2 = getCardSpacing();
-          const cols2 = Math.max(minColumns2, Math.floor((containerWidth2 + gap2) / (cardSize2 + gap2)));
+          const cols2 = Math.max(
+            minColumns2,
+            Math.floor((containerWidth2 + gap2) / (cardSize2 + gap2))
+          );
           this.containerEl.style.setProperty("--grid-columns", String(cols2));
         });
         this.resizeObserver.observe(this.containerEl);
@@ -9782,15 +13332,21 @@ var DynamicViewsCardView = class extends import_obsidian6.BasesView {
     if (settings.showTextPreview) {
       const snippetEntries = entries.filter((entry) => !(entry.file.path in this.snippets)).map((entry) => {
         const file = this.app.vault.getAbstractFileByPath(entry.file.path);
-        if (!(file instanceof import_obsidian6.TFile))
+        if (!(file instanceof import_obsidian8.TFile))
           return null;
-        const descValue = getFirstBasesPropertyValue(this.app, entry, settings.descriptionProperty);
+        const descValue = getFirstBasesPropertyValue(
+          this.app,
+          entry,
+          settings.descriptionProperty
+        );
         return {
           path: entry.file.path,
           file,
           descriptionData: descValue == null ? void 0 : descValue.data
         };
-      }).filter((e) => e !== null);
+      }).filter(
+        (e) => e !== null
+      );
       await loadSnippetsForEntries(
         snippetEntries,
         settings.fallbackToContent,
@@ -9802,9 +13358,13 @@ var DynamicViewsCardView = class extends import_obsidian6.BasesView {
     if (settings.imageFormat !== "none") {
       const imageEntries = entries.filter((entry) => !(entry.file.path in this.images)).map((entry) => {
         const file = this.app.vault.getAbstractFileByPath(entry.file.path);
-        if (!(file instanceof import_obsidian6.TFile))
+        if (!(file instanceof import_obsidian8.TFile))
           return null;
-        const imagePropertyValues = getAllBasesImagePropertyValues(this.app, entry, settings.imageProperty);
+        const imagePropertyValues = getAllBasesImagePropertyValues(
+          this.app,
+          entry,
+          settings.imageProperty
+        );
         return {
           path: entry.file.path,
           file,
@@ -9845,7 +13405,10 @@ var DynamicViewsCardView = class extends import_obsidian6.BasesView {
       if (distanceFromBottom < threshold && this.displayedCount < totalEntries) {
         this.isLoading = true;
         const batchSize = 50;
-        this.displayedCount = Math.min(this.displayedCount + batchSize, totalEntries);
+        this.displayedCount = Math.min(
+          this.displayedCount + batchSize,
+          totalEntries
+        );
         this.onDataUpdated();
       }
       this.scrollThrottleTimeout = window.setTimeout(() => {
@@ -9866,8 +13429,7 @@ var DynamicViewsCardView = class extends import_obsidian6.BasesView {
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
-    this.propertyObservers.forEach((obs) => obs.disconnect());
-    this.propertyObservers = [];
+    this.cardRenderer.cleanup();
   }
   focus() {
     this.containerEl.focus({ preventScroll: true });
@@ -9876,10 +13438,11 @@ var DynamicViewsCardView = class extends import_obsidian6.BasesView {
 var cardViewOptions = getBasesViewOptions;
 
 // src/bases/masonry-view.ts
-var import_obsidian7 = require("obsidian");
+var import_obsidian9 = require("obsidian");
+init_property();
 init_style_settings();
 var MASONRY_VIEW_TYPE = "dynamic-views-masonry";
-var DynamicViewsMasonryView = class extends import_obsidian7.BasesView {
+var DynamicViewsMasonryView = class extends import_obsidian9.BasesView {
   constructor(controller, scrollEl) {
     super(controller);
     this.type = MASONRY_VIEW_TYPE;
@@ -9894,7 +13457,6 @@ var DynamicViewsMasonryView = class extends import_obsidian7.BasesView {
     this.scrollListener = null;
     this.scrollThrottleTimeout = null;
     this.resizeObserver = null;
-    this.propertyObservers = [];
     this.isShuffled = false;
     this.shuffledOrder = [];
     this.lastSortMethod = null;
@@ -9908,7 +13470,6 @@ var DynamicViewsMasonryView = class extends import_obsidian7.BasesView {
     this.cardRenderer = new SharedCardRenderer(
       this.app,
       this.plugin,
-      this.propertyObservers,
       this.updateLayoutRef
     );
     this.displayedCount = this.app.isMobile ? 25 : BATCH_SIZE;
@@ -9949,7 +13510,10 @@ var DynamicViewsMasonryView = class extends import_obsidian7.BasesView {
         this.plugin.persistenceManager.getGlobalSettings(),
         this.plugin.persistenceManager.getDefaultViewSettings()
       );
-      this.containerEl.style.setProperty("--dynamic-views-image-aspect-ratio", String(settings.imageAspectRatio));
+      this.containerEl.style.setProperty(
+        "--dynamic-views-image-aspect-ratio",
+        String(settings.imageAspectRatio)
+      );
       const savedScrollTop = this.containerEl.scrollTop;
       let anchorCardPath = null;
       if (savedScrollTop > 0 && this.masonryContainer) {
@@ -9985,21 +13549,28 @@ var DynamicViewsMasonryView = class extends import_obsidian7.BasesView {
       for (const processedGroup of processedGroups) {
         if (remainingCount <= 0)
           break;
-        const entriesToTake = Math.min(processedGroup.entries.length, remainingCount);
+        const entriesToTake = Math.min(
+          processedGroup.entries.length,
+          remainingCount
+        );
         visibleEntries.push(...processedGroup.entries.slice(0, entriesToTake));
         remainingCount -= entriesToTake;
       }
       await this.loadContentForEntries(visibleEntries, settings);
       this.containerEl.empty();
-      this.propertyObservers.forEach((obs) => obs.disconnect());
-      this.propertyObservers = [];
-      this.masonryContainer = this.containerEl.createDiv("dynamic-views-masonry");
+      this.cardRenderer.cleanup();
+      this.masonryContainer = this.containerEl.createDiv(
+        "dynamic-views-masonry"
+      );
       this.setupMasonryLayout(settings);
       let displayedSoFar = 0;
       for (const processedGroup of processedGroups) {
         if (displayedSoFar >= this.displayedCount)
           break;
-        const entriesToDisplay = Math.min(processedGroup.entries.length, this.displayedCount - displayedSoFar);
+        const entriesToDisplay = Math.min(
+          processedGroup.entries.length,
+          this.displayedCount - displayedSoFar
+        );
         if (entriesToDisplay === 0)
           continue;
         const groupEntries = processedGroup.entries.slice(0, entriesToDisplay);
@@ -10041,7 +13612,9 @@ var DynamicViewsMasonryView = class extends import_obsidian7.BasesView {
           if (savedScrollTop > 0) {
             requestAnimationFrame(() => {
               if (anchorCardPath && this.masonryContainer) {
-                const anchorCard = this.masonryContainer.querySelector(`.card[data-path="${anchorCardPath}"]`);
+                const anchorCard = this.masonryContainer.querySelector(
+                  `.card[data-path="${anchorCardPath}"]`
+                );
                 if (anchorCard) {
                   const cardTop = anchorCard.offsetTop;
                   this.containerEl.scrollTop = Math.max(0, cardTop - 100);
@@ -10068,16 +13641,20 @@ var DynamicViewsMasonryView = class extends import_obsidian7.BasesView {
     this.updateLayoutRef.current = () => {
       if (!this.masonryContainer)
         return;
-      const cards = Array.from(this.masonryContainer.querySelectorAll(".card"));
+      const cards = Array.from(
+        this.masonryContainer.querySelectorAll(".card")
+      );
       if (cards.length === 0)
         return;
       const containerWidth = this.masonryContainer.clientWidth;
+      const gap = getCardSpacing();
+      console.log("masonry calc:", { containerWidth, cardSize: settings.cardSize, minColumns, gap });
       const result = calculateMasonryLayout({
         cards,
         containerWidth,
         cardSize: settings.cardSize,
         minColumns,
-        gap: getCardSpacing()
+        gap
       });
       applyMasonryLayout(this.masonryContainer, cards, result);
     };
@@ -10120,15 +13697,21 @@ var DynamicViewsMasonryView = class extends import_obsidian7.BasesView {
     if (settings.showTextPreview) {
       const snippetEntries = entries.filter((entry) => !(entry.file.path in this.snippets)).map((entry) => {
         const file = this.app.vault.getAbstractFileByPath(entry.file.path);
-        if (!(file instanceof import_obsidian7.TFile))
+        if (!(file instanceof import_obsidian9.TFile))
           return null;
-        const descValue = getFirstBasesPropertyValue(this.app, entry, settings.descriptionProperty);
+        const descValue = getFirstBasesPropertyValue(
+          this.app,
+          entry,
+          settings.descriptionProperty
+        );
         return {
           path: entry.file.path,
           file,
           descriptionData: descValue == null ? void 0 : descValue.data
         };
-      }).filter((e) => e !== null);
+      }).filter(
+        (e) => e !== null
+      );
       await loadSnippetsForEntries(
         snippetEntries,
         settings.fallbackToContent,
@@ -10140,9 +13723,13 @@ var DynamicViewsMasonryView = class extends import_obsidian7.BasesView {
     if (settings.imageFormat !== "none") {
       const imageEntries = entries.filter((entry) => !(entry.file.path in this.images)).map((entry) => {
         const file = this.app.vault.getAbstractFileByPath(entry.file.path);
-        if (!(file instanceof import_obsidian7.TFile))
+        if (!(file instanceof import_obsidian9.TFile))
           return null;
-        const imagePropertyValues = getAllBasesImagePropertyValues(this.app, entry, settings.imageProperty);
+        const imagePropertyValues = getAllBasesImagePropertyValues(
+          this.app,
+          entry,
+          settings.imageProperty
+        );
         return {
           path: entry.file.path,
           file,
@@ -10184,7 +13771,10 @@ var DynamicViewsMasonryView = class extends import_obsidian7.BasesView {
       if (distanceFromBottom < threshold && this.displayedCount < totalEntries) {
         this.isLoading = true;
         const batchSize = Math.min(30, 70);
-        this.displayedCount = Math.min(this.displayedCount + batchSize, totalEntries);
+        this.displayedCount = Math.min(
+          this.displayedCount + batchSize,
+          totalEntries
+        );
         this.onDataUpdated();
       }
     };
@@ -10217,8 +13807,7 @@ var DynamicViewsMasonryView = class extends import_obsidian7.BasesView {
     });
   }
   onunload() {
-    this.propertyObservers.forEach((obs) => obs.disconnect());
-    this.propertyObservers = [];
+    this.cardRenderer.cleanup();
   }
   focus() {
     this.containerEl.focus({ preventScroll: true });
@@ -10227,11 +13816,12 @@ var DynamicViewsMasonryView = class extends import_obsidian7.BasesView {
 var masonryViewOptions = getMasonryViewOptions;
 
 // src/settings-tab.ts
-var import_obsidian9 = require("obsidian");
+var import_obsidian11 = require("obsidian");
+init_property();
 
 // src/modals.ts
-var import_obsidian8 = require("obsidian");
-var ClearSettingsModal = class extends import_obsidian8.Modal {
+var import_obsidian10 = require("obsidian");
+var ClearSettingsModal = class extends import_obsidian10.Modal {
   constructor(app, plugin, onConfirm) {
     super(app);
     this.plugin = plugin;
@@ -10244,10 +13834,14 @@ var ClearSettingsModal = class extends import_obsidian8.Modal {
     contentEl.createEl("p", {
       text: "This will reset all plugin settings to their default values. This action cannot be undone."
     });
-    const buttonContainer = contentEl.createDiv({ cls: "modal-button-container" });
+    const buttonContainer = contentEl.createDiv({
+      cls: "modal-button-container"
+    });
     const cancelButton = buttonContainer.createEl("button", { text: "Cancel" });
     cancelButton.onclick = () => this.close();
-    const clearButton = buttonContainer.createEl("button", { text: "Clear settings" });
+    const clearButton = buttonContainer.createEl("button", {
+      text: "Clear settings"
+    });
     clearButton.addClass("mod-warning");
     clearButton.onclick = async () => {
       this.close();
@@ -10261,7 +13855,7 @@ var ClearSettingsModal = class extends import_obsidian8.Modal {
 };
 
 // src/settings-tab.ts
-var PropertySuggest = class extends import_obsidian9.AbstractInputSuggest {
+var PropertySuggest = class extends import_obsidian11.AbstractInputSuggest {
   constructor(app, inputEl, properties) {
     super(app, inputEl);
     this.properties = properties;
@@ -10282,7 +13876,7 @@ var PropertySuggest = class extends import_obsidian9.AbstractInputSuggest {
     this.close();
   }
 };
-var DynamicViewsSettingTab = class extends import_obsidian9.PluginSettingTab {
+var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
     this.plugin = plugin;
@@ -10322,10 +13916,14 @@ var DynamicViewsSettingTab = class extends import_obsidian9.PluginSettingTab {
       hasDefaultViewChanges = true;
     }
     if (hasGlobalChanges) {
-      await this.plugin.persistenceManager.setGlobalSettings(trimmedGlobalSettings);
+      await this.plugin.persistenceManager.setGlobalSettings(
+        trimmedGlobalSettings
+      );
     }
     if (hasDefaultViewChanges) {
-      await this.plugin.persistenceManager.setDefaultViewSettings(trimmedDefaultViewSettings);
+      await this.plugin.persistenceManager.setDefaultViewSettings(
+        trimmedDefaultViewSettings
+      );
     }
   }
   display() {
@@ -10333,52 +13931,68 @@ var DynamicViewsSettingTab = class extends import_obsidian9.PluginSettingTab {
     containerEl.empty();
     void this.trimTextFieldSettings();
     const settings = this.plugin.persistenceManager.getGlobalSettings();
-    new import_obsidian9.Setting(containerEl).setName("Open file action").setDesc("How files should open when clicked").addDropdown(
+    new import_obsidian11.Setting(containerEl).setName("Open file action").setDesc("How files should open when clicked").addDropdown(
       (dropdown) => dropdown.addOption("card", "Press on title or card").addOption("title", "Press on title").setValue(settings.openFileAction).onChange(async (value) => {
-        await this.plugin.persistenceManager.setGlobalSettings({ openFileAction: value });
-        document.body.classList.remove("dynamic-views-open-on-card", "dynamic-views-open-on-title");
+        await this.plugin.persistenceManager.setGlobalSettings({
+          openFileAction: value
+        });
+        document.body.classList.remove(
+          "dynamic-views-open-on-card",
+          "dynamic-views-open-on-title"
+        );
         document.body.classList.add(`dynamic-views-open-on-${value}`);
       })
     );
-    new import_obsidian9.Setting(containerEl).setName("Open random file in new pane").setDesc("When opening a random file from Bases view, open it in a new pane instead of the same pane").addToggle(
+    new import_obsidian11.Setting(containerEl).setName("Open random file in new pane").setDesc(
+      "When opening a random file from Bases view, open it in a new pane instead of the same pane"
+    ).addToggle(
       (toggle) => toggle.setValue(settings.openRandomInNewPane).onChange(async (value) => {
-        await this.plugin.persistenceManager.setGlobalSettings({ openRandomInNewPane: value });
+        await this.plugin.persistenceManager.setGlobalSettings({
+          openRandomInNewPane: value
+        });
       })
     );
-    new import_obsidian9.Setting(containerEl).setName('Show "Shuffle" in ribbon').setDesc("Display the shuffle button in the left sidebar ribbon. Reload plugin or Obsidian to apply.").addToggle(
+    new import_obsidian11.Setting(containerEl).setName('Show "Shuffle" in ribbon').setDesc(
+      "Display the shuffle button in the left sidebar ribbon. Reload plugin or Obsidian to apply."
+    ).addToggle(
       (toggle) => toggle.setValue(settings.showShuffleInRibbon).onChange(async (value) => {
-        await this.plugin.persistenceManager.setGlobalSettings({ showShuffleInRibbon: value });
+        await this.plugin.persistenceManager.setGlobalSettings({
+          showShuffleInRibbon: value
+        });
       })
     );
-    new import_obsidian9.Setting(containerEl).setName('Show "Open random note" in ribbon').setDesc("Display the random note button in the left sidebar ribbon. Reload plugin or Obsidian to apply.").addToggle(
+    new import_obsidian11.Setting(containerEl).setName('Show "Open random note" in ribbon').setDesc(
+      "Display the random note button in the left sidebar ribbon. Reload plugin or Obsidian to apply."
+    ).addToggle(
       (toggle) => toggle.setValue(settings.showRandomInRibbon).onChange(async (value) => {
-        await this.plugin.persistenceManager.setGlobalSettings({ showRandomInRibbon: value });
+        await this.plugin.persistenceManager.setGlobalSettings({
+          showRandomInRibbon: value
+        });
       })
     );
-    new import_obsidian9.Setting(containerEl).setName("Expand images on click").setDesc("How images (thumbnails and covers) expand to full-screen. Desktop only.").addDropdown(
-      (dropdown) => dropdown.addOption("off", "Off").addOption("hold", "Hold to zoom").addOption("toggle", "Click to toggle").setValue(settings.expandImagesOnClick).onChange(async (value) => {
-        await this.plugin.persistenceManager.setGlobalSettings({ expandImagesOnClick: value });
-        document.body.classList.remove("dynamic-views-thumbnail-expand-click-hold", "dynamic-views-thumbnail-expand-click-toggle");
-        if (value === "hold") {
-          document.body.classList.add("dynamic-views-thumbnail-expand-click-hold");
-        } else if (value === "toggle") {
-          document.body.classList.add("dynamic-views-thumbnail-expand-click-toggle");
+    new import_obsidian11.Setting(containerEl).setName("Thumbnail cache size").setDesc("Size of cached thumbnails (affects performance and quality)").addDropdown(
+      (dropdown) => dropdown.addOption("minimal", "Minimal").addOption("small", "Small").addOption("balanced", "Balanced").addOption("large", "Large").addOption("unlimited", "Unlimited").setValue(settings.thumbnailCacheSize).onChange(
+        async (value) => {
+          await this.plugin.persistenceManager.setGlobalSettings({
+            thumbnailCacheSize: value
+          });
         }
-      })
+      )
     );
-    new import_obsidian9.Setting(containerEl).setName("Thumbnail cache size").setDesc("Size of cached thumbnails (affects performance and quality)").addDropdown(
-      (dropdown) => dropdown.addOption("minimal", "Minimal").addOption("small", "Small").addOption("balanced", "Balanced").addOption("large", "Large").addOption("unlimited", "Unlimited").setValue(settings.thumbnailCacheSize).onChange(async (value) => {
-        await this.plugin.persistenceManager.setGlobalSettings({ thumbnailCacheSize: value });
-      })
-    );
-    new import_obsidian9.Setting(containerEl).setName("Omit first line in text preview").setDesc("Always skip first line in text previews (in addition to automatic omission when first line matches title/filename)").addToggle(
+    new import_obsidian11.Setting(containerEl).setName("Omit first line in text preview").setDesc(
+      "Always skip first line in text previews (in addition to automatic omission when first line matches title/filename)"
+    ).addToggle(
       (toggle) => toggle.setValue(settings.omitFirstLine).onChange(async (value) => {
-        await this.plugin.persistenceManager.setGlobalSettings({ omitFirstLine: value });
+        await this.plugin.persistenceManager.setGlobalSettings({
+          omitFirstLine: value
+        });
       })
     );
-    const timestampFormatSetting = new import_obsidian9.Setting(containerEl).setName("Timestamp format").addText(
+    const timestampFormatSetting = new import_obsidian11.Setting(containerEl).setName("Timestamp format").addText(
       (text) => text.setPlaceholder("YYYY-MM-DD HH:mm").setValue(settings.timestampFormat).onChange(async (value) => {
-        await this.plugin.persistenceManager.setGlobalSettings({ timestampFormat: value });
+        await this.plugin.persistenceManager.setGlobalSettings({
+          timestampFormat: value
+        });
       })
     );
     const timestampFormatDesc = timestampFormatSetting.descEl;
@@ -10387,9 +14001,11 @@ var DynamicViewsSettingTab = class extends import_obsidian9.PluginSettingTab {
       href: "https://momentjs.com/docs/#/displaying/format/"
     });
     timestampFormatDesc.appendText(" format for displaying date properties.");
-    const smartTimestampSetting = new import_obsidian9.Setting(containerEl).setName("Smart timestamp").addToggle(
+    const smartTimestampSetting = new import_obsidian11.Setting(containerEl).setName("Smart timestamp").addToggle(
       (toggle) => toggle.setValue(settings.smartTimestamp).onChange(async (value) => {
-        await this.plugin.persistenceManager.setGlobalSettings({ smartTimestamp: value });
+        await this.plugin.persistenceManager.setGlobalSettings({
+          smartTimestamp: value
+        });
         if (value) {
           conditionalText.show();
           smartTimestampSubSettings.show();
@@ -10406,7 +14022,9 @@ var DynamicViewsSettingTab = class extends import_obsidian9.PluginSettingTab {
     const conditionalText = smartTimestampDesc.createSpan({
       text: "One of the properties below must be shown in one of the property fields below."
     });
-    const smartTimestampSubSettings = containerEl.createDiv("smart-timestamp-sub-settings");
+    const smartTimestampSubSettings = containerEl.createDiv(
+      "smart-timestamp-sub-settings"
+    );
     let createdTimeValue = settings.createdTimeProperty;
     let modifiedTimeValue = settings.modifiedTimeProperty;
     let fallbackSetting;
@@ -10418,23 +14036,29 @@ var DynamicViewsSettingTab = class extends import_obsidian9.PluginSettingTab {
         fallbackSetting.settingEl.hide();
       }
     };
-    new import_obsidian9.Setting(smartTimestampSubSettings).setName("Created time property").setDesc("Leave blank to use file metadata.").addText(
+    new import_obsidian11.Setting(smartTimestampSubSettings).setName("Created time property").setDesc("Leave blank to use file metadata.").addText(
       (text) => text.setPlaceholder("created").setValue(settings.createdTimeProperty).onChange(async (value) => {
         createdTimeValue = value;
-        await this.plugin.persistenceManager.setGlobalSettings({ createdTimeProperty: value });
+        await this.plugin.persistenceManager.setGlobalSettings({
+          createdTimeProperty: value
+        });
         updateFallbackVisibility();
       })
     );
-    new import_obsidian9.Setting(smartTimestampSubSettings).setName("Modified time property").setDesc("Leave blank to use file metadata.").addText(
+    new import_obsidian11.Setting(smartTimestampSubSettings).setName("Modified time property").setDesc("Leave blank to use file metadata.").addText(
       (text) => text.setPlaceholder("modified").setValue(settings.modifiedTimeProperty).onChange(async (value) => {
         modifiedTimeValue = value;
-        await this.plugin.persistenceManager.setGlobalSettings({ modifiedTimeProperty: value });
+        await this.plugin.persistenceManager.setGlobalSettings({
+          modifiedTimeProperty: value
+        });
         updateFallbackVisibility();
       })
     );
-    fallbackSetting = new import_obsidian9.Setting(smartTimestampSubSettings).setName("Fall back to file metadata").setDesc("Use file metadata if a property above is missing or empty.").addToggle(
+    fallbackSetting = new import_obsidian11.Setting(smartTimestampSubSettings).setName("Fall back to file metadata").setDesc("Use file metadata if a property above is missing or empty.").addToggle(
       (toggle) => toggle.setValue(settings.fallbackToFileMetadata).onChange(async (value) => {
-        await this.plugin.persistenceManager.setGlobalSettings({ fallbackToFileMetadata: value });
+        await this.plugin.persistenceManager.setGlobalSettings({
+          fallbackToFileMetadata: value
+        });
       })
     );
     updateFallbackVisibility();
@@ -10445,111 +14069,155 @@ var DynamicViewsSettingTab = class extends import_obsidian9.PluginSettingTab {
       conditionalText.hide();
       smartTimestampSubSettings.hide();
     }
-    const appearanceHeading = new import_obsidian9.Setting(containerEl).setName("Appearance").setHeading();
+    const appearanceHeading = new import_obsidian11.Setting(containerEl).setName("Appearance").setHeading();
     appearanceHeading.settingEl.addClass("dynamic-views-appearance-heading");
-    const appearanceDesc = containerEl.createEl("p", { cls: "setting-item-description" });
-    appearanceDesc.appendText("Appearance settings can be configured via ");
+    const appearanceDesc = containerEl.createEl("p", {
+      cls: "setting-item-description"
+    });
+    appearanceDesc.appendText("Appearance settings can be configured in ");
     appearanceDesc.createEl("a", {
       text: "Style Settings",
       href: "obsidian://show-plugin?id=obsidian-style-settings"
     });
     appearanceDesc.appendText(".");
-    const appearanceTip = containerEl.createEl("p", { cls: "setting-item-description" });
+    const appearanceTip = containerEl.createEl("p", {
+      cls: "setting-item-description"
+    });
     appearanceTip.appendText("Tip: Run ");
     appearanceTip.createEl("em").appendText("Show style settings view");
     appearanceTip.appendText(" command to open settings in a tab.");
-    new import_obsidian9.Setting(containerEl).setName("Default settings for new views").setHeading();
+    new import_obsidian11.Setting(containerEl).setName("Default settings for new views").setHeading();
     const defaultViewSettings = this.plugin.persistenceManager.getDefaultViewSettings();
     const allProperties = getAllVaultProperties(this.app);
-    new import_obsidian9.Setting(containerEl).setName("First property").setDesc("Property to show in first position").addSearch((search) => {
+    new import_obsidian11.Setting(containerEl).setName("First property").setDesc("Property to show in first position").addSearch((search) => {
       search.setPlaceholder("Search properties").setValue(defaultViewSettings.propertyDisplay1).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ propertyDisplay1: value });
+        await this.plugin.persistenceManager.setDefaultViewSettings({
+          propertyDisplay1: value
+        });
       });
       new PropertySuggest(this.app, search.inputEl, allProperties);
     });
-    new import_obsidian9.Setting(containerEl).setName("Second property").setDesc("Property to show in second position").addSearch((search) => {
+    new import_obsidian11.Setting(containerEl).setName("Second property").setDesc("Property to show in second position").addSearch((search) => {
       search.setPlaceholder("Search properties").setValue(defaultViewSettings.propertyDisplay2).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ propertyDisplay2: value });
+        await this.plugin.persistenceManager.setDefaultViewSettings({
+          propertyDisplay2: value
+        });
       });
       new PropertySuggest(this.app, search.inputEl, allProperties);
     });
-    new import_obsidian9.Setting(containerEl).setName("Pair first and second properties").setDesc("Display first two properties horizontally").addToggle(
+    new import_obsidian11.Setting(containerEl).setName("Pair first and second properties").setDesc("Display first two properties horizontally").addToggle(
       (toggle) => toggle.setValue(defaultViewSettings.propertyLayout12SideBySide).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ propertyLayout12SideBySide: value });
+        await this.plugin.persistenceManager.setDefaultViewSettings({
+          propertyLayout12SideBySide: value
+        });
       })
     );
-    new import_obsidian9.Setting(containerEl).setName("Third property").setDesc("Property to show in third position").addSearch((search) => {
+    new import_obsidian11.Setting(containerEl).setName("Third property").setDesc("Property to show in third position").addSearch((search) => {
       search.setPlaceholder("Search properties").setValue(defaultViewSettings.propertyDisplay3).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ propertyDisplay3: value });
+        await this.plugin.persistenceManager.setDefaultViewSettings({
+          propertyDisplay3: value
+        });
       });
       new PropertySuggest(this.app, search.inputEl, allProperties);
     });
-    new import_obsidian9.Setting(containerEl).setName("Fourth property").setDesc("Property to show in fourth position").addSearch((search) => {
+    new import_obsidian11.Setting(containerEl).setName("Fourth property").setDesc("Property to show in fourth position").addSearch((search) => {
       search.setPlaceholder("Search properties").setValue(defaultViewSettings.propertyDisplay4).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ propertyDisplay4: value });
+        await this.plugin.persistenceManager.setDefaultViewSettings({
+          propertyDisplay4: value
+        });
       });
       new PropertySuggest(this.app, search.inputEl, allProperties);
     });
-    new import_obsidian9.Setting(containerEl).setName("Pair third and fourth properties").setDesc("Display third and fourth properties horizontally").addToggle(
+    new import_obsidian11.Setting(containerEl).setName("Pair third and fourth properties").setDesc("Display third and fourth properties horizontally").addToggle(
       (toggle) => toggle.setValue(defaultViewSettings.propertyLayout34SideBySide).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ propertyLayout34SideBySide: value });
+        await this.plugin.persistenceManager.setDefaultViewSettings({
+          propertyLayout34SideBySide: value
+        });
       })
     );
-    new import_obsidian9.Setting(containerEl).setName("Title property").setDesc("Default property to show as file title").addText(
+    new import_obsidian11.Setting(containerEl).setName("Title property").setDesc("Default property to show as file title").addText(
       (text) => text.setPlaceholder("Comma-separated if multiple").setValue(defaultViewSettings.titleProperty).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ titleProperty: value });
+        await this.plugin.persistenceManager.setDefaultViewSettings({
+          titleProperty: value
+        });
       })
     );
-    new import_obsidian9.Setting(containerEl).setName("Show text preview").setDesc("Show text preview by default").addToggle(
+    new import_obsidian11.Setting(containerEl).setName("Show text preview").setDesc("Show text preview by default").addToggle(
       (toggle) => toggle.setValue(defaultViewSettings.showTextPreview).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ showTextPreview: value });
+        await this.plugin.persistenceManager.setDefaultViewSettings({
+          showTextPreview: value
+        });
       })
     );
-    new import_obsidian9.Setting(containerEl).setName("Text preview property").setDesc("Default property to show as text preview").addText(
+    new import_obsidian11.Setting(containerEl).setName("Text preview property").setDesc("Default property to show as text preview").addText(
       (text) => text.setPlaceholder("Comma-separated if multiple").setValue(defaultViewSettings.descriptionProperty).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ descriptionProperty: value });
+        await this.plugin.persistenceManager.setDefaultViewSettings({
+          descriptionProperty: value
+        });
       })
     );
-    new import_obsidian9.Setting(containerEl).setName("Use note content if text preview property unavailable").setDesc("Fall back to note content when text preview property is not set").addToggle(
+    new import_obsidian11.Setting(containerEl).setName("Use note content if text preview property unavailable").setDesc(
+      "Fall back to note content when text preview property is not set"
+    ).addToggle(
       (toggle) => toggle.setValue(defaultViewSettings.fallbackToContent).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ fallbackToContent: value });
+        await this.plugin.persistenceManager.setDefaultViewSettings({
+          fallbackToContent: value
+        });
       })
     );
-    new import_obsidian9.Setting(containerEl).setName("Image format").setDesc("Default image format for cards").addDropdown(
-      (dropdown) => dropdown.addOption("thumbnail-left", "Thumbnail left").addOption("thumbnail-right", "Thumbnail right").addOption("cover-top", "Cover top").addOption("cover-bottom", "Cover bottom").addOption("cover-left", "Cover left").addOption("cover-right", "Cover right").addOption("none", "None").setValue(defaultViewSettings.imageFormat).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ imageFormat: value });
-      })
+    new import_obsidian11.Setting(containerEl).setName("Image format").setDesc("Default image format for cards").addDropdown(
+      (dropdown) => dropdown.addOption("thumbnail-left", "Thumbnail left").addOption("thumbnail-right", "Thumbnail right").addOption("cover-top", "Cover top").addOption("cover-bottom", "Cover bottom").addOption("cover-left", "Cover left").addOption("cover-right", "Cover right").addOption("none", "None").setValue(defaultViewSettings.imageFormat).onChange(
+        async (value) => {
+          await this.plugin.persistenceManager.setDefaultViewSettings({
+            imageFormat: value
+          });
+        }
+      )
     );
-    new import_obsidian9.Setting(containerEl).setName("Cover fit mode").setDesc("Default fit mode for cover images").addDropdown(
+    new import_obsidian11.Setting(containerEl).setName("Cover fit mode").setDesc("Default fit mode for cover images").addDropdown(
       (dropdown) => dropdown.addOption("crop", "Crop").addOption("contain", "Contain").setValue(defaultViewSettings.coverFitMode).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ coverFitMode: value });
+        await this.plugin.persistenceManager.setDefaultViewSettings({
+          coverFitMode: value
+        });
       })
     );
-    new import_obsidian9.Setting(containerEl).setName("Image property").setDesc("Default property to use for card images").addText(
+    new import_obsidian11.Setting(containerEl).setName("Image property").setDesc("Default property to use for card images").addText(
       (text) => text.setPlaceholder("Comma-separated if multiple").setValue(defaultViewSettings.imageProperty).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ imageProperty: value });
+        await this.plugin.persistenceManager.setDefaultViewSettings({
+          imageProperty: value
+        });
       })
     );
-    new import_obsidian9.Setting(containerEl).setName("Show image embeds").setDesc("Control when in-note image embeds are shown alongside image property values").addDropdown(
+    new import_obsidian11.Setting(containerEl).setName("Show image embeds").setDesc(
+      "Control when in-note image embeds are shown alongside image property values"
+    ).addDropdown(
       (dropdown) => dropdown.addOption("always", "Always").addOption("if-empty", "If property missing or empty").addOption("never", "Never").setValue(defaultViewSettings.fallbackToEmbeds).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ fallbackToEmbeds: value });
+        await this.plugin.persistenceManager.setDefaultViewSettings({
+          fallbackToEmbeds: value
+        });
       })
     );
-    new import_obsidian9.Setting(containerEl).setName("List marker").setDesc("Default marker style for list view").addDropdown(
+    new import_obsidian11.Setting(containerEl).setName("List marker").setDesc("Default marker style for list view").addDropdown(
       (dropdown) => dropdown.addOption("bullet", "Bullet").addOption("number", "Number").addOption("none", "None").setValue(defaultViewSettings.listMarker).onChange(async (value) => {
-        await this.plugin.persistenceManager.setDefaultViewSettings({ listMarker: value });
+        await this.plugin.persistenceManager.setDefaultViewSettings({
+          listMarker: value
+        });
       })
     );
-    new import_obsidian9.Setting(containerEl).setName("View height").setDesc("Default maximum height of results area in pixels. Set to 0 for unlimited.").addText(
+    new import_obsidian11.Setting(containerEl).setName("View height").setDesc(
+      "Default maximum height of results area in pixels. Set to 0 for unlimited."
+    ).addText(
       (text) => text.setPlaceholder("500").setValue(String(defaultViewSettings.queryHeight)).onChange(async (value) => {
         const num = parseInt(value);
         if (!isNaN(num) && num >= 0) {
-          await this.plugin.persistenceManager.setDefaultViewSettings({ queryHeight: num });
+          await this.plugin.persistenceManager.setDefaultViewSettings({
+            queryHeight: num
+          });
         }
       })
     );
-    new import_obsidian9.Setting(containerEl).setName("Configuration").setHeading();
-    new import_obsidian9.Setting(containerEl).setName("Manage settings").setDesc("Back up plugin settings to a file or restore from backup.").addButton(
+    new import_obsidian11.Setting(containerEl).setName("Configuration").setHeading();
+    new import_obsidian11.Setting(containerEl).setName("Manage settings").setDesc("Back up plugin settings to a file or restore from backup.").addButton(
       (button) => button.setButtonText("Import").onClick(() => {
         const input = document.createElement("input");
         input.setAttrs({
@@ -10570,13 +14238,16 @@ var DynamicViewsSettingTab = class extends import_obsidian9.PluginSettingTab {
                 try {
                   importedJson = JSON.parse(content);
                 } catch (e) {
-                  new import_obsidian9.Notice("Invalid import file");
+                  new import_obsidian11.Notice("Invalid import file");
                   console.error("Invalid import file");
                   return;
                 }
               }
               if (importedJson) {
-                const newGlobalSettings = Object.assign({}, DEFAULT_SETTINGS);
+                const newGlobalSettings = Object.assign(
+                  {},
+                  DEFAULT_SETTINGS
+                );
                 const newDefaultViewSettings = Object.assign({}, DEFAULT_VIEW_SETTINGS);
                 if (importedJson.globalSettings) {
                   for (const setting in importedJson.globalSettings) {
@@ -10592,9 +14263,13 @@ var DynamicViewsSettingTab = class extends import_obsidian9.PluginSettingTab {
                     }
                   }
                 }
-                await this.plugin.persistenceManager.setGlobalSettings(newGlobalSettings);
-                await this.plugin.persistenceManager.setDefaultViewSettings(newDefaultViewSettings);
-                new import_obsidian9.Notice("Settings imported");
+                await this.plugin.persistenceManager.setGlobalSettings(
+                  newGlobalSettings
+                );
+                await this.plugin.persistenceManager.setDefaultViewSettings(
+                  newDefaultViewSettings
+                );
+                new import_obsidian11.Notice("Settings imported");
                 this.display();
               }
               input.remove();
@@ -10607,15 +14282,23 @@ var DynamicViewsSettingTab = class extends import_obsidian9.PluginSettingTab {
       (button) => button.setButtonText("Export").onClick(async () => {
         const globalSettings = this.plugin.persistenceManager.getGlobalSettings();
         const defaultViewSettings2 = this.plugin.persistenceManager.getDefaultViewSettings();
-        const settingsText = JSON.stringify({
-          globalSettings,
-          defaultViewSettings: defaultViewSettings2
-        }, null, 2);
+        const settingsText = JSON.stringify(
+          {
+            globalSettings,
+            defaultViewSettings: defaultViewSettings2
+          },
+          null,
+          2
+        );
         const fileName = "dynamic-views-settings.json";
         if (navigator.share && navigator.canShare) {
           try {
-            const blob = new Blob([settingsText], { type: "application/json" });
-            const file = new File([blob], fileName, { type: "application/json" });
+            const blob = new Blob([settingsText], {
+              type: "application/json"
+            });
+            const file = new File([blob], fileName, {
+              type: "application/json"
+            });
             if (navigator.canShare({ files: [file] })) {
               await navigator.share({
                 files: [file],
@@ -10636,14 +14319,22 @@ var DynamicViewsSettingTab = class extends import_obsidian9.PluginSettingTab {
         exportLink.remove();
       })
     );
-    new import_obsidian9.Setting(containerEl).setName("Clear settings").setDesc("Reset all plugin settings to their default values.").addButton((button) => {
+    new import_obsidian11.Setting(containerEl).setName("Clear settings").setDesc("Reset all plugin settings to their default values.").addButton((button) => {
       button.setButtonText("Clear").setWarning().onClick(() => {
         new ClearSettingsModal(this.app, this.plugin, async () => {
-          const newGlobalSettings = JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
-          const newDefaultViewSettings = JSON.parse(JSON.stringify(DEFAULT_VIEW_SETTINGS));
-          await this.plugin.persistenceManager.setGlobalSettings(newGlobalSettings);
-          await this.plugin.persistenceManager.setDefaultViewSettings(newDefaultViewSettings);
-          new import_obsidian9.Notice("Settings cleared");
+          const newGlobalSettings = JSON.parse(
+            JSON.stringify(DEFAULT_SETTINGS)
+          );
+          const newDefaultViewSettings = JSON.parse(
+            JSON.stringify(DEFAULT_VIEW_SETTINGS)
+          );
+          await this.plugin.persistenceManager.setGlobalSettings(
+            newGlobalSettings
+          );
+          await this.plugin.persistenceManager.setDefaultViewSettings(
+            newDefaultViewSettings
+          );
+          new import_obsidian11.Notice("Settings cleared");
           this.display();
         }).open();
       });
@@ -10655,7 +14346,7 @@ var DynamicViewsSettingTab = class extends import_obsidian9.PluginSettingTab {
 };
 
 // src/utils/randomize.ts
-var import_obsidian10 = require("obsidian");
+var import_obsidian12 = require("obsidian");
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -10680,7 +14371,9 @@ function getActiveBasesView(app) {
       return {
         type: viewInstanceType,
         data: wrapper.controller.view.data,
-        onDataUpdated: (_d = wrapper.controller.view.onDataUpdated) == null ? void 0 : _d.bind(wrapper.controller.view),
+        onDataUpdated: (_d = wrapper.controller.view.onDataUpdated) == null ? void 0 : _d.bind(
+          wrapper.controller.view
+        ),
         isShuffled: wrapper.controller.view.isShuffled,
         shuffledOrder: wrapper.controller.view.shuffledOrder
       };
@@ -10695,7 +14388,7 @@ async function openRandomFile(app, openInNewPane) {
   var _a;
   const basesView = getActiveBasesView(app);
   if (!basesView) {
-    new import_obsidian10.Notice("No active Bases view");
+    new import_obsidian12.Notice("No active Bases view");
     return;
   }
   const entries = (_a = basesView.data) == null ? void 0 : _a.data;
@@ -10714,27 +14407,41 @@ function toggleShuffleActiveView(app) {
   var _a, _b, _c;
   const basesView = getActiveBasesView(app);
   if (!basesView) {
-    new import_obsidian10.Notice("No active Bases view");
+    new import_obsidian12.Notice("No active Bases view");
     return;
   }
   const isDynamicView = basesView.type === "dynamic-views-grid" || basesView.type === "dynamic-views-masonry";
   if (isDynamicView) {
     const dynamicView = basesView;
     const currentState = (_a = dynamicView.isShuffled) != null ? _a : false;
-    console.log("// [Shuffle Debug] toggleShuffle - current state:", currentState);
+    console.log(
+      "// [Shuffle Debug] toggleShuffle - current state:",
+      currentState
+    );
     console.log("// [Shuffle Debug] basesView type:", basesView.type);
     dynamicView.isShuffled = !currentState;
     if (dynamicView.isShuffled) {
       const entries = (_b = basesView.data) == null ? void 0 : _b.data;
-      console.log("// [Shuffle Debug] Enabling shuffle, entries.length:", entries == null ? void 0 : entries.length);
+      console.log(
+        "// [Shuffle Debug] Enabling shuffle, entries.length:",
+        entries == null ? void 0 : entries.length
+      );
       if (entries && entries.length > 0) {
         const paths = entries.map((e) => e.file.path);
         dynamicView.shuffledOrder = shuffleArray([...paths]);
-        console.log("// [Shuffle Debug] Created shuffledOrder.length:", dynamicView.shuffledOrder.length);
-        console.log("// [Shuffle Debug] First 3 shuffled paths:", dynamicView.shuffledOrder.slice(0, 3));
+        console.log(
+          "// [Shuffle Debug] Created shuffledOrder.length:",
+          dynamicView.shuffledOrder.length
+        );
+        console.log(
+          "// [Shuffle Debug] First 3 shuffled paths:",
+          dynamicView.shuffledOrder.slice(0, 3)
+        );
       }
     } else {
-      console.log("// [Shuffle Debug] Disabling shuffle, clearing shuffledOrder");
+      console.log(
+        "// [Shuffle Debug] Disabling shuffle, clearing shuffledOrder"
+      );
       dynamicView.shuffledOrder = [];
     }
     if (dynamicView.onDataUpdated) {
@@ -10753,7 +14460,29 @@ function toggleShuffleActiveView(app) {
 }
 
 // main.ts
-var DynamicViewsPlugin = class extends import_obsidian11.Plugin {
+var DynamicViewsPlugin = class extends import_obsidian13.Plugin {
+  /**
+   * Extract alpha from --background-modifier-cover and set as CSS custom property
+   */
+  syncOverlayOpacity() {
+    const computedStyle = getComputedStyle(document.body);
+    const coverBg = computedStyle.getPropertyValue(
+      "--background-modifier-cover"
+    );
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = 1;
+    const ctx = canvas.getContext("2d");
+    if (!ctx)
+      return;
+    ctx.fillStyle = coverBg;
+    ctx.fillRect(0, 0, 1, 1);
+    const [, , , a] = ctx.getImageData(0, 0, 1, 1).data;
+    const alphaPercent = Math.round(a / 255 * 100);
+    document.body.style.setProperty(
+      "--dynamic-views-overlay-opacity",
+      `${alphaPercent}%`
+    );
+  }
   // Helper function for datacorejsx blocks
   createView(dc, userQuery) {
     setDatacorePreact(dc.preact);
@@ -10770,12 +14499,9 @@ var DynamicViewsPlugin = class extends import_obsidian11.Plugin {
     this.persistenceManager = new PersistenceManager(this);
     await this.persistenceManager.load();
     const settings = this.persistenceManager.getGlobalSettings();
-    document.body.classList.add(`dynamic-views-open-on-${settings.openFileAction}`);
-    if (settings.expandImagesOnClick === "hold") {
-      document.body.classList.add("dynamic-views-thumbnail-expand-click-hold");
-    } else if (settings.expandImagesOnClick === "toggle") {
-      document.body.classList.add("dynamic-views-thumbnail-expand-click-toggle");
-    }
+    document.body.classList.add(
+      `dynamic-views-open-on-${settings.openFileAction}`
+    );
     setPluginInstance(this);
     this.addSettingTab(new DynamicViewsSettingTab(this.app, this));
     this.registerBasesView("dynamic-views-grid", {
@@ -10791,6 +14517,16 @@ var DynamicViewsPlugin = class extends import_obsidian11.Plugin {
       options: masonryViewOptions
     });
     this.app.workspace.trigger("parse-style-settings");
+    if (document.body.classList.contains("dynamic-views-image-zoom-enabled")) {
+      this.syncOverlayOpacity();
+    }
+    this.registerEvent(
+      this.app.workspace.on("css-change", () => {
+        if (document.body.classList.contains("dynamic-views-image-zoom-enabled")) {
+          this.syncOverlayOpacity();
+        }
+      })
+    );
     this.addCommand({
       id: "create-dynamic-view",
       name: "Create note with query",
@@ -10816,14 +14552,18 @@ var DynamicViewsPlugin = class extends import_obsidian11.Plugin {
       }
     });
     if (settings.showRandomInRibbon) {
-      const _randomRibbon = this.addRibbonIcon("dices", "Open random file from Bases view", async (evt) => {
-        document.querySelectorAll(".image-embed.is-zoomed").forEach((el) => {
-          el.classList.remove("is-zoomed");
-        });
-        const defaultOpenInNewPane = this.persistenceManager.getGlobalSettings().openRandomInNewPane;
-        const openInNewPane = import_obsidian11.Keymap.isModEvent(evt) ? !defaultOpenInNewPane : defaultOpenInNewPane;
-        await openRandomFile(this.app, openInNewPane);
-      });
+      const _randomRibbon = this.addRibbonIcon(
+        "dices",
+        "Open random file from Bases view",
+        async (evt) => {
+          document.querySelectorAll(".image-embed.is-zoomed").forEach((el) => {
+            el.classList.remove("is-zoomed");
+          });
+          const defaultOpenInNewPane = this.persistenceManager.getGlobalSettings().openRandomInNewPane;
+          const openInNewPane = import_obsidian13.Keymap.isModEvent(evt) ? !defaultOpenInNewPane : defaultOpenInNewPane;
+          await openRandomFile(this.app, openInNewPane);
+        }
+      );
     }
     if (settings.showShuffleInRibbon) {
       this.addRibbonIcon("shuffle", "Shuffle Bases view", () => {
@@ -10863,10 +14603,15 @@ var DynamicViewsPlugin = class extends import_obsidian11.Plugin {
           const filePath = url.searchParams.get("file");
           if (filePath) {
             const decodedPath = decodeURIComponent(filePath);
-            const file = this.app.vault.getAbstractFileByPath(decodedPath + ".md");
-            if (file instanceof import_obsidian11.TFile) {
+            const file = this.app.vault.getAbstractFileByPath(
+              decodedPath + ".md"
+            );
+            if (file instanceof import_obsidian13.TFile) {
               const sourcePath = ((_b = view.file) == null ? void 0 : _b.path) || "";
-              const link = this.app.fileManager.generateMarkdownLink(file, sourcePath);
+              const link = this.app.fileManager.generateMarkdownLink(
+                file,
+                sourcePath
+              );
               editor.replaceSelection(link);
               evt.preventDefault();
             }
@@ -10901,14 +14646,14 @@ return dv.createView(dc, USER_QUERY);
         const leaf = this.app.workspace.getLeaf("tab");
         await leaf.openFile(file);
         const view = leaf.view;
-        if (view instanceof import_obsidian11.MarkdownView) {
+        if (view instanceof import_obsidian13.MarkdownView) {
           const viewState = view.getState();
           viewState.mode = "preview";
           await view.setState(viewState, { history: false });
         }
       }
     } catch (error) {
-      new import_obsidian11.Notice(`Failed to create file. Check console for details.`);
+      new import_obsidian13.Notice(`Failed to create file. Check console for details.`);
       console.error("File creation failed:", error);
     }
   }

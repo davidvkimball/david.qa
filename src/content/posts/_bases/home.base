@@ -10,40 +10,11 @@ properties:
     displayName: Date
 views:
   - type: bases-cms
-    name: Bases CMS
+    name: All Posts
+    sort:
+      - property: date
+        direction: DESC
     showDraftStatus: true
     draftStatusUseFilenamePrefix: true
     titleProperty: note.title
-  - type: cards
-    name: All Posts
-    order:
-      - title
-      - date
-      - formula.Draft
-    sort:
-      - property: date
-        direction: DESC
-    cardSize: 260
-    imageAspectRatio: 0.4
-    columnSize:
-      note.title: 187
-  - type: cards
-    name: Drafts
-    filters:
-      and:
-        - formula.Draft == true
-    order:
-      - title
-      - date
-      - formula.Draft
-    sort:
-      - property: date
-        direction: DESC
-    cardSize: 260
-    imageAspectRatio: 0.4
-  - type: dynamic-views-grid
-    name: Dynamic View
-    sort:
-      - property: date
-        direction: DESC
-    titleProperty: title
+    showTextPreview: false
