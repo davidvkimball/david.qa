@@ -1,24 +1,36 @@
 {
-  "enableUnderscorePrefix": true,
   "defaultTemplate": "---\ntitle: \"{{title}}\"\ndate: {{date}}\n---\n",
-  "postsFolder": "",
-  "postsLinkBasePath": "",
-  "automatePostCreation": true,
   "autoInsertProperties": true,
-  "creationMode": "file",
-  "indexFileName": "",
   "dateFormat": "YYYY-MM-DD",
-  "excludedDirectories": "",
-  "onlyAutomateInPostsFolder": true,
-  "enablePages": false,
-  "pagesFolder": "pages",
-  "pagesLinkBasePath": "",
-  "pagesCreationMode": "file",
-  "pagesIndexFileName": "",
-  "pageTemplate": "---\ntitle: \"{{title}}\"\ndescription: \"\"\n---\n",
   "enableCopyHeadingLink": true,
   "copyHeadingLinkFormat": "astro",
   "addTrailingSlashToLinks": true,
-  "customContentTypes": [],
+  "enableOpenTerminalCommand": false,
+  "terminalProjectRootPath": "",
+  "enableTerminalRibbonIcon": false,
+  "enableOpenConfigFileCommand": false,
+  "configFilePath": "",
+  "enableConfigRibbonIcon": false,
+  "contentTypes": [
+    {
+      "id": "posts-1765496483248",
+      "name": "Posts",
+      "folder": "",
+      "linkBasePath": "",
+      "template": "---\ntitle: \"{{title}}\"\ndate: {{date}}\n---\n",
+      "enabled": true,
+      "creationMode": "file",
+      "indexFileName": "",
+      "ignoreSubfolders": true,
+      "enableUnderscorePrefix": true
+    }
+  ],
+  "migrationCompleted": true,
+  "helpButtonReplacement": {
+    "enabled": false,
+    "commandId": "edit-astro-config",
+    "iconId": "wrench"
+  },
+  "showMdxFilesInExplorer": false,
   "linkBasePath": ""
 }

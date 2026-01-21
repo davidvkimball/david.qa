@@ -32,13 +32,18 @@ var style_settings_exports = {};
 __export(style_settings_exports, {
   applyCustomColors: () => applyCustomColors,
   getCardSpacing: () => getCardSpacing,
+  getDateFormat: () => getDateFormat,
+  getDatetimeFormat: () => getDatetimeFormat,
   getEmptyValueMarker: () => getEmptyValueMarker,
   getListSeparator: () => getListSeparator,
   getMinGridColumns: () => getMinGridColumns,
   getMinMasonryColumns: () => getMinMasonryColumns,
   getTagStyle: () => getTagStyle,
+  getTimeFormat: () => getTimeFormat,
   getZoomSensitivity: () => getZoomSensitivity,
   hasCardBackground: () => hasCardBackground,
+  isSlideshowEnabled: () => isSlideshowEnabled,
+  isSlideshowIndicatorEnabled: () => isSlideshowIndicatorEnabled,
   shouldHideEmptyProperties: () => shouldHideEmptyProperties,
   shouldHideMissingProperties: () => shouldHideMissingProperties,
   shouldShowOlderDateOnly: () => shouldShowOlderDateOnly,
@@ -48,6 +53,13 @@ __export(style_settings_exports, {
 });
 function getCSSVariable(name, defaultValue) {
   const value = getComputedStyle(document.body).getPropertyValue(name).trim();
+  return value || defaultValue;
+}
+function getCSSTextVariable(name, defaultValue) {
+  let value = getComputedStyle(document.body).getPropertyValue(name).trim();
+  if (value.startsWith('"') && value.endsWith('"') || value.startsWith("'") && value.endsWith("'")) {
+    value = value.slice(1, -1);
+  }
   return value || defaultValue;
 }
 function getCSSVariableAsNumber(name, defaultValue) {
@@ -83,31 +95,31 @@ function showTagHashPrefix() {
   return hasBodyClass("dynamic-views-show-tag-hash");
 }
 function getCardSpacing() {
-  return getCSSVariableAsNumber("--dynamic-views-card-spacing", 12);
+  return getCSSVariableAsNumber("--dynamic-views-card-spacing", 8);
 }
 function shouldShowRecentTimeOnly() {
-  return hasBodyClass("dynamic-views-timestamp-recent-time-only");
+  return !hasBodyClass("dynamic-views-timestamp-recent-full");
 }
 function shouldShowOlderDateOnly() {
-  return hasBodyClass("dynamic-views-timestamp-older-date-only");
+  return !hasBodyClass("dynamic-views-timestamp-older-full");
+}
+function getDatetimeFormat() {
+  return getCSSTextVariable(
+    "--dynamic-views-datetime-format",
+    "YYYY-MM-DD HH:mm"
+  );
+}
+function getDateFormat() {
+  return getCSSTextVariable("--dynamic-views-date-format", "YYYY-MM-DD");
+}
+function getTimeFormat() {
+  return getCSSTextVariable("--dynamic-views-time-format", "HH:mm");
 }
 function getListSeparator() {
-  let value = getComputedStyle(document.body).getPropertyValue(
-    "--dynamic-views-list-separator"
-  );
-  if (value.startsWith('"') && value.endsWith('"') || value.startsWith("'") && value.endsWith("'")) {
-    value = value.slice(1, -1);
-  }
-  return value || ", ";
+  return getCSSTextVariable("--dynamic-views-list-separator", ", ");
 }
 function getEmptyValueMarker() {
-  let value = getComputedStyle(document.body).getPropertyValue(
-    "--dynamic-views-empty-value-marker"
-  );
-  if (value.startsWith('"') && value.endsWith('"') || value.startsWith("'") && value.endsWith("'")) {
-    value = value.slice(1, -1);
-  }
-  return value || "\u2014";
+  return getCSSTextVariable("--dynamic-views-empty-value-marker", "\u2014");
 }
 function shouldHideMissingProperties() {
   return hasBodyClass("dynamic-views-hide-missing-properties");
@@ -117,6 +129,12 @@ function shouldHideEmptyProperties() {
 }
 function getZoomSensitivity() {
   return getCSSVariableAsNumber("--dynamic-views-zoom-sensitivity", 0.15);
+}
+function isSlideshowEnabled() {
+  return !hasBodyClass("dynamic-views-slideshow-disabled");
+}
+function isSlideshowIndicatorEnabled() {
+  return !hasBodyClass("dynamic-views-hide-slideshow-indicator");
 }
 function applyCustomColors(cardEl, theme, cache) {
   var _a, _b, _c, _d, _e;
@@ -144,251 +162,15 @@ function applyCustomColors(cardEl, theme, cache) {
       cache.timestampColor[theme]
     );
   }
-  if ((_e = cache.metadataColor) == null ? void 0 : _e[theme]) {
+  if ((_e = cache.propertyColor) == null ? void 0 : _e[theme]) {
     cardEl.style.setProperty(
-      "--dynamic-views-metadata-color",
-      cache.metadataColor[theme]
+      "--dynamic-views-property-color",
+      cache.propertyColor[theme]
     );
   }
 }
 var init_style_settings = __esm({
   "src/utils/style-settings.ts"() {
-  }
-});
-
-// src/utils/property.ts
-var property_exports = {};
-__export(property_exports, {
-  getAllBasesImagePropertyValues: () => getAllBasesImagePropertyValues,
-  getAllDatacoreImagePropertyValues: () => getAllDatacoreImagePropertyValues,
-  getAllVaultProperties: () => getAllVaultProperties,
-  getFirstBasesDatePropertyValue: () => getFirstBasesDatePropertyValue,
-  getFirstBasesPropertyValue: () => getFirstBasesPropertyValue,
-  getFirstDatacoreDatePropertyValue: () => getFirstDatacoreDatePropertyValue,
-  getFirstDatacorePropertyValue: () => getFirstDatacorePropertyValue,
-  getPropertyLabel: () => getPropertyLabel,
-  isValidUri: () => isValidUri
-});
-function getFirstBasesPropertyValue(app, entry, propertyString) {
-  if (!propertyString || !propertyString.trim())
-    return null;
-  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
-  for (const prop of properties) {
-    let value = entry.getValue(prop);
-    if (value && typeof value === "object" && "icon" in value && !("data" in value)) {
-      value = entry.getValue(`formula.${prop}`);
-    }
-    if (value && typeof value === "object" && "data" in value) {
-      return value;
-    }
-  }
-  return null;
-}
-function getFirstDatacorePropertyValue(page, propertyString) {
-  if (!propertyString || !propertyString.trim())
-    return null;
-  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
-  for (const prop of properties) {
-    const value = page.value(prop);
-    if (value !== null && value !== void 0) {
-      return value;
-    }
-  }
-  return null;
-}
-function getFirstBasesDatePropertyValue(app, entry, propertyString) {
-  if (!propertyString || !propertyString.trim())
-    return null;
-  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
-  for (const prop of properties) {
-    let value = entry.getValue(prop);
-    if (value && typeof value === "object" && "icon" in value && !("data" in value) && !("date" in value)) {
-      value = entry.getValue(`formula.${prop}`);
-    }
-    if (value && typeof value === "object" && "date" in value && value.date instanceof Date) {
-      return value;
-    }
-  }
-  return null;
-}
-function getFirstDatacoreDatePropertyValue(page, propertyString) {
-  if (!propertyString || !propertyString.trim())
-    return null;
-  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
-  for (const prop of properties) {
-    const value = page.value(prop);
-    if (value && typeof value === "object" && "toMillis" in value) {
-      return value;
-    }
-  }
-  return null;
-}
-function getAllBasesImagePropertyValues(app, entry, propertyString) {
-  if (!propertyString || !propertyString.trim())
-    return [];
-  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
-  const allImages = [];
-  for (const prop of properties) {
-    let value = entry.getValue(prop);
-    if (value && typeof value === "object" && "icon" in value && !("data" in value)) {
-      value = entry.getValue(`formula.${prop}`);
-    }
-    if (!value || !(typeof value === "object" && "data" in value))
-      continue;
-    const data = value.data;
-    if (data == null || data === "")
-      continue;
-    if (Array.isArray(data)) {
-      for (const item of data) {
-        if (typeof item === "string" || typeof item === "number") {
-          const str = String(item);
-          if (str.trim())
-            allImages.push(str);
-        }
-      }
-    } else if (typeof data === "string" || typeof data === "number") {
-      const str = String(data);
-      if (str.trim())
-        allImages.push(str);
-    }
-  }
-  return allImages;
-}
-function getAllDatacoreImagePropertyValues(page, propertyString) {
-  if (!propertyString || !propertyString.trim())
-    return [];
-  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
-  const allImages = [];
-  for (const prop of properties) {
-    const value = page.value(prop);
-    if (value === null || value === void 0)
-      continue;
-    if (Array.isArray(value)) {
-      for (const item of value) {
-        if (typeof item === "object" && item !== null && "path" in item) {
-          const pathValue = item.path;
-          if (typeof pathValue === "string" || typeof pathValue === "number") {
-            const str = String(pathValue).trim();
-            if (str)
-              allImages.push(str);
-          }
-        } else if (typeof item === "string" || typeof item === "number") {
-          const str = String(item).trim();
-          if (str)
-            allImages.push(str);
-        }
-      }
-    } else {
-      if (typeof value === "object" && value !== null && "path" in value) {
-        const pathValue = value.path;
-        if (typeof pathValue === "string" || typeof pathValue === "number") {
-          const str = String(pathValue).trim();
-          if (str)
-            allImages.push(str);
-        }
-      } else if (typeof value === "string" || typeof value === "number") {
-        const str = String(value).trim();
-        if (str)
-          allImages.push(str);
-      }
-    }
-  }
-  return allImages;
-}
-function getPropertyLabel(propertyName) {
-  if (!propertyName || propertyName === "")
-    return "";
-  const mappedLabel = PROPERTY_LABEL_MAP[propertyName.toLowerCase()];
-  if (mappedLabel)
-    return mappedLabel;
-  if (propertyName.startsWith("note.")) {
-    return propertyName.slice(5);
-  }
-  return propertyName;
-}
-function getAllVaultProperties(app) {
-  const properties = /* @__PURE__ */ new Set();
-  properties.add("file.path");
-  properties.add("file.tags");
-  properties.add("file.mtime");
-  properties.add("file.ctime");
-  properties.add("file path");
-  properties.add("file tags");
-  properties.add("created time");
-  properties.add("modified time");
-  const metadataCache = app.metadataCache;
-  if (typeof metadataCache.getAllPropertyInfos === "function") {
-    const allPropertyInfos = metadataCache.getAllPropertyInfos();
-    if (allPropertyInfos) {
-      for (const [propertyName] of Object.entries(allPropertyInfos)) {
-        properties.add(propertyName);
-      }
-    }
-  }
-  return Array.from(properties).sort((a, b) => {
-    const aBasesFormat = a.startsWith("file.");
-    const bBasesFormat = b.startsWith("file.");
-    const aHumanFormat = (a.startsWith("file ") || a.includes(" time")) && !aBasesFormat;
-    const bHumanFormat = (b.startsWith("file ") || b.includes(" time")) && !bBasesFormat;
-    if (aBasesFormat && !bBasesFormat)
-      return -1;
-    if (!aBasesFormat && bBasesFormat)
-      return 1;
-    if (aHumanFormat && !bHumanFormat)
-      return -1;
-    if (!aHumanFormat && bHumanFormat)
-      return 1;
-    return a.localeCompare(b);
-  });
-}
-function isValidUri(value) {
-  if (!value || typeof value !== "string")
-    return false;
-  const trimmed = value.trim();
-  if (trimmed.length < 5 || trimmed.length > 2048)
-    return false;
-  if (!trimmed.includes("://"))
-    return false;
-  const uriPattern = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\/.+$/;
-  return uriPattern.test(trimmed);
-}
-var PROPERTY_LABEL_MAP;
-var init_property = __esm({
-  "src/utils/property.ts"() {
-    PROPERTY_LABEL_MAP = {
-      "file.file": "file",
-      file: "file",
-      "file.name": "file name",
-      "file name": "file name",
-      "file.basename": "file base name",
-      "file base name": "file base name",
-      "file.ext": "file extension",
-      "file.extension": "file extension",
-      "file extension": "file extension",
-      "file.backlinks": "file backlinks",
-      "file backlinks": "file backlinks",
-      "file.ctime": "created time",
-      "created time": "created time",
-      "file.embeds": "file embeds",
-      "file embeds": "file embeds",
-      "file.fullname": "file full name",
-      "file full name": "file full name",
-      "file.links": "file links",
-      "file links": "file links",
-      "file.path": "file path",
-      path: "file path",
-      "file path": "file path",
-      "file.size": "file size",
-      "file size": "file size",
-      "file.tags": "file tags",
-      "file tags": "file tags",
-      tags: "tags",
-      "note.tags": "tags",
-      "file.mtime": "modified time",
-      "modified time": "modified time",
-      "file.folder": "folder",
-      folder: "folder"
-    };
   }
 });
 
@@ -4332,7 +4114,7 @@ var import_obsidian13 = require("obsidian");
 // src/constants.ts
 var DEFAULT_VIEW_SETTINGS = {
   titleProperty: "",
-  descriptionProperty: "",
+  textPreviewProperty: "",
   imageProperty: "",
   urlProperty: "",
   propertyDisplay1: "file.tags",
@@ -4349,13 +4131,13 @@ var DEFAULT_VIEW_SETTINGS = {
   propertyDisplay12: "",
   propertyDisplay13: "",
   propertyDisplay14: "",
-  propertyLayout12SideBySide: false,
-  propertyLayout34SideBySide: true,
-  propertyLayout56SideBySide: false,
-  propertyLayout78SideBySide: false,
-  propertyLayout910SideBySide: false,
-  propertyLayout1112SideBySide: false,
-  propertyLayout1314SideBySide: false,
+  propertyGroup1SideBySide: false,
+  propertyGroup2SideBySide: false,
+  propertyGroup3SideBySide: false,
+  propertyGroup4SideBySide: false,
+  propertyGroup5SideBySide: false,
+  propertyGroup6SideBySide: false,
+  propertyGroup7SideBySide: false,
   propertyGroup1Position: "bottom",
   propertyGroup2Position: "bottom",
   propertyGroup3Position: "bottom",
@@ -4363,7 +4145,7 @@ var DEFAULT_VIEW_SETTINGS = {
   propertyGroup5Position: "bottom",
   propertyGroup6Position: "bottom",
   propertyGroup7Position: "bottom",
-  propertyLabels: "hide",
+  propertyLabels: "inline",
   showTitle: true,
   subtitleProperty: "",
   showTextPreview: true,
@@ -4378,7 +4160,7 @@ var DEFAULT_VIEW_SETTINGS = {
 };
 var DEFAULT_SETTINGS = {
   titleProperty: "",
-  descriptionProperty: "",
+  textPreviewProperty: "",
   imageProperty: "",
   urlProperty: "",
   omitFirstLine: false,
@@ -4401,13 +4183,13 @@ var DEFAULT_SETTINGS = {
   propertyDisplay12: "",
   propertyDisplay13: "",
   propertyDisplay14: "",
-  propertyLayout12SideBySide: false,
-  propertyLayout34SideBySide: true,
-  propertyLayout56SideBySide: false,
-  propertyLayout78SideBySide: false,
-  propertyLayout910SideBySide: false,
-  propertyLayout1112SideBySide: false,
-  propertyLayout1314SideBySide: false,
+  propertyGroup1SideBySide: false,
+  propertyGroup2SideBySide: false,
+  propertyGroup3SideBySide: false,
+  propertyGroup4SideBySide: false,
+  propertyGroup5SideBySide: false,
+  propertyGroup6SideBySide: false,
+  propertyGroup7SideBySide: false,
   propertyGroup1Position: "bottom",
   propertyGroup2Position: "bottom",
   propertyGroup3Position: "bottom",
@@ -4415,24 +4197,24 @@ var DEFAULT_SETTINGS = {
   propertyGroup5Position: "bottom",
   propertyGroup6Position: "bottom",
   propertyGroup7Position: "bottom",
-  propertyLabels: "hide",
+  propertyLabels: "inline",
   imageFormat: "thumbnail-right",
   coverFitMode: "crop",
   imageAspectRatio: 1,
-  timestampFormat: "",
   listMarker: "bullet",
   randomizeAction: "shuffle",
   thumbnailCacheSize: "balanced",
   queryHeight: 0,
   openFileAction: "card",
-  openRandomInNewPane: true,
+  openRandomInNewTab: true,
   showShuffleInRibbon: true,
   showRandomInRibbon: true,
   smartTimestamp: true,
   createdTimeProperty: "",
   modifiedTimeProperty: "",
   fallbackToFileMetadata: true,
-  cardSize: 400
+  cardSize: 400,
+  preventSidebarSwipe: "disabled"
 };
 var DEFAULT_UI_STATE = {
   sortMethod: "mtime-desc",
@@ -4558,9 +4340,275 @@ var PersistenceManager = class {
 var import_obsidian6 = require("obsidian");
 
 // src/shared/card-renderer.tsx
-var import_obsidian3 = require("obsidian");
+var import_obsidian2 = require("obsidian");
 init_style_settings();
-init_property();
+
+// src/utils/property.ts
+var DEFAULT_DISPLAY_TO_SYNTAX = {
+  "file name": "file.name",
+  "file backlinks": "file.backlinks",
+  "file base name": "file.basename",
+  "created time": "file.ctime",
+  "file embeds": "file.embeds",
+  "file extension": "file.ext",
+  folder: "file.folder",
+  "file full name": "file.fullname",
+  "file links": "file.links",
+  "modified time": "file.mtime",
+  "file path": "file.path",
+  "file size": "file.size",
+  "file tags": "file.tags"
+};
+function buildDisplayToSyntaxMap(app) {
+  var _a;
+  try {
+    const leaves = app.workspace.getLeavesOfType("bases");
+    if (!leaves || leaves.length === 0)
+      return null;
+    const view = leaves[0].view;
+    if (!((_a = view == null ? void 0 : view.query) == null ? void 0 : _a.properties))
+      return null;
+    const map = {};
+    for (const [syntaxName, config] of Object.entries(view.query.properties)) {
+      if (config && typeof config.getDisplayName === "function") {
+        const displayName = config.getDisplayName();
+        if (displayName) {
+          map[displayName] = syntaxName;
+        }
+      }
+    }
+    return map;
+  } catch (e) {
+    return null;
+  }
+}
+function getFormulaNames(app) {
+  var _a;
+  try {
+    const leaves = app.workspace.getLeavesOfType("bases");
+    if (!leaves || leaves.length === 0)
+      return /* @__PURE__ */ new Set();
+    const view = leaves[0].view;
+    if (!((_a = view == null ? void 0 : view.query) == null ? void 0 : _a.formulas))
+      return /* @__PURE__ */ new Set();
+    return new Set(Object.keys(view.query.formulas));
+  } catch (e) {
+    return /* @__PURE__ */ new Set();
+  }
+}
+function normalizePropertyName(app, propertyName) {
+  if (!propertyName || !propertyName.trim())
+    return propertyName;
+  const trimmed = propertyName.trim();
+  if (trimmed.startsWith("file.") || trimmed.startsWith("formula.") || trimmed.startsWith("note.")) {
+    return trimmed;
+  }
+  const dynamicMap = buildDisplayToSyntaxMap(app);
+  if (dynamicMap) {
+    if (trimmed in dynamicMap) {
+      return dynamicMap[trimmed];
+    }
+  } else {
+    if (trimmed in DEFAULT_DISPLAY_TO_SYNTAX) {
+      return DEFAULT_DISPLAY_TO_SYNTAX[trimmed];
+    }
+  }
+  const formulaNames = getFormulaNames(app);
+  if (formulaNames.has(trimmed)) {
+    return `formula.${trimmed}`;
+  }
+  return trimmed;
+}
+function getFirstBasesPropertyValue(app, entry, propertyString) {
+  if (!propertyString || !propertyString.trim())
+    return null;
+  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
+  for (const prop of properties) {
+    let value = entry.getValue(prop);
+    if (value && typeof value === "object" && "icon" in value && !("data" in value)) {
+      value = entry.getValue(`formula.${prop}`);
+    }
+    if (value && typeof value === "object" && "data" in value) {
+      return value;
+    }
+  }
+  return null;
+}
+function getFirstDatacorePropertyValue(page, propertyString) {
+  if (!propertyString || !propertyString.trim())
+    return null;
+  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
+  for (const prop of properties) {
+    const value = page.value(prop);
+    if (value !== null && value !== void 0) {
+      return value;
+    }
+  }
+  return null;
+}
+function getAllBasesImagePropertyValues(app, entry, propertyString) {
+  if (!propertyString || !propertyString.trim())
+    return [];
+  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
+  const allImages = [];
+  for (const prop of properties) {
+    let value = entry.getValue(prop);
+    if (value && typeof value === "object" && "icon" in value && !("data" in value)) {
+      value = entry.getValue(`formula.${prop}`);
+    }
+    if (!value || !(typeof value === "object" && "data" in value))
+      continue;
+    const data = value.data;
+    if (data == null || data === "")
+      continue;
+    if (Array.isArray(data)) {
+      for (const item of data) {
+        if (typeof item === "string" || typeof item === "number") {
+          const str = String(item);
+          if (str.trim())
+            allImages.push(str);
+        }
+      }
+    } else if (typeof data === "string" || typeof data === "number") {
+      const str = String(data);
+      if (str.trim())
+        allImages.push(str);
+    }
+  }
+  return allImages;
+}
+function getAllDatacoreImagePropertyValues(page, propertyString) {
+  if (!propertyString || !propertyString.trim())
+    return [];
+  const properties = propertyString.split(",").map((p) => p.trim()).filter((p) => p);
+  const allImages = [];
+  for (const prop of properties) {
+    const value = page.value(prop);
+    if (value === null || value === void 0)
+      continue;
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        if (typeof item === "object" && item !== null && "path" in item) {
+          const pathValue = item.path;
+          if (typeof pathValue === "string" || typeof pathValue === "number") {
+            const str = String(pathValue).trim();
+            if (str)
+              allImages.push(str);
+          }
+        } else if (typeof item === "string" || typeof item === "number") {
+          const str = String(item).trim();
+          if (str)
+            allImages.push(str);
+        }
+      }
+    } else {
+      if (typeof value === "object" && value !== null && "path" in value) {
+        const pathValue = value.path;
+        if (typeof pathValue === "string" || typeof pathValue === "number") {
+          const str = String(pathValue).trim();
+          if (str)
+            allImages.push(str);
+        }
+      } else if (typeof value === "string" || typeof value === "number") {
+        const str = String(value).trim();
+        if (str)
+          allImages.push(str);
+      }
+    }
+  }
+  return allImages;
+}
+var PROPERTY_LABEL_MAP = {
+  "file.file": "file",
+  file: "file",
+  "file.name": "file name",
+  "file name": "file name",
+  "file.basename": "file base name",
+  "file base name": "file base name",
+  "file.ext": "file extension",
+  "file.extension": "file extension",
+  "file extension": "file extension",
+  "file.backlinks": "file backlinks",
+  "file backlinks": "file backlinks",
+  "file.ctime": "created time",
+  "created time": "created time",
+  "file.embeds": "file embeds",
+  "file embeds": "file embeds",
+  "file.fullname": "file full name",
+  "file full name": "file full name",
+  "file.links": "file links",
+  "file links": "file links",
+  "file.path": "file path",
+  path: "file path",
+  "file path": "file path",
+  "file.size": "file size",
+  "file size": "file size",
+  "file.tags": "file tags",
+  "file tags": "file tags",
+  tags: "tags",
+  "note.tags": "tags",
+  "file.mtime": "modified time",
+  "modified time": "modified time",
+  "file.folder": "folder",
+  folder: "folder"
+};
+function getPropertyLabel(propertyName) {
+  if (!propertyName || propertyName === "")
+    return "";
+  const mappedLabel = PROPERTY_LABEL_MAP[propertyName.toLowerCase()];
+  if (mappedLabel)
+    return mappedLabel;
+  if (propertyName.startsWith("note.")) {
+    return propertyName.slice(5);
+  }
+  return propertyName;
+}
+function getAllVaultProperties(app) {
+  const properties = /* @__PURE__ */ new Set();
+  properties.add("file.path");
+  properties.add("file.tags");
+  properties.add("file.mtime");
+  properties.add("file.ctime");
+  properties.add("file path");
+  properties.add("file tags");
+  properties.add("created time");
+  properties.add("modified time");
+  const metadataCache = app.metadataCache;
+  if (typeof metadataCache.getAllPropertyInfos === "function") {
+    const allPropertyInfos = metadataCache.getAllPropertyInfos();
+    if (allPropertyInfos) {
+      for (const [propertyName] of Object.entries(allPropertyInfos)) {
+        properties.add(propertyName);
+      }
+    }
+  }
+  return Array.from(properties).sort((a, b) => {
+    const aBasesFormat = a.startsWith("file.");
+    const bBasesFormat = b.startsWith("file.");
+    const aHumanFormat = (a.startsWith("file ") || a.includes(" time")) && !aBasesFormat;
+    const bHumanFormat = (b.startsWith("file ") || b.includes(" time")) && !bBasesFormat;
+    if (aBasesFormat && !bBasesFormat)
+      return -1;
+    if (!aBasesFormat && bBasesFormat)
+      return 1;
+    if (aHumanFormat && !bHumanFormat)
+      return -1;
+    if (!aHumanFormat && bHumanFormat)
+      return 1;
+    return a.localeCompare(b);
+  });
+}
+function isValidUri(value) {
+  if (!value || typeof value !== "string")
+    return false;
+  const trimmed = value.trim();
+  if (trimmed.length < 5 || trimmed.length > 2048)
+    return false;
+  if (!trimmed.includes("://"))
+    return false;
+  const uriPattern = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\/.+$/;
+  return uriPattern.test(trimmed);
+}
 
 // src/utils/link-parser.ts
 function isWebUrl(url) {
@@ -4681,6 +4729,163 @@ function findLinksInText(text) {
   return segments;
 }
 
+// src/utils/image.ts
+var import_obsidian = require("obsidian");
+var VALID_IMAGE_EXTENSIONS = [
+  "avif",
+  "bmp",
+  "gif",
+  "jpeg",
+  "jpg",
+  "png",
+  "svg",
+  "webp"
+];
+function isExternalUrl(url) {
+  return /^https?:\/\//i.test(url);
+}
+function hasValidImageExtension(path) {
+  return /\.(avif|bmp|gif|jpe?g|png|svg|webp)$/i.test(path);
+}
+function validateImageUrl(url) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    setTimeout(() => resolve(false), 5e3);
+    img.src = url;
+  });
+}
+function stripWikilinkSyntax(path) {
+  if (!path)
+    return "";
+  const wikilinkMatch = path.match(/^!?\[\[([^\]|]+)(?:\|[^\]]*)?\]\]$/);
+  return wikilinkMatch ? wikilinkMatch[1].trim() : path;
+}
+async function processImagePaths(imagePaths) {
+  const internalPaths = [];
+  const externalUrls = [];
+  for (const imgPath of imagePaths) {
+    const cleanPath = stripWikilinkSyntax(imgPath);
+    if (cleanPath.length === 0)
+      continue;
+    if (isExternalUrl(cleanPath)) {
+      if (hasValidImageExtension(cleanPath) || !cleanPath.includes(".")) {
+        const isValid = await validateImageUrl(cleanPath);
+        if (isValid) {
+          externalUrls.push(cleanPath);
+        }
+      }
+    } else {
+      if (hasValidImageExtension(cleanPath)) {
+        internalPaths.push(cleanPath);
+      }
+    }
+  }
+  return { internalPaths, externalUrls };
+}
+function resolveInternalImagePaths(internalPaths, sourcePath, app) {
+  const resourcePaths = [];
+  for (const propPath of internalPaths) {
+    const imageFile = app.metadataCache.getFirstLinkpathDest(
+      propPath,
+      sourcePath
+    );
+    if (imageFile && VALID_IMAGE_EXTENSIONS.includes(imageFile.extension)) {
+      const resourcePath = app.vault.getResourcePath(imageFile);
+      resourcePaths.push(resourcePath);
+    }
+  }
+  return resourcePaths;
+}
+async function extractEmbedImages(file, app) {
+  const metadata = app.metadataCache.getFileCache(file);
+  if (!(metadata == null ? void 0 : metadata.embeds))
+    return [];
+  const bodyResourcePaths = [];
+  const bodyExternalUrls = [];
+  for (const embed of metadata.embeds) {
+    const embedLink = embed.link;
+    if (isExternalUrl(embedLink)) {
+      if (hasValidImageExtension(embedLink) || !embedLink.includes(".")) {
+        bodyExternalUrls.push(embedLink);
+      }
+    } else {
+      const targetFile = app.metadataCache.getFirstLinkpathDest(
+        embedLink,
+        file.path
+      );
+      if (targetFile && VALID_IMAGE_EXTENSIONS.includes(targetFile.extension)) {
+        const resourcePath = app.vault.getResourcePath(targetFile);
+        bodyResourcePaths.push(resourcePath);
+      }
+    }
+  }
+  for (const externalUrl of bodyExternalUrls) {
+    const isValid = await validateImageUrl(externalUrl);
+    if (isValid) {
+      bodyResourcePaths.push(externalUrl);
+    }
+  }
+  return bodyResourcePaths;
+}
+
+// src/utils/file-extension.ts
+var cachedHiddenFormats = null;
+function extractExtension(path) {
+  var _a;
+  const ext = (_a = path.split(".").pop()) == null ? void 0 : _a.toLowerCase();
+  return ext && ext !== "" ? ext : null;
+}
+function getHiddenFormats() {
+  if (cachedHiddenFormats)
+    return cachedHiddenFormats;
+  const rawValue = getComputedStyle(document.body).getPropertyValue("--dynamic-views-hidden-file-extensions").trim();
+  if (rawValue === '""' || rawValue === "''") {
+    cachedHiddenFormats = /* @__PURE__ */ new Set();
+  } else {
+    const value = rawValue.replace(/['"]/g, "");
+    cachedHiddenFormats = value ? new Set(value.split(",").map((e) => e.trim().toLowerCase())) : /* @__PURE__ */ new Set(["md"]);
+  }
+  return cachedHiddenFormats;
+}
+function getFileExtInfo(path, forceShow = false) {
+  const ext = extractExtension(path);
+  if (!ext)
+    return null;
+  if (!forceShow && getHiddenFormats().has(ext))
+    return null;
+  return { ext: `.${ext}` };
+}
+function stripExtFromTitle(title, path, forceStrip = false) {
+  const ext = extractExtension(path);
+  if (!ext)
+    return title;
+  if (!forceStrip && ext === "md")
+    return title;
+  const extWithDot = `.${ext}`;
+  if (title.toLowerCase().endsWith(extWithDot)) {
+    return title.slice(0, -extWithDot.length);
+  }
+  return title;
+}
+function getFileTypeIcon(path) {
+  const ext = extractExtension(path);
+  if (!ext)
+    return null;
+  if (getHiddenFormats().has(ext))
+    return null;
+  if (ext === "canvas")
+    return "layout-dashboard";
+  if (ext === "base")
+    return "layout-list";
+  if (ext === "pdf")
+    return "file-text";
+  if (VALID_IMAGE_EXTENSIONS.includes(ext))
+    return "image";
+  return "file";
+}
+
 // src/utils/image-color.ts
 function extractAverageColor(img) {
   const canvas = document.createElement("canvas");
@@ -4723,11 +4928,6 @@ function getColorTheme(rgbString) {
   return calculateLuminance(rgbString) > 0.5 ? "light" : "dark";
 }
 
-// src/shared/constants.ts
-var BATCH_SIZE = 50;
-var SCROLL_TOLERANCE = 1;
-var IMAGE_ASPECT_RATIO = 0.55;
-
 // src/shared/image-loader.ts
 function handleImageLoad(imgEl, imageEmbedContainer, cardEl, onLayoutUpdate) {
   const ambientColor = extractAverageColor(imgEl);
@@ -4737,27 +4937,95 @@ function handleImageLoad(imgEl, imageEmbedContainer, cardEl, onLayoutUpdate) {
   cardEl.setAttribute("data-ambient-theme", colorTheme);
   if (imgEl.naturalWidth > 0 && imgEl.naturalHeight > 0) {
     const imgAspect = imgEl.naturalHeight / imgEl.naturalWidth;
-    const containerMaxAspect = parseFloat(
-      getComputedStyle(document.body).getPropertyValue(
-        "--dynamic-views-image-aspect-ratio"
-      ) || String(IMAGE_ASPECT_RATIO)
-    );
-    if (imgAspect < containerMaxAspect) {
-      cardEl.style.setProperty("--actual-aspect-ratio", imgAspect.toString());
-    }
+    cardEl.style.setProperty("--actual-aspect-ratio", imgAspect.toString());
   }
+  cardEl.classList.add("cover-ready");
   if (onLayoutUpdate) {
     onLayoutUpdate();
   }
 }
 function setupImageLoadHandler(imgEl, imageEmbedContainer, cardEl, onLayoutUpdate) {
-  imgEl.addEventListener("load", () => {
+  if (imgEl.complete && imgEl.naturalWidth > 0 && imgEl.naturalHeight > 0) {
     handleImageLoad(imgEl, imageEmbedContainer, cardEl, onLayoutUpdate);
-  });
+  } else {
+    imgEl.addEventListener("load", () => {
+      handleImageLoad(imgEl, imageEmbedContainer, cardEl, onLayoutUpdate);
+    });
+    imgEl.addEventListener("error", () => {
+      cardEl.classList.add("cover-ready");
+      if (onLayoutUpdate)
+        onLayoutUpdate();
+    });
+  }
+}
+function handleJsxImageRef(imgEl, updateLayoutRef) {
+  if (!imgEl || !imgEl.complete || imgEl.naturalWidth === 0)
+    return;
+  const cardEl = imgEl.closest(".card");
+  if (!cardEl || cardEl.classList.contains("cover-ready"))
+    return;
+  const imageEmbedEl = imgEl.closest(".image-embed");
+  if (!imageEmbedEl)
+    return;
+  handleImageLoad(imgEl, imageEmbedEl, cardEl, updateLayoutRef.current);
+}
+function handleJsxImageLoad(e, updateLayoutRef) {
+  const imgEl = e.currentTarget;
+  const cardEl = imgEl.closest(".card");
+  if (!cardEl || cardEl.classList.contains("cover-ready"))
+    return;
+  const imageEmbedEl = imgEl.closest(".image-embed");
+  if (!imageEmbedEl)
+    return;
+  handleImageLoad(imgEl, imageEmbedEl, cardEl, updateLayoutRef.current);
+}
+function handleJsxImageError(e, updateLayoutRef) {
+  const imgEl = e.currentTarget;
+  const cardEl = imgEl.closest(".card");
+  if (!cardEl)
+    return;
+  cardEl.classList.add("cover-ready");
+  if (updateLayoutRef.current)
+    updateLayoutRef.current();
 }
 
-// src/shared/image-zoom-handler.ts
-var import_obsidian2 = require("obsidian");
+// src/bases/swipe-interceptor.ts
+var HORIZONTAL_THRESHOLD = 10;
+function setupSwipeInterception(container, signal, interceptAll = false) {
+  let touchStartX = 0;
+  let touchStartY = 0;
+  const handleTouchStart = (e) => {
+    if (e.touches.length !== 1)
+      return;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  };
+  const handleTouchMove = (e) => {
+    if (e.touches.length !== 1)
+      return;
+    if (interceptAll) {
+      const target = e.target;
+      if (target.tagName !== "IMG") {
+        e.stopPropagation();
+      }
+      return;
+    }
+    const touch = e.touches[0];
+    const deltaX = Math.abs(touch.clientX - touchStartX);
+    const deltaY = Math.abs(touch.clientY - touchStartY);
+    if (deltaX > HORIZONTAL_THRESHOLD && deltaX > deltaY) {
+      e.stopPropagation();
+    }
+  };
+  container.addEventListener("touchstart", handleTouchStart, {
+    passive: true,
+    signal
+  });
+  container.addEventListener("touchmove", handleTouchMove, {
+    passive: false,
+    signal
+  });
+}
 
 // node_modules/@panzoom/panzoom/dist/panzoom.es.js
 var __assign = function() {
@@ -5111,7 +5379,7 @@ function Panzoom(elem, options) {
   function constrainXY(toX, toY, toScale, panOptions) {
     var opts = __assign(__assign({}, options), panOptions);
     var result = { x, y, opts };
-    if (!opts.force && (opts.disablePan || opts.panOnlyWhenZoomed && scale === opts.startScale)) {
+    if (!(panOptions === null || panOptions === void 0 ? void 0 : panOptions.force) && (opts.disablePan || opts.panOnlyWhenZoomed && scale === opts.startScale)) {
       return result;
     }
     toX = parseFloat(toX);
@@ -5155,7 +5423,7 @@ function Panzoom(elem, options) {
   function constrainScale(toScale, zoomOptions) {
     var opts = __assign(__assign({}, options), zoomOptions);
     var result = { scale, opts };
-    if (!opts.force && opts.disableZoom) {
+    if (!(zoomOptions === null || zoomOptions === void 0 ? void 0 : zoomOptions.force) && opts.disableZoom) {
       return result;
     }
     var minScale = options.minScale;
@@ -5191,7 +5459,7 @@ function Panzoom(elem, options) {
   function zoom(toScale, zoomOptions, originalEvent) {
     var result = constrainScale(toScale, zoomOptions);
     var opts = result.opts;
-    if (!opts.force && opts.disableZoom) {
+    if (!(zoomOptions === null || zoomOptions === void 0 ? void 0 : zoomOptions.force) && opts.disableZoom) {
       return;
     }
     toScale = result.scale;
@@ -5292,9 +5560,7 @@ function Panzoom(elem, options) {
       zoomToPoint(toScale, current, { animate: false }, event);
     }
     if (!hasMultiple || options.pinchAndPan) {
-      pan(origX + (current.clientX - startClientX) / toScale, origY + (current.clientY - startClientY) / toScale, {
-        animate: false
-      }, event);
+      pan(origX + (current.clientX - startClientX) / toScale, origY + (current.clientY - startClientY) / toScale, { animate: false }, event);
     }
   }
   function handleUp(event) {
@@ -5360,9 +5626,8 @@ function Panzoom(elem, options) {
 Panzoom.defaultOptions = defaultOptions;
 
 // src/shared/image-zoom-gestures.ts
-var import_obsidian = require("obsidian");
 init_style_settings();
-function setupImageZoomGestures(imgEl, container, app, file) {
+function setupImageZoomGestures(imgEl, container, app) {
   let panzoomInstance = null;
   let clickHandler = null;
   let dblclickHandler = null;
@@ -5388,7 +5653,7 @@ function setupImageZoomGestures(imgEl, container, app, file) {
       maxScale: 4,
       minScale,
       startScale,
-      step: zoomSensitivity,
+      step: isMobile ? zoomSensitivity * 2 : zoomSensitivity,
       canvas: false,
       cursor: "move"
     });
@@ -5404,16 +5669,12 @@ function setupImageZoomGestures(imgEl, container, app, file) {
       panzoomInstance == null ? void 0 : panzoomInstance.reset();
     };
     imgEl.addEventListener("dblclick", dblclickHandler);
-    if (app && file) {
-      contextmenuHandler = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const menu = new import_obsidian.Menu();
-        app.workspace.trigger("file-menu", menu, file, "file-explorer");
-        menu.showAtMouseEvent(e);
-      };
-      imgEl.addEventListener("contextmenu", contextmenuHandler);
-    }
+    contextmenuHandler = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      panzoomInstance == null ? void 0 : panzoomInstance.reset();
+    };
+    imgEl.addEventListener("contextmenu", contextmenuHandler);
   }
   if (imgEl.complete && imgEl.naturalWidth > 0) {
     attachPanzoom();
@@ -5447,136 +5708,288 @@ function setupImageZoomGestures(imgEl, container, app, file) {
 
 // src/shared/image-zoom-handler.ts
 var zoomListenerCleanups = /* @__PURE__ */ new WeakMap();
-function handleImageZoomClick(e, cardPath, app, zoomCleanupFns2, zoomedOriginalParents2) {
-  const isZoomEnabled = document.body.classList.contains(
-    "dynamic-views-image-zoom-enabled"
+function closeImageZoom(cloneEl, zoomCleanupFns2, zoomedClones2) {
+  cloneEl.remove();
+  for (const [original, clone] of zoomedClones2) {
+    if (clone === cloneEl) {
+      zoomedClones2.delete(original);
+      break;
+    }
+  }
+  const cleanup = zoomCleanupFns2.get(cloneEl);
+  if (cleanup) {
+    cleanup();
+    zoomCleanupFns2.delete(cloneEl);
+  }
+  const removeListeners = zoomListenerCleanups.get(cloneEl);
+  if (removeListeners) {
+    removeListeners();
+    zoomListenerCleanups.delete(cloneEl);
+  }
+}
+function handleImageZoomClick(e, cardPath, app, zoomCleanupFns2, zoomedClones2) {
+  const isZoomDisabled = document.body.classList.contains(
+    "dynamic-views-image-zoom-disabled"
   );
-  if (!isZoomEnabled)
+  if (isZoomDisabled)
     return;
   e.stopPropagation();
   const embedEl = e.currentTarget;
-  const isZoomed = embedEl.classList.contains("is-zoomed");
-  if (isZoomed) {
-    closeImageZoom(embedEl, zoomCleanupFns2, zoomedOriginalParents2);
+  const existingClone = zoomedClones2.get(embedEl);
+  if (existingClone) {
+    closeImageZoom(existingClone, zoomCleanupFns2, zoomedClones2);
   } else {
-    openImageZoom(
-      embedEl,
-      cardPath,
-      app,
-      zoomCleanupFns2,
-      zoomedOriginalParents2
-    );
+    openImageZoom(embedEl, cardPath, app, zoomCleanupFns2, zoomedClones2);
   }
 }
-function closeImageZoom(embedEl, zoomCleanupFns2, zoomedOriginalParents2) {
-  embedEl.classList.remove("is-zoomed");
-  const originalParent = zoomedOriginalParents2.get(embedEl);
-  if (originalParent && embedEl.parentElement !== originalParent) {
-    originalParent.appendChild(embedEl);
-    zoomedOriginalParents2.delete(embedEl);
-  }
-  const cleanup = zoomCleanupFns2.get(embedEl);
-  if (cleanup) {
-    cleanup();
-    zoomCleanupFns2.delete(embedEl);
-  }
-  const removeListeners = zoomListenerCleanups.get(embedEl);
-  if (removeListeners) {
-    removeListeners();
-    zoomListenerCleanups.delete(embedEl);
-  }
-}
-function openImageZoom(embedEl, cardPath, app, zoomCleanupFns2, zoomedOriginalParents2) {
-  const viewContainer = embedEl.closest(".workspace-leaf-content");
-  if (viewContainer) {
-    viewContainer.querySelectorAll(".image-embed.is-zoomed").forEach((el) => {
-      el.classList.remove("is-zoomed");
-      const originalParent2 = zoomedOriginalParents2.get(el);
-      if (originalParent2 && el.parentElement !== originalParent2) {
-        originalParent2.appendChild(el);
-        zoomedOriginalParents2.delete(el);
-      }
-      const cleanup2 = zoomCleanupFns2.get(el);
-      if (cleanup2) {
-        cleanup2();
-        zoomCleanupFns2.delete(el);
-      }
-    });
-  }
-  const isConstrained = document.body.classList.contains(
-    "dynamic-views-zoom-constrain-to-editor"
-  );
-  const originalParent = embedEl.parentElement;
-  if (originalParent && !isConstrained) {
-    zoomedOriginalParents2.set(embedEl, originalParent);
-    document.body.appendChild(embedEl);
-  }
-  embedEl.classList.add("is-zoomed");
-  const imgEl = embedEl.querySelector("img");
-  if (!imgEl) {
-    console.warn("Dynamic Views: Zoom opened but no img element found");
+function openImageZoom(embedEl, cardPath, app, zoomCleanupFns2, zoomedClones2) {
+  const sourceImg = embedEl.querySelector("img");
+  if (!sourceImg) {
+    console.warn("Dynamic Views: Cannot zoom - no img element found");
     return;
   }
-  const file = app.vault.getAbstractFileByPath(cardPath);
-  const cleanup = setupImageZoomGestures(
-    imgEl,
-    embedEl,
-    app,
-    file instanceof import_obsidian2.TFile ? file : void 0
+  for (const [, clone] of zoomedClones2) {
+    closeImageZoom(clone, zoomCleanupFns2, zoomedClones2);
+  }
+  const cloneEl = embedEl.cloneNode(true);
+  cloneEl.classList.add("is-zoomed");
+  const imgEl = cloneEl.querySelector("img");
+  const isFullscreen = app.isMobile || document.body.classList.contains("dynamic-views-zoom-fullscreen");
+  if (!isFullscreen) {
+    const viewContainer = embedEl.closest(".workspace-leaf-content");
+    if (viewContainer) {
+      viewContainer.appendChild(cloneEl);
+    } else {
+      document.body.appendChild(cloneEl);
+    }
+  } else {
+    document.body.appendChild(cloneEl);
+  }
+  zoomedClones2.set(embedEl, cloneEl);
+  const isPinchZoomDisabled = document.body.classList.contains(
+    "dynamic-views-zoom-disabled"
   );
-  zoomCleanupFns2.set(embedEl, cleanup);
-  const closeZoom = (evt) => {
-    const target = evt.target;
-    if (!embedEl.contains(target)) {
-      embedEl.classList.remove("is-zoomed");
-      const originalParent2 = zoomedOriginalParents2.get(embedEl);
-      if (originalParent2 && embedEl.parentElement !== originalParent2) {
-        originalParent2.appendChild(embedEl);
-        zoomedOriginalParents2.delete(embedEl);
-      }
-      const cleanup2 = zoomCleanupFns2.get(embedEl);
-      if (cleanup2) {
-        cleanup2();
-        zoomCleanupFns2.delete(embedEl);
-      }
-      const removeListeners = zoomListenerCleanups.get(embedEl);
-      if (removeListeners) {
-        removeListeners();
-        zoomListenerCleanups.delete(embedEl);
-      }
+  if (!isPinchZoomDisabled) {
+    const gestureCleanup = setupImageZoomGestures(imgEl, cloneEl, app);
+    if (app.isMobile) {
+      const swipeController = new AbortController();
+      setupSwipeInterception(cloneEl, swipeController.signal, true);
+      zoomCleanupFns2.set(cloneEl, () => {
+        gestureCleanup();
+        swipeController.abort();
+      });
+    } else {
+      zoomCleanupFns2.set(cloneEl, gestureCleanup);
+    }
+  } else {
+    const onImageClick = (e) => {
+      e.stopPropagation();
+      closeImageZoom(cloneEl, zoomCleanupFns2, zoomedClones2);
+    };
+    const onContextMenu = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    imgEl.addEventListener("click", onImageClick);
+    imgEl.addEventListener("contextmenu", onContextMenu);
+    zoomCleanupFns2.set(cloneEl, () => {
+      imgEl.removeEventListener("click", onImageClick);
+      imgEl.removeEventListener("contextmenu", onContextMenu);
+    });
+  }
+  const onOverlayClick = (e) => {
+    if (e.target === cloneEl) {
+      closeImageZoom(cloneEl, zoomCleanupFns2, zoomedClones2);
     }
   };
-  const handleEscape = (evt) => {
-    if (evt.key === "Escape") {
-      embedEl.classList.remove("is-zoomed");
-      const originalParent2 = zoomedOriginalParents2.get(embedEl);
-      if (originalParent2 && embedEl.parentElement !== originalParent2) {
-        originalParent2.appendChild(embedEl);
-        zoomedOriginalParents2.delete(embedEl);
-      }
-      const cleanup2 = zoomCleanupFns2.get(embedEl);
-      if (cleanup2) {
-        cleanup2();
-        zoomCleanupFns2.delete(embedEl);
-      }
-      const removeListeners = zoomListenerCleanups.get(embedEl);
-      if (removeListeners) {
-        removeListeners();
-        zoomListenerCleanups.delete(embedEl);
-      }
+  const onClickOutside = (e) => {
+    if (!document.body.classList.contains("dynamic-views-zoom-close-on-click")) {
+      return;
+    }
+    const target = e.target;
+    if (target !== imgEl && target !== cloneEl) {
+      closeImageZoom(cloneEl, zoomCleanupFns2, zoomedClones2);
     }
   };
-  setTimeout(() => {
-    document.addEventListener("click", closeZoom);
-    document.addEventListener("keydown", handleEscape);
-  }, 0);
-  zoomListenerCleanups.set(embedEl, () => {
-    document.removeEventListener("click", closeZoom);
-    document.removeEventListener("keydown", handleEscape);
+  const onEscape = (e) => {
+    if (e.key === "Escape") {
+      closeImageZoom(cloneEl, zoomCleanupFns2, zoomedClones2);
+    }
+  };
+  document.addEventListener("keydown", onEscape);
+  let clickListenersAdded = false;
+  requestAnimationFrame(() => {
+    if (cloneEl.isConnected) {
+      cloneEl.addEventListener("click", onOverlayClick);
+      document.addEventListener("click", onClickOutside);
+      clickListenersAdded = true;
+    }
+  });
+  zoomListenerCleanups.set(cloneEl, () => {
+    document.removeEventListener("keydown", onEscape);
+    if (clickListenersAdded) {
+      cloneEl.removeEventListener("click", onOverlayClick);
+      document.removeEventListener("click", onClickOutside);
+    }
   });
 }
 
+// src/shared/constants.ts
+var BATCH_SIZE = 50;
+var SCROLL_TOLERANCE = 1;
+var SLIDESHOW_ANIMATION_MS = 300;
+
+// src/shared/slideshow-utils.ts
+function createSlideshowNavigator(imageUrls, getElements, signal, callbacks) {
+  let currentIndex = 0;
+  let isAnimating = false;
+  const navigate = (direction) => {
+    if (isAnimating || signal.aborted)
+      return;
+    let newIndex = currentIndex + direction;
+    if (newIndex < 0)
+      newIndex = imageUrls.length - 1;
+    if (newIndex >= imageUrls.length)
+      newIndex = 0;
+    const elements = getElements();
+    if (!elements) {
+      isAnimating = false;
+      return;
+    }
+    const { imageEmbed, currImg, nextImg } = elements;
+    const newUrl = imageUrls[newIndex];
+    isAnimating = true;
+    if (callbacks == null ? void 0 : callbacks.onSlideChange) {
+      nextImg.addEventListener(
+        "load",
+        () => {
+          if (!signal.aborted) {
+            callbacks.onSlideChange(newIndex, nextImg);
+          }
+        },
+        { once: true, signal }
+      );
+    }
+    nextImg.src = newUrl;
+    imageEmbed.style.setProperty("--cover-image-url", `url("${newUrl}")`);
+    const isWrapToFirst = direction === 1 && currentIndex === imageUrls.length - 1 && newIndex === 0 && imageUrls.length >= 3;
+    const slideLeft = direction === 1 && !isWrapToFirst;
+    const exitClass = slideLeft ? "slideshow-exit-left" : "slideshow-exit-right";
+    const enterClass = slideLeft ? "slideshow-enter-left" : "slideshow-enter-right";
+    currImg.classList.add(exitClass);
+    nextImg.classList.add(enterClass);
+    const timeoutId = setTimeout(() => {
+      if (signal.aborted)
+        return;
+      currImg.classList.remove(exitClass);
+      nextImg.classList.remove(enterClass);
+      currImg.classList.remove("slideshow-img-current");
+      currImg.classList.add("slideshow-img-next");
+      nextImg.classList.remove("slideshow-img-next");
+      nextImg.classList.add("slideshow-img-current");
+      currImg.src = "";
+      currentIndex = newIndex;
+      isAnimating = false;
+      if (callbacks == null ? void 0 : callbacks.onAnimationComplete) {
+        callbacks.onAnimationComplete();
+      }
+    }, SLIDESHOW_ANIMATION_MS);
+    signal.addEventListener("abort", () => clearTimeout(timeoutId), {
+      once: true
+    });
+  };
+  return { navigate };
+}
+function setupImagePreload(cardEl, imageUrls, signal) {
+  let preloaded = false;
+  cardEl.addEventListener(
+    "mouseenter",
+    () => {
+      if (!preloaded) {
+        preloaded = true;
+        imageUrls.slice(1).forEach((url) => {
+          const img = new Image();
+          img.src = url;
+        });
+      }
+    },
+    { once: true, signal }
+  );
+}
+
 // src/shared/card-renderer.tsx
+function renderFileTypeIcon(path) {
+  const icon = getFileTypeIcon(path);
+  if (!icon)
+    return null;
+  return /* @__PURE__ */ h(
+    "span",
+    {
+      className: "card-title-icon",
+      ref: (el) => {
+        if (el)
+          (0, import_obsidian2.setIcon)(el, icon);
+      }
+    }
+  );
+}
+function truncateTitleWithExtension(titleEl) {
+  const textEl = titleEl.querySelector(".card-title-text-content") || titleEl.querySelector("a.internal-link");
+  if (!textEl)
+    return;
+  const containerStyle = getComputedStyle(titleEl);
+  const lineHeight = parseFloat(containerStyle.lineHeight);
+  const maxLines = parseInt(
+    containerStyle.getPropertyValue("--dynamic-views-title-lines") || "2"
+  );
+  const maxHeight = lineHeight * maxLines;
+  const fullText = textEl.textContent || "";
+  if (!fullText)
+    return;
+  if (titleEl.scrollHeight <= maxHeight)
+    return;
+  let low = 0;
+  let high = fullText.length;
+  const ellipsis = "\u2026";
+  while (low < high) {
+    const mid = Math.ceil((low + high) / 2);
+    textEl.textContent = fullText.slice(0, mid) + ellipsis;
+    if (titleEl.scrollHeight <= maxHeight) {
+      low = mid;
+    } else {
+      high = mid - 1;
+    }
+  }
+  textEl.textContent = fullText.slice(0, low) + ellipsis;
+  while (titleEl.scrollHeight > maxHeight && low > 0) {
+    low--;
+    textEl.textContent = fullText.slice(0, low) + ellipsis;
+  }
+}
+function renderFileExt(path, extInfo, settings, app, handleDrag) {
+  if (!extInfo)
+    return null;
+  const extNoDot = extInfo.ext.slice(1);
+  if (settings.openFileAction === "title") {
+    return /* @__PURE__ */ h(
+      "span",
+      {
+        className: "card-title-ext clickable",
+        "data-ext": extNoDot,
+        draggable: true,
+        onDragStart: handleDrag,
+        onClick: (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const newLeaf = e.metaKey || e.ctrlKey;
+          void app.workspace.openLinkText(path, "", newLeaf);
+        }
+      },
+      extInfo.ext
+    );
+  }
+  return /* @__PURE__ */ h("span", { className: "card-title-ext", "data-ext": extNoDot }, extInfo.ext);
+}
 function renderLink(link, app) {
   if (link.type === "internal") {
     if (link.isEmbed) {
@@ -5609,8 +6022,9 @@ function renderLink(link, app) {
           void app.workspace.openLinkText(link.url, "", newLeaf);
         },
         onDragStart: (e) => {
+          e.stopPropagation();
           const file = app.metadataCache.getFirstLinkpathDest(link.url, "");
-          if (!(file instanceof import_obsidian3.TFile))
+          if (!(file instanceof import_obsidian2.TFile))
             return;
           const dragData = app.dragManager.dragFile(e, file);
           app.dragManager.onDragStart(e, dragData);
@@ -5644,6 +6058,7 @@ function renderLink(link, app) {
       },
       onDragStart: (e) => {
         var _a, _b;
+        e.stopPropagation();
         (_a = e.dataTransfer) == null ? void 0 : _a.clearData();
         const dragText = link.caption === link.url ? link.url : `[${link.caption}](${link.url})`;
         (_b = e.dataTransfer) == null ? void 0 : _b.setData("text/plain", dragText);
@@ -5666,7 +6081,7 @@ function renderTextWithLinks(text, app) {
   return /* @__PURE__ */ h(Fragment, null, elements);
 }
 var zoomCleanupFns = /* @__PURE__ */ new Map();
-var zoomedOriginalParents = /* @__PURE__ */ new Map();
+var zoomedClones = /* @__PURE__ */ new Map();
 function renderPropertyContent(propertyName, card, resolvedValue, timeIcon, settings, app) {
   const stringValue = typeof resolvedValue === "string" ? resolvedValue : "";
   return renderProperty(
@@ -5679,129 +6094,117 @@ function renderPropertyContent(propertyName, card, resolvedValue, timeIcon, sett
     timeIcon
   );
 }
-function CoverCarousel({
+function CoverSlideshow({
   imageArray,
-  updateLayoutRef
+  updateLayoutRef,
+  cardPath,
+  app
 }) {
-  const onCarouselRef = (carouselEl) => {
-    if (!carouselEl)
+  const onSlideshowRef = (slideshowEl) => {
+    if (!slideshowEl)
       return;
-    let currentSlide = 0;
-    const slides = Array.from(carouselEl.querySelectorAll(".carousel-slide"));
-    const updateSlide = (newIndex, direction) => {
-      const oldSlide = slides[currentSlide];
-      const newSlide = slides[newIndex];
-      if (!oldSlide || !newSlide)
-        return;
-      console.log("// CAROUSEL TRANSITION (Datacore):", {
-        from: currentSlide,
-        to: newIndex,
-        direction,
-        oldClasses: oldSlide.className,
-        newClasses: newSlide.className
-      });
-      newSlide.classList.remove("is-active", "slide-left", "slide-right");
-      newSlide.classList.add(
-        direction === "next" ? "slide-right" : "slide-left"
-      );
-      console.log("// After positioning new slide:", newSlide.className);
-      void newSlide.offsetHeight;
-      oldSlide.classList.remove("is-active", "slide-left", "slide-right");
-      oldSlide.classList.add(
-        direction === "next" ? "slide-left" : "slide-right"
-      );
-      newSlide.classList.add("is-active");
-      setTimeout(() => {
-        newSlide.classList.remove("slide-left", "slide-right");
-      }, 310);
-      console.log("// After transition:", {
-        oldClasses: oldSlide.className,
-        newClasses: newSlide.className
-      });
-      currentSlide = newIndex;
-    };
-    const leftArrow = carouselEl.querySelector(".carousel-nav-left");
-    const rightArrow = carouselEl.querySelector(".carousel-nav-right");
-    leftArrow == null ? void 0 : leftArrow.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const newIndex = currentSlide === 0 ? imageArray.length - 1 : currentSlide - 1;
-      const direction = currentSlide === 0 ? "next" : "prev";
-      updateSlide(newIndex, direction);
-    });
-    rightArrow == null ? void 0 : rightArrow.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const newIndex = currentSlide === imageArray.length - 1 ? 0 : currentSlide + 1;
-      const direction = currentSlide === imageArray.length - 1 ? "prev" : "next";
-      updateSlide(newIndex, direction);
-    });
-  };
-  return /* @__PURE__ */ h("div", { className: "card-cover card-cover-carousel", ref: onCarouselRef }, /* @__PURE__ */ h("div", { className: "carousel-slides" }, imageArray.map(
-    (url, index) => /* @__PURE__ */ h(
-      "div",
-      {
-        key: index,
-        className: `carousel-slide ${index === 0 ? "is-active" : ""}`
+    const existingController = slideshowEl._slideshowController;
+    if (existingController) {
+      existingController.abort();
+    }
+    const controller = new AbortController();
+    const { signal } = controller;
+    slideshowEl._slideshowController = controller;
+    const imageEmbed = slideshowEl.querySelector(".image-embed");
+    if (!imageEmbed)
+      return;
+    const cardEl = slideshowEl.closest(".card");
+    if (cardEl) {
+      setupImagePreload(cardEl, imageArray, signal);
+    }
+    const { navigate } = createSlideshowNavigator(
+      imageArray,
+      () => {
+        const currImg = imageEmbed.querySelector(
+          ".slideshow-img-current"
+        );
+        const nextImg = imageEmbed.querySelector(
+          ".slideshow-img-next"
+        );
+        if (!currImg || !nextImg)
+          return null;
+        return { imageEmbed, currImg, nextImg };
       },
-      /* @__PURE__ */ h(
-        "div",
-        {
-          className: "image-embed",
-          style: { "--cover-image-url": `url("${url}")` }
-        },
-        index === 0 && /* @__PURE__ */ h("div", { className: "carousel-indicator" }, /* @__PURE__ */ h(
-          "svg",
-          {
-            xmlns: "http://www.w3.org/2000/svg",
-            width: "24",
-            height: "24",
-            viewBox: "0 0 24 24",
-            fill: "none",
-            stroke: "currentColor",
-            "stroke-width": "2",
-            "stroke-linecap": "round",
-            "stroke-linejoin": "round"
-          },
-          /* @__PURE__ */ h("rect", { x: "5", y: "7", width: "13", height: "10", rx: "1" }),
-          /* @__PURE__ */ h("polyline", { points: "4 2,8 2,8 7" }),
-          /* @__PURE__ */ h("polyline", { points: "8 2,16 2,16 7" }),
-          /* @__PURE__ */ h("polyline", { points: "16 2,20 2,20 7" })
-        )),
-        /* @__PURE__ */ h(
-          "img",
-          {
-            src: url,
-            alt: "",
-            onLoad: (e) => {
-              var _a;
-              if (index === 0) {
-                const imgEl = e.currentTarget;
-                const imageEmbedEl = imgEl.parentElement;
-                if (imageEmbedEl) {
-                  const slideEl = imageEmbedEl.parentElement;
-                  if (slideEl) {
-                    const carouselEl = (_a = slideEl.parentElement) == null ? void 0 : _a.parentElement;
-                    if (carouselEl) {
-                      const cardEl = carouselEl.closest(
-                        ".card"
-                      );
-                      if (cardEl) {
-                        handleImageLoad(
-                          imgEl,
-                          imageEmbedEl,
-                          cardEl,
-                          updateLayoutRef.current
-                        );
-                      }
-                    }
-                  }
-                }
-              }
-            }
+      signal,
+      {
+        onSlideChange: (_newIndex, nextImg) => {
+          if (cardEl) {
+            handleImageLoad(
+              nextImg,
+              imageEmbed,
+              cardEl,
+              updateLayoutRef.current
+            );
           }
-        )
-      )
-    )
-  )), /* @__PURE__ */ h("div", { className: "carousel-nav-left" }, /* @__PURE__ */ h(
+        },
+        onAnimationComplete: () => {
+          if (updateLayoutRef.current)
+            updateLayoutRef.current();
+        }
+      }
+    );
+    const leftArrow = slideshowEl.querySelector(".slideshow-nav-left");
+    const rightArrow = slideshowEl.querySelector(".slideshow-nav-right");
+    leftArrow == null ? void 0 : leftArrow.addEventListener(
+      "click",
+      (e) => {
+        e.stopPropagation();
+        navigate(-1);
+      },
+      { signal }
+    );
+    rightArrow == null ? void 0 : rightArrow.addEventListener(
+      "click",
+      (e) => {
+        e.stopPropagation();
+        navigate(1);
+      },
+      { signal }
+    );
+  };
+  return /* @__PURE__ */ h("div", { className: "card-cover card-cover-slideshow", ref: onSlideshowRef }, /* @__PURE__ */ h(
+    "div",
+    {
+      className: "image-embed",
+      style: { "--cover-image-url": `url("${imageArray[0]}")` },
+      onClick: (e) => {
+        handleImageZoomClick(e, cardPath, app, zoomCleanupFns, zoomedClones);
+      }
+    },
+    /* @__PURE__ */ h(
+      "img",
+      {
+        className: "slideshow-img slideshow-img-current",
+        src: imageArray[0],
+        alt: "",
+        ref: (imgEl) => handleJsxImageRef(imgEl, updateLayoutRef),
+        onLoad: (e) => handleJsxImageLoad(e, updateLayoutRef)
+      }
+    ),
+    /* @__PURE__ */ h("img", { className: "slideshow-img slideshow-img-next", src: "", alt: "" })
+  ), isSlideshowIndicatorEnabled() && /* @__PURE__ */ h("div", { className: "slideshow-indicator" }, /* @__PURE__ */ h(
+    "svg",
+    {
+      xmlns: "http://www.w3.org/2000/svg",
+      width: "24",
+      height: "24",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round"
+    },
+    /* @__PURE__ */ h("rect", { x: "5", y: "7", width: "13", height: "10", rx: "1" }),
+    /* @__PURE__ */ h("polyline", { points: "4 2,8 2,8 7" }),
+    /* @__PURE__ */ h("polyline", { points: "8 2,16 2,16 7" }),
+    /* @__PURE__ */ h("polyline", { points: "16 2,20 2,20 7" })
+  )), /* @__PURE__ */ h("div", { className: "slideshow-nav-left" }, /* @__PURE__ */ h(
     "svg",
     {
       xmlns: "http://www.w3.org/2000/svg",
@@ -5815,7 +6218,7 @@ function CoverCarousel({
       "stroke-linejoin": "round"
     },
     /* @__PURE__ */ h("polyline", { points: "15 18 9 12 15 6" })
-  )), /* @__PURE__ */ h("div", { className: "carousel-nav-right" }, /* @__PURE__ */ h(
+  )), /* @__PURE__ */ h("div", { className: "slideshow-nav-right" }, /* @__PURE__ */ h(
     "svg",
     {
       xmlns: "http://www.w3.org/2000/svg",
@@ -5948,8 +6351,8 @@ function renderProperty(propertyName, propertyValue, resolvedValue, settings, ca
               const folderFile = app.vault.getAbstractFileByPath(
                 cumulativePath
               );
-              if (folderFile instanceof import_obsidian3.TFolder) {
-                const menu = new import_obsidian3.Menu();
+              if (folderFile instanceof import_obsidian2.TFolder) {
+                const menu = new import_obsidian2.Menu();
                 app.workspace.trigger(
                   "file-menu",
                   menu,
@@ -6028,6 +6431,14 @@ function Card({
 }) {
   const useCreatedTime = sortMethod.startsWith("ctime") && !isShuffled;
   const timeIcon = useCreatedTime ? "calendar" : "clock";
+  const normalizedTitleProperty = normalizePropertyName(
+    app,
+    settings.titleProperty || ""
+  );
+  const isFullname = normalizedTitleProperty === "file.fullname";
+  const displayTitle = isFullname ? stripExtFromTitle(card.title, card.path, true) : card.title;
+  const extInfo = getFileExtInfo(card.path, isFullname);
+  const extNoDot = (extInfo == null ? void 0 : extInfo.ext.slice(1)) || "";
   const isArray = Array.isArray(card.imageUrl);
   const imageArray = isArray ? card.imageUrl.flat().filter(
     (url) => typeof url === "string" && url.length > 0
@@ -6055,7 +6466,7 @@ function Card({
   }
   const handleDrag = (e) => {
     const file = app.vault.getAbstractFileByPath(card.path);
-    if (!(file instanceof import_obsidian3.TFile))
+    if (!(file instanceof import_obsidian2.TFile))
       return;
     const dragData = app.dragManager.dragFile(e, file);
     app.dragManager.onDragStart(e, dragData);
@@ -6073,8 +6484,12 @@ function Card({
           const target = e.target;
           const isLink = target.tagName === "A" || target.closest("a");
           const isTag = target.classList.contains("tag") || target.closest(".tag");
+          const isPathSegment = target.classList.contains("path-segment") || target.closest(".path-segment");
           const isImage = target.tagName === "IMG";
-          if (!isLink && !isTag && !isImage) {
+          const isZoomEnabled = !document.body.classList.contains(
+            "dynamic-views-image-zoom-disabled"
+          );
+          if (!isLink && !isTag && !isPathSegment && !(isImage && isZoomEnabled)) {
             const newLeaf = e.metaKey || e.ctrlKey;
             if (onCardClick) {
               onCardClick(card.path, newLeaf);
@@ -6108,14 +6523,16 @@ function Card({
         }
       },
       onMouseEnter: (e) => {
-        app.workspace.trigger("hover-link", {
-          event: e,
-          source: "dynamic-views",
-          hoverParent: e.currentTarget,
-          targetEl: e.currentTarget,
-          linktext: card.path,
-          sourcePath: card.path
-        });
+        if (settings.openFileAction === "card") {
+          app.workspace.trigger("hover-link", {
+            event: e,
+            source: "dynamic-views",
+            hoverParent: e.currentTarget,
+            targetEl: e.currentTarget,
+            linktext: card.path,
+            sourcePath: card.path
+          });
+        }
         const imageSelector = format === "cover" ? ".card-cover img" : ".card-thumbnail img";
         const imgEl = e.currentTarget.querySelector(
           imageSelector
@@ -6132,48 +6549,81 @@ function Card({
     (settings.showTitle || card.hasValidUrl) && /* @__PURE__ */ h(
       "div",
       {
-        className: card.hasValidUrl ? "card-title-container" : "card-title"
+        className: card.hasValidUrl ? "card-title-container" : "card-title",
+        ref: (el) => {
+          if (el && !card.hasValidUrl && !document.body.classList.contains(
+            "dynamic-views-title-overflow-scroll"
+          )) {
+            requestAnimationFrame(() => {
+              requestAnimationFrame(() => truncateTitleWithExtension(el));
+            });
+          }
+        }
       },
-      settings.showTitle && /* @__PURE__ */ h("div", { className: card.hasValidUrl ? "card-title" : void 0 }, settings.openFileAction === "title" ? /* @__PURE__ */ h(
-        "a",
+      settings.showTitle && /* @__PURE__ */ h(
+        "div",
         {
-          href: card.path,
-          className: "internal-link",
-          "data-href": card.path,
-          draggable: true,
-          onDragStart: handleDrag,
-          onClick: (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            const newLeaf = e.metaKey || e.ctrlKey;
-            void app.workspace.openLinkText(card.path, "", newLeaf);
+          className: card.hasValidUrl ? "card-title" : void 0,
+          ref: (el) => {
+            if (el && card.hasValidUrl && !document.body.classList.contains(
+              "dynamic-views-title-overflow-scroll"
+            )) {
+              requestAnimationFrame(() => {
+                requestAnimationFrame(() => truncateTitleWithExtension(el));
+              });
+            }
           }
         },
-        card.title
-      ) : card.title),
+        renderFileTypeIcon(card.path),
+        renderFileExt(card.path, extInfo, settings, app, handleDrag),
+        settings.openFileAction === "title" ? /* @__PURE__ */ h(
+          "a",
+          {
+            href: card.path,
+            className: "internal-link",
+            "data-href": card.path,
+            "data-ext": extNoDot,
+            draggable: true,
+            onDragStart: handleDrag,
+            onClick: (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const newLeaf = e.metaKey || e.ctrlKey;
+              void app.workspace.openLinkText(card.path, "", newLeaf);
+            }
+          },
+          displayTitle
+        ) : /* @__PURE__ */ h("span", { className: "card-title-text-content", "data-ext": extNoDot }, displayTitle)
+      ),
       card.hasValidUrl && card.urlValue && /* @__PURE__ */ h(
-        "svg",
+        "span",
         {
-          className: "card-title-url-icon text-icon-button svg-icon",
-          xmlns: "http://www.w3.org/2000/svg",
-          width: "24",
-          height: "24",
-          viewBox: "0 0 24 24",
-          fill: "none",
-          stroke: "currentColor",
-          strokeWidth: "2",
-          strokeLinecap: "round",
-          strokeLinejoin: "round",
+          className: "card-title-url-icon text-icon-button",
+          "aria-label": card.urlValue,
           onClick: (e) => {
             e.preventDefault();
             e.stopPropagation();
             window.open(card.urlValue, "_blank", "noopener,noreferrer");
-          },
-          title: "Open URL"
+          }
         },
-        /* @__PURE__ */ h("path", { d: "M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" }),
-        /* @__PURE__ */ h("path", { d: "m21 3-9 9" }),
-        /* @__PURE__ */ h("path", { d: "M15 3h6v6" })
+        /* @__PURE__ */ h(
+          "svg",
+          {
+            className: "svg-icon",
+            xmlns: "http://www.w3.org/2000/svg",
+            width: "24",
+            height: "24",
+            viewBox: "0 0 24 24",
+            fill: "none",
+            stroke: "currentColor",
+            strokeWidth: "2",
+            strokeLinecap: "round",
+            strokeLinejoin: "round"
+          },
+          /* @__PURE__ */ h("path", { d: "M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" }),
+          /* @__PURE__ */ h("path", { d: "m21 3-9 9" }),
+          /* @__PURE__ */ h("path", { d: "M15 3h6v6" })
+        )
       )
     ),
     settings.subtitleProperty && card.subtitle && /* @__PURE__ */ h("div", { className: "card-subtitle" }, renderProperty(
@@ -6191,13 +6641,15 @@ function Card({
         className: imageArray.length > 0 ? "card-cover-wrapper" : "card-cover-wrapper card-cover-wrapper-placeholder"
       },
       imageArray.length > 0 ? (() => {
-        const shouldShowCarousel = (position === "top" || position === "bottom") && imageArray.length >= 2;
-        if (shouldShowCarousel) {
+        const shouldShowSlideshow = isSlideshowEnabled() && (position === "top" || position === "bottom") && imageArray.length >= 2;
+        if (shouldShowSlideshow) {
           return /* @__PURE__ */ h(
-            CoverCarousel,
+            CoverSlideshow,
             {
               imageArray,
-              updateLayoutRef
+              updateLayoutRef,
+              cardPath: card.path,
+              app
             }
           );
         }
@@ -6214,7 +6666,7 @@ function Card({
                 card.path,
                 app,
                 zoomCleanupFns,
-                zoomedOriginalParents
+                zoomedClones
               );
             }
           },
@@ -6223,26 +6675,9 @@ function Card({
             {
               src: imageArray[0] || "",
               alt: "",
-              onLoad: (e) => {
-                const imgEl = e.currentTarget;
-                const imageEmbedEl = imgEl.parentElement;
-                if (imageEmbedEl) {
-                  const imageEl = imageEmbedEl.parentElement;
-                  if (imageEl) {
-                    const cardEl = imageEl.closest(
-                      ".card"
-                    );
-                    if (cardEl) {
-                      handleImageLoad(
-                        imgEl,
-                        imageEmbedEl,
-                        cardEl,
-                        updateLayoutRef.current
-                      );
-                    }
-                  }
-                }
-              }
+              ref: (imgEl) => handleJsxImageRef(imgEl, updateLayoutRef),
+              onLoad: (e) => handleJsxImageLoad(e, updateLayoutRef),
+              onError: (e) => handleJsxImageError(e, updateLayoutRef)
             }
           )
         ));
@@ -6264,109 +6699,24 @@ function Card({
         );
         const updateWrapperDimensions = () => {
           const cardWidth = cardEl.offsetWidth;
-          const targetWidth2 = Math.floor(wrapperRatio * cardWidth);
-          const paddingValue2 = targetWidth2 + elementSpacing;
+          const targetWidth = Math.floor(wrapperRatio * cardWidth);
+          const paddingValue = targetWidth + elementSpacing;
           cardEl.style.setProperty(
             "--dynamic-views-side-cover-width",
-            `${targetWidth2}px`
+            `${targetWidth}px`
           );
           cardEl.style.setProperty(
             "--dynamic-views-side-cover-content-padding",
-            `${paddingValue2}px`
+            `${paddingValue}px`
           );
-          return { cardWidth, targetWidth: targetWidth2, paddingValue: paddingValue2 };
+          return { cardWidth, targetWidth, paddingValue };
         };
-        const {
-          cardWidth: _cardWidth,
-          targetWidth,
-          paddingValue
-        } = updateWrapperDimensions();
-        const cardComputed = getComputedStyle(cardEl);
-        console.log(
-          "[CSS Variable Check]",
-          "cardEl classes:",
-          cardEl.className,
-          "--side-cover-width on card style:",
-          cardEl.style.getPropertyValue("--dynamic-views-side-cover-width"),
-          "card computed --side-cover-width:",
-          cardComputed.getPropertyValue("--dynamic-views-side-cover-width")
-        );
-        const computedStyle = cardComputed;
-        console.log(
-          "[Side Cover Debug - card-renderer]",
-          "cardPath:",
-          card.path,
-          "position:",
-          position,
-          "aspectRatio:",
-          aspectRatio,
-          "wrapperRatio:",
-          wrapperRatio,
-          "cardOffsetWidth:",
-          cardEl.offsetWidth,
-          "cardClientWidth:",
-          cardEl.clientWidth,
-          "padding:",
-          computedStyle.padding,
-          "targetWidth:",
-          targetWidth,
-          "paddingValue:",
-          paddingValue
-        );
-        setTimeout(() => {
-          const wrapper = cardEl.querySelector(
-            ".card-cover-wrapper"
-          );
-          const cover = cardEl.querySelector(".card-cover");
-          const img = cardEl.querySelector(
-            ".card-cover img"
-          );
-          if (wrapper && cover && img) {
-            const wrapperComputed = getComputedStyle(wrapper);
-            console.log(
-              "[Wrapper CSS Debug - card-renderer]",
-              "wrapper classes:",
-              wrapper.className,
-              "wrapper.style.width:",
-              wrapper.style.width,
-              "wrapper parent is card:",
-              wrapper.parentElement === cardEl,
-              "wrapper CSS width value:",
-              wrapperComputed.getPropertyValue("width"),
-              "wrapper resolves variable:",
-              wrapperComputed.getPropertyValue(
-                "--dynamic-views-side-cover-width"
-              )
-            );
-            console.log(
-              "[Side Cover Rendered - card-renderer]",
-              "cardPath:",
-              card.path,
-              "position:",
-              position,
-              "wrapperWidth:",
-              wrapper.offsetWidth,
-              "wrapperComputedWidth:",
-              wrapperComputed.width,
-              "coverWidth:",
-              cover.offsetWidth,
-              "coverComputedWidth:",
-              getComputedStyle(cover).width,
-              "imgWidth:",
-              img.offsetWidth,
-              "imgComputedWidth:",
-              getComputedStyle(img).width
-            );
-          }
-        }, 200);
+        updateWrapperDimensions();
         const resizeObserver = new ResizeObserver((entries) => {
           for (const entry of entries) {
             const target = entry.target;
             const newCardWidth = target.offsetWidth;
             if (newCardWidth === 0) {
-              console.log(
-                "[Side Cover Resize - card-renderer] Skipped - cardWidth is 0"
-              );
               continue;
             }
             const newTargetWidth = Math.floor(wrapperRatio * newCardWidth);
@@ -6378,17 +6728,6 @@ function Card({
             cardEl.style.setProperty(
               "--dynamic-views-side-cover-content-padding",
               `${newPaddingValue}px`
-            );
-            console.log(
-              "[Side Cover Resize - card-renderer]",
-              "cardPath:",
-              card.path,
-              "newCardWidth:",
-              newCardWidth,
-              "newTargetWidth:",
-              newTargetWidth,
-              "newPaddingValue:",
-              newPaddingValue
             );
           }
         });
@@ -6435,7 +6774,7 @@ function Card({
               card.path,
               app,
               zoomCleanupFns,
-              zoomedOriginalParents
+              zoomedClones
             );
           }
         },
@@ -6444,24 +6783,9 @@ function Card({
           {
             src: imageArray[0] || "",
             alt: "",
-            onLoad: (e) => {
-              const imgEl = e.currentTarget;
-              const imageEmbedEl = imgEl.parentElement;
-              if (imageEmbedEl) {
-                const imageEl = imageEmbedEl.parentElement;
-                if (imageEl) {
-                  const cardEl = imageEl.closest(".card");
-                  if (cardEl) {
-                    handleImageLoad(
-                      imgEl,
-                      imageEmbedEl,
-                      cardEl,
-                      updateLayoutRef.current
-                    );
-                  }
-                }
-              }
-            }
+            ref: (imgEl) => handleJsxImageRef(imgEl, updateLayoutRef),
+            onLoad: (e) => handleJsxImageLoad(e, updateLayoutRef),
+            onError: (e) => handleJsxImageError(e, updateLayoutRef)
           }
         )
       )
@@ -6510,7 +6834,7 @@ function Card({
               card.path,
               app,
               zoomCleanupFns,
-              zoomedOriginalParents
+              zoomedClones
             );
           }
         },
@@ -6519,26 +6843,9 @@ function Card({
           {
             src: imageArray[0] || "",
             alt: "",
-            onLoad: (e) => {
-              const imgEl = e.currentTarget;
-              const imageEmbedEl = imgEl.parentElement;
-              if (imageEmbedEl) {
-                const imageEl = imageEmbedEl.parentElement;
-                if (imageEl) {
-                  const cardEl = imageEl.closest(
-                    ".card"
-                  );
-                  if (cardEl) {
-                    handleImageLoad(
-                      imgEl,
-                      imageEmbedEl,
-                      cardEl,
-                      updateLayoutRef.current
-                    );
-                  }
-                }
-              }
-            }
+            ref: (imgEl) => handleJsxImageRef(imgEl, updateLayoutRef),
+            onLoad: (e) => handleJsxImageLoad(e, updateLayoutRef),
+            onError: (e) => handleJsxImageError(e, updateLayoutRef)
           }
         )
       )
@@ -6585,7 +6892,7 @@ function Card({
               card.path,
               app,
               zoomCleanupFns,
-              zoomedOriginalParents
+              zoomedClones
             );
           }
         },
@@ -6594,24 +6901,9 @@ function Card({
           {
             src: imageArray[0] || "",
             alt: "",
-            onLoad: (e) => {
-              const imgEl = e.currentTarget;
-              const imageEmbedEl = imgEl.parentElement;
-              if (imageEmbedEl) {
-                const imageEl = imageEmbedEl.parentElement;
-                if (imageEl) {
-                  const cardEl = imageEl.closest(".card");
-                  if (cardEl) {
-                    handleImageLoad(
-                      imgEl,
-                      imageEmbedEl,
-                      cardEl,
-                      updateLayoutRef.current
-                    );
-                  }
-                }
-              }
-            }
+            ref: (imgEl) => handleJsxImageRef(imgEl, updateLayoutRef),
+            onLoad: (e) => handleJsxImageLoad(e, updateLayoutRef),
+            onError: (e) => handleJsxImageError(e, updateLayoutRef)
           }
         )
       )
@@ -6630,7 +6922,7 @@ function Card({
       const row1 = row1HasContent && /* @__PURE__ */ h(
         "div",
         {
-          className: `property-row property-row-1${settings.propertyLayout12SideBySide ? " property-row-sidebyside" : ""}${card.property1 === null && card.property2 !== null || card.property1 !== null && card.property2 === null ? " property-row-single" : ""}`
+          className: `property-row property-row-1${settings.propertyGroup1SideBySide ? " property-row-sidebyside" : ""}${card.property1 === null && card.property2 !== null || card.property1 !== null && card.property2 === null ? " property-row-single" : ""}`
         },
         /* @__PURE__ */ h("div", { className: "property-field property-field-1" }, card.propertyName1 && renderPropertyContent(
           card.propertyName1,
@@ -6652,7 +6944,7 @@ function Card({
       const row2 = row2HasContent && /* @__PURE__ */ h(
         "div",
         {
-          className: `property-row property-row-2${settings.propertyLayout34SideBySide ? " property-row-sidebyside" : ""}${card.property3 === null && card.property4 !== null || card.property3 !== null && card.property4 === null ? " property-row-single" : ""}`
+          className: `property-row property-row-2${settings.propertyGroup2SideBySide ? " property-row-sidebyside" : ""}${card.property3 === null && card.property4 !== null || card.property3 !== null && card.property4 === null ? " property-row-single" : ""}`
         },
         /* @__PURE__ */ h("div", { className: "property-field property-field-3" }, card.propertyName3 && renderPropertyContent(
           card.propertyName3,
@@ -6674,7 +6966,7 @@ function Card({
       const row3 = row3HasContent && /* @__PURE__ */ h(
         "div",
         {
-          className: `property-row property-row-3${settings.propertyLayout56SideBySide ? " property-row-sidebyside" : ""}${card.property5 === null && card.property6 !== null || card.property5 !== null && card.property6 === null ? " property-row-single" : ""}`
+          className: `property-row property-row-3${settings.propertyGroup3SideBySide ? " property-row-sidebyside" : ""}${card.property5 === null && card.property6 !== null || card.property5 !== null && card.property6 === null ? " property-row-single" : ""}`
         },
         /* @__PURE__ */ h("div", { className: "property-field property-field-5" }, card.propertyName5 && renderPropertyContent(
           card.propertyName5,
@@ -6696,7 +6988,7 @@ function Card({
       const row4 = row4HasContent && /* @__PURE__ */ h(
         "div",
         {
-          className: `property-row property-row-4${settings.propertyLayout78SideBySide ? " property-row-sidebyside" : ""}${card.property7 === null && card.property8 !== null || card.property7 !== null && card.property8 === null ? " property-row-single" : ""}`
+          className: `property-row property-row-4${settings.propertyGroup4SideBySide ? " property-row-sidebyside" : ""}${card.property7 === null && card.property8 !== null || card.property7 !== null && card.property8 === null ? " property-row-single" : ""}`
         },
         /* @__PURE__ */ h("div", { className: "property-field property-field-7" }, card.propertyName7 && renderPropertyContent(
           card.propertyName7,
@@ -6718,7 +7010,7 @@ function Card({
       const row5 = row5HasContent && /* @__PURE__ */ h(
         "div",
         {
-          className: `property-row property-row-5${settings.propertyLayout910SideBySide ? " property-row-sidebyside" : ""}${card.property9 === null && card.property10 !== null || card.property9 !== null && card.property10 === null ? " property-row-single" : ""}`
+          className: `property-row property-row-5${settings.propertyGroup5SideBySide ? " property-row-sidebyside" : ""}${card.property9 === null && card.property10 !== null || card.property9 !== null && card.property10 === null ? " property-row-single" : ""}`
         },
         /* @__PURE__ */ h("div", { className: "property-field property-field-9" }, card.propertyName9 && renderPropertyContent(
           card.propertyName9,
@@ -6740,7 +7032,7 @@ function Card({
       const row6 = row6HasContent && /* @__PURE__ */ h(
         "div",
         {
-          className: `property-row property-row-6${settings.propertyLayout1112SideBySide ? " property-row-sidebyside" : ""}${card.property11 === null && card.property12 !== null || card.property11 !== null && card.property12 === null ? " property-row-single" : ""}`
+          className: `property-row property-row-6${settings.propertyGroup6SideBySide ? " property-row-sidebyside" : ""}${card.property11 === null && card.property12 !== null || card.property11 !== null && card.property12 === null ? " property-row-single" : ""}`
         },
         /* @__PURE__ */ h("div", { className: "property-field property-field-11" }, card.propertyName11 && renderPropertyContent(
           card.propertyName11,
@@ -6762,7 +7054,7 @@ function Card({
       const row7 = row7HasContent && /* @__PURE__ */ h(
         "div",
         {
-          className: `property-row property-row-7${settings.propertyLayout1314SideBySide ? " property-row-sidebyside" : ""}${card.property13 === null && card.property14 !== null || card.property13 !== null && card.property14 === null ? " property-row-single" : ""}`
+          className: `property-row property-row-7${settings.propertyGroup7SideBySide ? " property-row-sidebyside" : ""}${card.property13 === null && card.property14 !== null || card.property13 !== null && card.property14 === null ? " property-row-single" : ""}`
         },
         /* @__PURE__ */ h("div", { className: "property-field property-field-13" }, card.propertyName13 && renderPropertyContent(
           card.propertyName13,
@@ -6904,36 +7196,26 @@ function handleArrowKey(e, currentIndex, viewMode, containerRef, onFocusChange) 
 }
 
 // src/shared/data-transform.ts
-init_property();
+var import_obsidian3 = require("obsidian");
 
 // src/shared/render-utils.ts
-function formatTimestamp(timestamp, settings, isDateOnly = false) {
-  const date = new Date(timestamp);
-  if (settings.timestampFormat && settings.timestampFormat.trim()) {
-    const moment = require_moment();
-    return moment(timestamp).format(settings.timestampFormat);
-  }
-  const yyyy = date.getFullYear();
-  const MM = String(date.getMonth() + 1).padStart(2, "0");
-  const dd = String(date.getDate()).padStart(2, "0");
-  const HH = String(date.getHours()).padStart(2, "0");
-  const mm = String(date.getMinutes()).padStart(2, "0");
-  if (isDateOnly) {
-    return `${yyyy}-${MM}-${dd}`;
-  }
+function formatTimestamp(timestamp, isDateOnly = false, styled = false) {
+  const moment = require_moment();
   const styleSettings = (init_style_settings(), __toCommonJS(style_settings_exports));
-  const now = Date.now();
-  const isRecent = now - timestamp < 864e5;
-  if (isRecent) {
-    if (styleSettings.shouldShowRecentTimeOnly()) {
-      return `${HH}:${mm}`;
+  if (isDateOnly) {
+    return moment(timestamp).format(styleSettings.getDateFormat());
+  }
+  if (styled) {
+    const now = Date.now();
+    const isRecent = now - timestamp < 864e5;
+    if (isRecent && styleSettings.shouldShowRecentTimeOnly()) {
+      return moment(timestamp).format(styleSettings.getTimeFormat());
     }
-    return `${yyyy}-${MM}-${dd} ${HH}:${mm}`;
+    if (!isRecent && styleSettings.shouldShowOlderDateOnly()) {
+      return moment(timestamp).format(styleSettings.getDateFormat());
+    }
   }
-  if (styleSettings.shouldShowOlderDateOnly()) {
-    return `${yyyy}-${MM}-${dd}`;
-  }
-  return `${yyyy}-${MM}-${dd} ${HH}:${mm}`;
+  return moment(timestamp).format(styleSettings.getDatetimeFormat());
 }
 function getTimestampIcon(propertyName, settings) {
   if (propertyName === "file.ctime" || propertyName === "created time" || settings.createdTimeProperty && propertyName === settings.createdTimeProperty) {
@@ -6966,7 +7248,7 @@ function handleTimestampPropertyFallback(propertyName, settings, cardData) {
   }
   if (settings.fallbackToFileMetadata) {
     const timestamp = isCustomCreatedTime ? cardData.ctime : cardData.mtime;
-    return formatTimestamp(timestamp, settings);
+    return formatTimestamp(timestamp);
   } else {
     return "...";
   }
@@ -7021,19 +7303,51 @@ function applySmartTimestamp(props, sortMethod, settings) {
   });
   return result;
 }
+function resolveTimestampProperty(propertyName, ctime, mtime, styled = false) {
+  if (!propertyName)
+    return null;
+  const prop = propertyName.trim().toLowerCase();
+  if (prop === "file.ctime" || prop === "created time") {
+    return formatTimestamp(ctime, false, styled);
+  }
+  if (prop === "file.mtime" || prop === "modified time") {
+    return formatTimestamp(mtime, false, styled);
+  }
+  return null;
+}
 function datacoreResultToCardData(result, dc, settings, sortMethod, isShuffled, snippet, imageUrl, hasImageAvailable) {
   var _a, _b, _c, _d;
-  let rawTitle = getFirstDatacorePropertyValue(result, settings.titleProperty);
-  if (Array.isArray(rawTitle))
-    rawTitle = rawTitle[0];
-  const title = dc.coerce.string(rawTitle || result.$name || "");
   const path = result.$path || "";
   const folderPath = path.split("/").slice(0, -1).join("/");
-  const yamlTagsRaw = result.value("tags");
-  const yamlTags = Array.isArray(yamlTagsRaw) ? yamlTagsRaw : [];
-  const tags = result.$tags || [];
   const ctime = ((_b = (_a = result.$ctime) == null ? void 0 : _a.toMillis) == null ? void 0 : _b.call(_a)) || 0;
   const mtime = ((_d = (_c = result.$mtime) == null ? void 0 : _c.toMillis) == null ? void 0 : _d.call(_c)) || 0;
+  let title = "";
+  if (settings.titleProperty) {
+    const titleProps = settings.titleProperty.split(",").map((p) => p.trim());
+    for (const prop of titleProps) {
+      const specialValue = resolveTimestampProperty(prop, ctime, mtime);
+      if (specialValue) {
+        title = specialValue;
+        break;
+      }
+      let rawTitle = getFirstDatacorePropertyValue(result, prop);
+      if (Array.isArray(rawTitle))
+        rawTitle = rawTitle[0];
+      const propTitle = dc.coerce.string(rawTitle);
+      if (propTitle) {
+        title = propTitle;
+        break;
+      }
+    }
+  }
+  if (!title) {
+    title = result.$name || "";
+  }
+  const yamlTagsRaw = result.value("tags");
+  const yamlTags = stripTagHashes(
+    Array.isArray(yamlTagsRaw) ? yamlTagsRaw : []
+  );
+  const tags = stripTagHashes(result.$tags || []);
   const cardData = {
     path,
     name: result.$name || "",
@@ -7106,29 +7420,48 @@ function datacoreResultToCardData(result, dc, settings, sortMethod, isShuffled, 
     }
   }
   if (settings.urlProperty) {
-    const urlValue = getFirstDatacorePropertyValue(
-      result,
-      settings.urlProperty
-    );
-    if (urlValue !== null && typeof urlValue === "string") {
-      const { isValidUri: isValidUri2 } = (init_property(), __toCommonJS(property_exports));
+    let urlValue = getFirstDatacorePropertyValue(result, settings.urlProperty);
+    if (Array.isArray(urlValue)) {
+      urlValue = urlValue.find((v) => typeof v === "string");
+    }
+    if (typeof urlValue === "string") {
       cardData.urlValue = urlValue;
-      cardData.hasValidUrl = isValidUri2(urlValue);
+      cardData.hasValidUrl = isValidUri(urlValue);
     }
   }
   return cardData;
 }
 function basesEntryToCardData(app, entry, settings, sortMethod, isShuffled, snippet, imageUrl, hasImageAvailable) {
   const fileName = entry.file.basename || entry.file.name;
-  const titleValue = getFirstBasesPropertyValue(
-    app,
-    entry,
-    settings.titleProperty
-  );
-  const titleData = titleValue == null ? void 0 : titleValue.data;
-  const title = titleData != null && titleData !== "" && (typeof titleData === "string" || typeof titleData === "number") ? String(titleData) : fileName;
   const path = entry.file.path;
   const folderPath = path.split("/").slice(0, -1).join("/");
+  const ctime = entry.file.stat.ctime;
+  const mtime = entry.file.stat.mtime;
+  let title = "";
+  if (settings.titleProperty) {
+    const titleProps = settings.titleProperty.split(",").map((p) => p.trim());
+    for (const prop of titleProps) {
+      const normalizedProp = normalizePropertyName(app, prop);
+      const specialValue = resolveTimestampProperty(
+        normalizedProp,
+        ctime,
+        mtime
+      );
+      if (specialValue) {
+        title = specialValue;
+        break;
+      }
+      const titleValue = getFirstBasesPropertyValue(app, entry, normalizedProp);
+      const titleData = titleValue == null ? void 0 : titleValue.data;
+      if (titleData != null && titleData !== "" && (typeof titleData === "string" || typeof titleData === "number")) {
+        title = String(titleData);
+        break;
+      }
+    }
+  }
+  if (!title) {
+    title = fileName;
+  }
   const yamlTagsValue = entry.getValue("note.tags");
   let yamlTags = [];
   if (yamlTagsValue && yamlTagsValue.data != null) {
@@ -7153,8 +7486,6 @@ function basesEntryToCardData(app, entry, settings, sortMethod, isShuffled, snip
     }).filter((t) => t) : typeof tagData === "string" || typeof tagData === "number" ? [String(tagData)] : [];
     tags = stripTagHashes(rawTags);
   }
-  const ctime = entry.file.stat.ctime;
-  const mtime = entry.file.stat.mtime;
   const cardData = {
     path,
     name: fileName,
@@ -7207,7 +7538,7 @@ function basesEntryToCardData(app, entry, settings, sortMethod, isShuffled, snip
     ) : null;
   }
   if (settings.subtitleProperty) {
-    const subtitleProps = settings.subtitleProperty.split(",").map((p) => p.trim()).filter((p) => p);
+    const subtitleProps = settings.subtitleProperty.split(",").map((p) => normalizePropertyName(app, p.trim())).filter((p) => p);
     for (const prop of subtitleProps) {
       const resolved = resolveBasesProperty(
         app,
@@ -7227,22 +7558,37 @@ function basesEntryToCardData(app, entry, settings, sortMethod, isShuffled, snip
     }
   }
   if (settings.urlProperty) {
+    const normalizedUrlProperty = settings.urlProperty.split(",").map((p) => normalizePropertyName(app, p.trim())).join(",");
     const urlValue = getFirstBasesPropertyValue(
       app,
       entry,
-      settings.urlProperty
+      normalizedUrlProperty
     );
-    if (urlValue && typeof urlValue === "object" && "data" in urlValue && typeof urlValue.data === "string") {
-      const { isValidUri: isValidUri2 } = (init_property(), __toCommonJS(property_exports));
-      cardData.urlValue = urlValue.data;
-      cardData.hasValidUrl = isValidUri2(urlValue.data);
+    if (urlValue && typeof urlValue === "object" && "data" in urlValue) {
+      let urlData = urlValue.data;
+      if (Array.isArray(urlData)) {
+        urlData = urlData.find((v) => typeof v === "string");
+      }
+      if (typeof urlData === "string") {
+        cardData.urlValue = urlData;
+        cardData.hasValidUrl = isValidUri(urlData);
+      }
     }
   }
   return cardData;
 }
-function transformDatacoreResults(results, dc, settings, sortMethod, isShuffled, snippets, images, hasImageAvailable) {
-  return results.filter((p) => p.$path).map(
-    (p) => datacoreResultToCardData(
+function transformDatacoreResults(app, results, dc, settings, sortMethod, isShuffled, snippets, images, hasImageAvailable) {
+  return results.filter((p) => p.$path).map((p) => {
+    var _a;
+    const ext = ((_a = p.$path.split(".").pop()) == null ? void 0 : _a.toLowerCase()) || "";
+    if (VALID_IMAGE_EXTENSIONS.includes(ext) && !images[p.$path]) {
+      const file = app.vault.getAbstractFileByPath(p.$path);
+      if (file instanceof import_obsidian3.TFile) {
+        images[p.$path] = app.vault.getResourcePath(file);
+        hasImageAvailable[p.$path] = true;
+      }
+    }
+    return datacoreResultToCardData(
       p,
       dc,
       settings,
@@ -7251,12 +7597,18 @@ function transformDatacoreResults(results, dc, settings, sortMethod, isShuffled,
       snippets[p.$path],
       images[p.$path],
       hasImageAvailable[p.$path]
-    )
-  );
+    );
+  });
 }
 function transformBasesEntries(app, entries, settings, sortMethod, isShuffled, snippets, images, hasImageAvailable) {
-  return entries.map(
-    (entry) => basesEntryToCardData(
+  return entries.map((entry) => {
+    var _a;
+    const ext = ((_a = entry.file.extension) == null ? void 0 : _a.toLowerCase()) || "";
+    if (VALID_IMAGE_EXTENSIONS.includes(ext) && !images[entry.file.path]) {
+      images[entry.file.path] = app.vault.getResourcePath(entry.file);
+      hasImageAvailable[entry.file.path] = true;
+    }
+    return basesEntryToCardData(
       app,
       entry,
       settings,
@@ -7265,8 +7617,8 @@ function transformBasesEntries(app, entries, settings, sortMethod, isShuffled, s
       snippets[entry.file.path],
       images[entry.file.path],
       hasImageAvailable[entry.file.path]
-    )
-  );
+    );
+  });
 }
 function resolveBasesProperty(app, propertyName, entry, cardData, settings) {
   if (!propertyName || propertyName === "") {
@@ -7285,14 +7637,14 @@ function resolveBasesProperty(app, propertyName, entry, cardData, settings) {
   if (propertyName === "file.tags" || propertyName === "file tags") {
     return cardData.tags.length > 0 ? "tags" : null;
   }
-  if (propertyName === "file.ctime" || propertyName === "created time") {
-    const formatted = formatTimestamp(cardData.ctime, settings);
-    return formatted;
-  }
-  if (propertyName === "file.mtime" || propertyName === "modified time") {
-    const formatted = formatTimestamp(cardData.mtime, settings);
-    return formatted;
-  }
+  const timestamp = resolveTimestampProperty(
+    propertyName,
+    cardData.ctime,
+    cardData.mtime,
+    true
+  );
+  if (timestamp)
+    return timestamp;
   const value = getFirstBasesPropertyValue(app, entry, propertyName);
   if (!value) {
     const fallback = handleTimestampPropertyFallback(
@@ -7306,12 +7658,7 @@ function resolveBasesProperty(app, propertyName, entry, cardData, settings) {
   }
   const timestampData = extractTimestamp(value);
   if (timestampData) {
-    const formatted = formatTimestamp(
-      timestampData.timestamp,
-      settings,
-      timestampData.isDateOnly
-    );
-    return formatted;
+    return formatTimestamp(timestampData.timestamp, timestampData.isDateOnly);
   }
   const data = value == null ? void 0 : value.data;
   if (data == null || data === "" || Array.isArray(data) && data.length === 0) {
@@ -7329,9 +7676,11 @@ function resolveBasesProperty(app, propertyName, entry, cardData, settings) {
     if (typeof data === "string" && result.trim() === "") {
       return "";
     }
-    const valueObj = value;
-    if (typeof data === "string" && (valueObj.sourcePath !== void 0 || valueObj.display !== void 0)) {
-      return `[[${result}]]`;
+    if (!hasUriScheme(result) && typeof data === "string") {
+      const valueObj = value;
+      if (valueObj.sourcePath !== void 0 || valueObj.display !== void 0) {
+        return `[[${result}]]`;
+      }
     }
     return result;
   }
@@ -7417,22 +7766,20 @@ function resolveDatacoreProperty(propertyName, result, cardData, settings, dc) {
   if (propertyName === "file.tags" || propertyName === "file tags") {
     return cardData.tags.length > 0 ? "tags" : null;
   }
-  if (propertyName === "file.ctime" || propertyName === "created time") {
-    return formatTimestamp(cardData.ctime, settings);
-  }
-  if (propertyName === "file.mtime" || propertyName === "modified time") {
-    return formatTimestamp(cardData.mtime, settings);
-  }
+  const timestamp = resolveTimestampProperty(
+    propertyName,
+    cardData.ctime,
+    cardData.mtime,
+    true
+  );
+  if (timestamp)
+    return timestamp;
   const rawValue = getFirstDatacorePropertyValue(result, propertyName);
   if (Array.isArray(rawValue)) {
     const firstElement = rawValue[0];
     const timestampData2 = extractTimestamp(firstElement);
     if (timestampData2) {
-      return formatTimestamp(
-        timestampData2.timestamp,
-        settings,
-        timestampData2.isDateOnly
-      );
+      return formatTimestamp(timestampData2.timestamp, timestampData2.isDateOnly);
     }
     const stringElements = rawValue.map((item) => {
       if (typeof item === "object" && item !== null && "path" in item) {
@@ -7451,19 +7798,15 @@ function resolveDatacoreProperty(propertyName, result, cardData, settings, dc) {
   }
   const timestampData = extractTimestamp(rawValue);
   if (timestampData) {
-    return formatTimestamp(
-      timestampData.timestamp,
-      settings,
-      timestampData.isDateOnly
-    );
+    return formatTimestamp(timestampData.timestamp, timestampData.isDateOnly);
   }
   if (rawValue === null || rawValue === void 0) {
     const isCustomCreatedTime = settings.createdTimeProperty && propertyName === settings.createdTimeProperty;
     const isCustomModifiedTime = settings.modifiedTimeProperty && propertyName === settings.modifiedTimeProperty;
     if (isCustomCreatedTime || isCustomModifiedTime) {
       if (settings.fallbackToFileMetadata) {
-        const timestamp = isCustomCreatedTime ? cardData.ctime : cardData.mtime;
-        return formatTimestamp(timestamp, settings);
+        const timestamp2 = isCustomCreatedTime ? cardData.ctime : cardData.mtime;
+        return formatTimestamp(timestamp2);
       } else {
         return "...";
       }
@@ -7510,6 +7853,7 @@ function CardView({
   onFocusChange
 }) {
   const allCards = transformDatacoreResults(
+    app,
     results,
     dc,
     settings,
@@ -7544,7 +7888,6 @@ function MasonryView(props) {
 }
 
 // src/components/list-view.tsx
-init_property();
 function ListView({
   results,
   displayedCount,
@@ -7609,7 +7952,7 @@ function ListView({
         const hasProperties = card.property1 || card.property2 || card.property3 || card.property4;
         if (!hasProperties)
           return null;
-        return /* @__PURE__ */ h("span", { className: "list-meta" }, card.property1 === "tags" && p.$tags && p.$tags.length > 0 ? /* @__PURE__ */ h(Fragment, null, p.$tags.map(
+        return /* @__PURE__ */ h("span", { className: "list-properties" }, card.property1 === "tags" && p.$tags && p.$tags.length > 0 ? /* @__PURE__ */ h(Fragment, null, p.$tags.map(
           (tag) => /* @__PURE__ */ h(
             "a",
             {
@@ -7696,7 +8039,71 @@ function ListView({
 }
 
 // src/components/settings.tsx
-init_property();
+var PROPERTY_GROUPS = [
+  {
+    key: "propertyGroup1",
+    label: "Property group 1",
+    firstProp: "propertyDisplay1",
+    secondProp: "propertyDisplay2",
+    sideBySide: "propertyGroup1SideBySide",
+    position: "propertyGroup1Position"
+  },
+  {
+    key: "propertyGroup2",
+    label: "Property group 2",
+    firstProp: "propertyDisplay3",
+    secondProp: "propertyDisplay4",
+    sideBySide: "propertyGroup2SideBySide",
+    position: "propertyGroup2Position"
+  },
+  {
+    key: "propertyGroup3",
+    label: "Property group 3",
+    firstProp: "propertyDisplay5",
+    secondProp: "propertyDisplay6",
+    sideBySide: "propertyGroup3SideBySide",
+    position: "propertyGroup3Position"
+  },
+  {
+    key: "propertyGroup4",
+    label: "Property group 4",
+    firstProp: "propertyDisplay7",
+    secondProp: "propertyDisplay8",
+    sideBySide: "propertyGroup4SideBySide",
+    position: "propertyGroup4Position"
+  },
+  {
+    key: "propertyGroup5",
+    label: "Property group 5",
+    firstProp: "propertyDisplay9",
+    secondProp: "propertyDisplay10",
+    sideBySide: "propertyGroup5SideBySide",
+    position: "propertyGroup5Position"
+  },
+  {
+    key: "propertyGroup6",
+    label: "Property group 6",
+    firstProp: "propertyDisplay11",
+    secondProp: "propertyDisplay12",
+    sideBySide: "propertyGroup6SideBySide",
+    position: "propertyGroup6Position"
+  },
+  {
+    key: "propertyGroup7",
+    label: "Property group 7",
+    firstProp: "propertyDisplay13",
+    secondProp: "propertyDisplay14",
+    sideBySide: "propertyGroup7SideBySide",
+    position: "propertyGroup7Position"
+  }
+];
+var handleKeyboardActivate = (action) => (e) => {
+  const evt = e;
+  if (evt.key === "Enter" || evt.key === " ") {
+    evt.preventDefault();
+    action();
+  }
+};
 function Settings({
   dc,
   app,
@@ -7705,6 +8112,119 @@ function Settings({
   menuRef
 }) {
   const allProperties = getAllVaultProperties(app);
+  const [expandedSections, setExpandedSections] = dc.useState({
+    title: false,
+    textPreview: false,
+    image: false,
+    properties: false,
+    propertyGroup1: false,
+    propertyGroup2: false,
+    propertyGroup3: false,
+    propertyGroup4: false,
+    propertyGroup5: false,
+    propertyGroup6: false,
+    propertyGroup7: false
+  });
+  const toggleSection = (section) => {
+    setExpandedSections((prev) => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+  const chevronSvg = /* @__PURE__ */ h(
+    "svg",
+    {
+      className: "chevron",
+      xmlns: "http://www.w3.org/2000/svg",
+      width: "16",
+      height: "16",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: "2",
+      strokeLinecap: "round",
+      strokeLinejoin: "round"
+    },
+    /* @__PURE__ */ h("polyline", { points: "6 9 12 15 18 9" })
+  );
+  const renderSectionHeader = (sectionKey, label) => /* @__PURE__ */ h(
+    "div",
+    {
+      className: `settings-section-header ${expandedSections[sectionKey] ? "" : "collapsed"}`,
+      onClick: () => toggleSection(sectionKey),
+      onKeyDown: handleKeyboardActivate(() => toggleSection(sectionKey)),
+      tabIndex: 0,
+      role: "button",
+      "aria-expanded": expandedSections[sectionKey]
+    },
+    chevronSvg,
+    /* @__PURE__ */ h("span", null, label)
+  );
+  const renderToggle = (label, settingKey) => /* @__PURE__ */ h("div", { className: "setting-item setting-item-toggle" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, label)), /* @__PURE__ */ h(
+    "div",
+    {
+      className: `checkbox-container ${settings[settingKey] ? "is-enabled" : ""}`,
+      onClick: () => onSettingsChange({ [settingKey]: !settings[settingKey] }),
+      onKeyDown: handleKeyboardActivate(
+        () => onSettingsChange({ [settingKey]: !settings[settingKey] })
+      ),
+      tabIndex: 0,
+      role: "checkbox",
+      "aria-checked": settings[settingKey]
+    }
+  ));
+  const renderTextInput = (label, settingKey, placeholder) => /* @__PURE__ */ h("div", { className: "setting-item setting-item-text" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, label)), /* @__PURE__ */ h(
+    "input",
+    {
+      type: "text",
+      value: settings[settingKey],
+      onChange: (e) => {
+        const evt = e;
+        onSettingsChange({ [settingKey]: evt.target.value });
+      },
+      placeholder,
+      className: "setting-text-input"
+    }
+  ));
+  const renderPropertyDropdown = (label, settingKey) => /* @__PURE__ */ h("div", { className: "setting-item setting-item-dropdown" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, label)), /* @__PURE__ */ h(
+    "select",
+    {
+      value: settings[settingKey],
+      onChange: (e) => {
+        const evt = e;
+        onSettingsChange({ [settingKey]: evt.target.value });
+      },
+      className: "dropdown"
+    },
+    /* @__PURE__ */ h("option", { value: "" }, "None"),
+    allProperties.map(
+      (prop) => /* @__PURE__ */ h("option", { key: prop, value: prop }, prop)
+    )
+  ));
+  const renderPropertyGroup = (group) => /* @__PURE__ */ h("div", { className: "settings-section", key: group.key }, renderSectionHeader(group.key, group.label), /* @__PURE__ */ h(
+    "div",
+    {
+      className: `settings-section-content ${expandedSections[group.key] ? "" : "collapsed"}`
+    },
+    renderPropertyDropdown("First property", group.firstProp),
+    renderPropertyDropdown("Second property", group.secondProp),
+    renderToggle("Show side-by-side", group.sideBySide),
+    /* @__PURE__ */ h("div", { className: "setting-item setting-item-dropdown" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Position")), /* @__PURE__ */ h(
+      "select",
+      {
+        value: settings[group.position],
+        onChange: (e) => {
+          const evt = e;
+          onSettingsChange({
+            [group.position]: evt.target.value
+          });
+        },
+        className: "dropdown"
+      },
+      /* @__PURE__ */ h("option", { value: "top" }, "Top"),
+      /* @__PURE__ */ h("option", { value: "bottom" }, "Bottom")
+    ))
+  ));
   return /* @__PURE__ */ h("div", { ref: menuRef, className: "settings-dropdown-menu" }, /* @__PURE__ */ h("div", { className: "setting-item" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Card size"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Minimum width of cards in pixels")), /* @__PURE__ */ h("div", { style: { display: "flex", alignItems: "center", gap: "8px" } }, /* @__PURE__ */ h(
     "input",
     {
@@ -7720,293 +8240,168 @@ function Settings({
       },
       style: { flex: 1 }
     }
-  ))), /* @__PURE__ */ h("div", { className: "setting-item setting-item-toggle" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Show title"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Display note title on cards")), /* @__PURE__ */ h(
+  ))), /* @__PURE__ */ h("div", { className: "settings-section" }, renderSectionHeader("title", "Title"), /* @__PURE__ */ h(
     "div",
     {
-      className: `checkbox-container ${settings.showTitle ? "is-enabled" : ""}`,
-      onClick: () => onSettingsChange({ showTitle: !settings.showTitle }),
-      onKeyDown: (e) => {
-        const evt = e;
-        if (evt.key === "Enter" || evt.key === " ") {
-          evt.preventDefault();
-          onSettingsChange({ showTitle: !settings.showTitle });
-        }
-      },
-      tabIndex: 0,
-      role: "checkbox",
-      "aria-checked": settings.showTitle
-    }
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-text" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Title property"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Property to show as card title")), /* @__PURE__ */ h(
-    "input",
-    {
-      type: "text",
-      value: settings.titleProperty,
-      onChange: (e) => {
-        const evt = e;
-        onSettingsChange({ titleProperty: evt.target.value });
-      },
-      placeholder: "Comma-separated if multiple",
-      className: "setting-text-input"
-    }
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-toggle" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Show text preview"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Display note excerpts")), /* @__PURE__ */ h(
-    "div",
-    {
-      className: `checkbox-container ${settings.showTextPreview ? "is-enabled" : ""}`,
-      onClick: () => onSettingsChange({ showTextPreview: !settings.showTextPreview }),
-      onKeyDown: (e) => {
-        const evt = e;
-        if (evt.key === "Enter" || evt.key === " ") {
-          evt.preventDefault();
-          onSettingsChange({ showTextPreview: !settings.showTextPreview });
-        }
-      },
-      tabIndex: 0,
-      role: "checkbox",
-      "aria-checked": settings.showTextPreview
-    }
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-text" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Text preview property"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Property to show as text preview")), /* @__PURE__ */ h(
-    "input",
-    {
-      type: "text",
-      value: settings.descriptionProperty,
-      onChange: (e) => {
-        const evt = e;
-        onSettingsChange({ descriptionProperty: evt.target.value });
-      },
-      placeholder: "Comma-separated if multiple",
-      className: "setting-text-input"
-    }
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-toggle" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Use note content if text preview property missing or empty"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Fall back to note content when text preview property is not set or empty")), /* @__PURE__ */ h(
-    "div",
-    {
-      className: `checkbox-container ${settings.fallbackToContent ? "is-enabled" : ""}`,
-      onClick: () => onSettingsChange({ fallbackToContent: !settings.fallbackToContent }),
-      onKeyDown: (e) => {
-        const evt = e;
-        if (evt.key === "Enter" || evt.key === " ") {
-          evt.preventDefault();
-          onSettingsChange({
-            fallbackToContent: !settings.fallbackToContent
-          });
-        }
-      },
-      tabIndex: 0,
-      role: "checkbox",
-      "aria-checked": settings.fallbackToContent
-    }
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-dropdown" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Image format"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Display first image embed in note (wikilink or markdown format), or first value of image property")), /* @__PURE__ */ h(
-    "select",
-    {
-      value: (() => {
-        const imageFormatParts = settings.imageFormat.split("-");
-        return settings.imageFormat === "none" ? "none" : imageFormatParts[0];
-      })(),
-      onChange: (e) => {
-        const evt = e;
-        const newFormat = evt.target.value;
-        if (newFormat === "none") {
-          onSettingsChange({ imageFormat: "none" });
-        } else {
-          const currentPosition = settings.imageFormat === "none" ? "right" : settings.imageFormat.split("-")[1] || "right";
-          onSettingsChange({
-            imageFormat: `${newFormat}-${currentPosition}`
-          });
-        }
-      },
-      className: "dropdown"
+      className: `settings-section-content ${expandedSections.title ? "" : "collapsed"}`
     },
-    /* @__PURE__ */ h("option", { value: "thumbnail" }, "Thumbnail"),
-    /* @__PURE__ */ h("option", { value: "cover" }, "Cover"),
-    /* @__PURE__ */ h("option", { value: "none" }, "None")
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-dropdown" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Image position"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Position of the image within the card")), /* @__PURE__ */ h(
-    "select",
-    {
-      value: (() => {
-        const position = settings.imageFormat.split("-")[1];
-        return position || "right";
-      })(),
-      onChange: (e) => {
-        const evt = e;
-        const currentFormat = settings.imageFormat.split("-")[0];
-        onSettingsChange({
-          imageFormat: `${currentFormat}-${evt.target.value}`
-        });
-      },
-      className: "dropdown"
-    },
-    /* @__PURE__ */ h("option", { value: "left" }, "Left"),
-    /* @__PURE__ */ h("option", { value: "right" }, "Right"),
-    /* @__PURE__ */ h("option", { value: "top" }, "Top"),
-    /* @__PURE__ */ h("option", { value: "bottom" }, "Bottom")
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-text" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Image property"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Property to show as image")), /* @__PURE__ */ h(
-    "input",
-    {
-      type: "text",
-      value: settings.imageProperty,
-      onChange: (e) => {
-        const evt = e;
-        onSettingsChange({ imageProperty: evt.target.value });
-      },
-      placeholder: "Comma-separated if multiple",
-      className: "setting-text-input"
-    }
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-dropdown" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Show image embeds"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Control when in-note image embeds are shown alongside image property values")), /* @__PURE__ */ h(
-    "select",
-    {
-      value: settings.fallbackToEmbeds,
-      onChange: (e) => {
-        const evt = e;
-        onSettingsChange({
-          fallbackToEmbeds: evt.target.value
-        });
-      },
-      className: "dropdown"
-    },
-    /* @__PURE__ */ h("option", { value: "always" }, "Always"),
-    /* @__PURE__ */ h("option", { value: "if-empty" }, "If property missing or empty"),
-    /* @__PURE__ */ h("option", { value: "never" }, "Never")
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-dropdown" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Image fit"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "How cover images are displayed (crop fills container, contain shows full image)")), /* @__PURE__ */ h(
-    "select",
-    {
-      value: settings.coverFitMode,
-      onChange: (e) => {
-        const evt = e;
-        onSettingsChange({
-          coverFitMode: evt.target.value
-        });
-      },
-      className: "dropdown"
-    },
-    /* @__PURE__ */ h("option", { value: "crop" }, "Crop"),
-    /* @__PURE__ */ h("option", { value: "contain" }, "Contain")
-  )), /* @__PURE__ */ h("div", { className: "setting-item" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Image ratio"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Aspect ratio of images")), /* @__PURE__ */ h("div", { style: { display: "flex", alignItems: "center", gap: "8px" } }, /* @__PURE__ */ h(
-    "input",
-    {
-      type: "range",
-      min: "0.25",
-      max: "2.5",
-      step: "0.05",
-      value: settings.imageAspectRatio,
-      onChange: (e) => {
-        const evt = e;
-        onSettingsChange({
-          imageAspectRatio: parseFloat(evt.target.value)
-        });
-      },
-      style: { flex: 1 }
-    }
-  ), /* @__PURE__ */ h("span", { style: { minWidth: "40px" } }, settings.imageAspectRatio.toFixed(2)))), /* @__PURE__ */ h("div", { className: "setting-item setting-item-text" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "First property"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Property to show in first position")), /* @__PURE__ */ h(
-    "select",
-    {
-      value: settings.propertyDisplay1,
-      onChange: (e) => {
-        const evt = e;
-        onSettingsChange({ propertyDisplay1: evt.target.value });
-      },
-      className: "dropdown"
-    },
-    /* @__PURE__ */ h("option", { value: "" }, "None"),
-    allProperties.map(
-      (prop) => /* @__PURE__ */ h("option", { key: prop, value: prop }, prop)
+    renderToggle("Show title", "showTitle"),
+    renderTextInput(
+      "Title property",
+      "titleProperty",
+      "Comma-separated if multiple"
     )
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-text" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Second property"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Property to show in second position")), /* @__PURE__ */ h(
-    "select",
-    {
-      value: settings.propertyDisplay2,
-      onChange: (e) => {
-        const evt = e;
-        onSettingsChange({ propertyDisplay2: evt.target.value });
-      },
-      className: "dropdown"
-    },
-    /* @__PURE__ */ h("option", { value: "" }, "None"),
-    allProperties.map(
-      (prop) => /* @__PURE__ */ h("option", { key: prop, value: prop }, prop)
-    )
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-toggle" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Pair first and second properties"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Display first two properties horizontally")), /* @__PURE__ */ h(
+  )), /* @__PURE__ */ h("div", { className: "settings-section" }, renderSectionHeader("textPreview", "Text preview"), /* @__PURE__ */ h(
     "div",
     {
-      className: `checkbox-container ${settings.propertyLayout12SideBySide ? "is-enabled" : ""}`,
-      onClick: () => onSettingsChange({
-        propertyLayout12SideBySide: !settings.propertyLayout12SideBySide
-      }),
-      onKeyDown: (e) => {
-        const evt = e;
-        if (evt.key === "Enter" || evt.key === " ") {
-          evt.preventDefault();
-          onSettingsChange({
-            propertyLayout12SideBySide: !settings.propertyLayout12SideBySide
-          });
-        }
-      },
-      tabIndex: 0,
-      role: "checkbox",
-      "aria-checked": settings.propertyLayout12SideBySide
-    }
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-text" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Third property"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Property to show in third position")), /* @__PURE__ */ h(
-    "select",
-    {
-      value: settings.propertyDisplay3,
-      onChange: (e) => {
-        const evt = e;
-        onSettingsChange({ propertyDisplay3: evt.target.value });
-      },
-      className: "dropdown"
+      className: `settings-section-content ${expandedSections.textPreview ? "" : "collapsed"}`
     },
-    /* @__PURE__ */ h("option", { value: "" }, "None"),
-    allProperties.map(
-      (prop) => /* @__PURE__ */ h("option", { key: prop, value: prop }, prop)
+    renderToggle("Show text preview", "showTextPreview"),
+    renderTextInput(
+      "Text preview property",
+      "textPreviewProperty",
+      "Comma-separated if multiple"
+    ),
+    renderToggle(
+      "Use note content if property missing or empty",
+      "fallbackToContent"
     )
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-text" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Fourth property"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Property to show in fourth position")), /* @__PURE__ */ h(
-    "select",
-    {
-      value: settings.propertyDisplay4,
-      onChange: (e) => {
-        const evt = e;
-        onSettingsChange({ propertyDisplay4: evt.target.value });
-      },
-      className: "dropdown"
-    },
-    /* @__PURE__ */ h("option", { value: "" }, "None"),
-    allProperties.map(
-      (prop) => /* @__PURE__ */ h("option", { key: prop, value: prop }, prop)
-    )
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-toggle" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Pair third and fourth properties"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Display third and fourth properties horizontally")), /* @__PURE__ */ h(
+  )), /* @__PURE__ */ h("div", { className: "settings-section" }, renderSectionHeader("image", "Image"), /* @__PURE__ */ h(
     "div",
     {
-      className: `checkbox-container ${settings.propertyLayout34SideBySide ? "is-enabled" : ""}`,
-      onClick: () => onSettingsChange({
-        propertyLayout34SideBySide: !settings.propertyLayout34SideBySide
-      }),
-      onKeyDown: (e) => {
-        const evt = e;
-        if (evt.key === "Enter" || evt.key === " ") {
-          evt.preventDefault();
-          onSettingsChange({
-            propertyLayout34SideBySide: !settings.propertyLayout34SideBySide
-          });
-        }
-      },
-      tabIndex: 0,
-      role: "checkbox",
-      "aria-checked": settings.propertyLayout34SideBySide
-    }
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-dropdown" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Show property labels"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Display labels for property values")), /* @__PURE__ */ h(
-    "select",
-    {
-      value: settings.propertyLabels,
-      onChange: (e) => {
-        const evt = e;
-        onSettingsChange({
-          propertyLabels: evt.target.value
-        });
-      },
-      className: "dropdown"
+      className: `settings-section-content ${expandedSections.image ? "" : "collapsed"}`
     },
-    /* @__PURE__ */ h("option", { value: "inline" }, "Inline"),
-    /* @__PURE__ */ h("option", { value: "above" }, "On top"),
-    /* @__PURE__ */ h("option", { value: "hide" }, "Hide")
-  )), /* @__PURE__ */ h("div", { className: "setting-item setting-item-text" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "List marker"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Marker style for list view")), /* @__PURE__ */ h(
+    /* @__PURE__ */ h("div", { className: "setting-item setting-item-dropdown" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Format")), /* @__PURE__ */ h(
+      "select",
+      {
+        value: (() => {
+          const imageFormatParts = settings.imageFormat.split("-");
+          return settings.imageFormat === "none" ? "none" : imageFormatParts[0];
+        })(),
+        onChange: (e) => {
+          const evt = e;
+          const newFormat = evt.target.value;
+          if (newFormat === "none") {
+            onSettingsChange({ imageFormat: "none" });
+          } else {
+            const currentPosition = settings.imageFormat === "none" ? "right" : settings.imageFormat.split("-")[1] || "right";
+            onSettingsChange({
+              imageFormat: `${newFormat}-${currentPosition}`
+            });
+          }
+        },
+        className: "dropdown"
+      },
+      /* @__PURE__ */ h("option", { value: "thumbnail" }, "Thumbnail"),
+      /* @__PURE__ */ h("option", { value: "cover" }, "Cover"),
+      /* @__PURE__ */ h("option", { value: "none" }, "None")
+    )),
+    /* @__PURE__ */ h("div", { className: "setting-item setting-item-dropdown" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Position")), /* @__PURE__ */ h(
+      "select",
+      {
+        value: (() => {
+          const position = settings.imageFormat.split("-")[1];
+          return position || "right";
+        })(),
+        onChange: (e) => {
+          const evt = e;
+          const currentFormat = settings.imageFormat.split("-")[0];
+          onSettingsChange({
+            imageFormat: `${currentFormat}-${evt.target.value}`
+          });
+        },
+        className: "dropdown"
+      },
+      /* @__PURE__ */ h("option", { value: "left" }, "Left"),
+      /* @__PURE__ */ h("option", { value: "right" }, "Right"),
+      /* @__PURE__ */ h("option", { value: "top" }, "Top"),
+      /* @__PURE__ */ h("option", { value: "bottom" }, "Bottom")
+    )),
+    renderTextInput(
+      "Image property",
+      "imageProperty",
+      "Comma-separated if multiple"
+    ),
+    /* @__PURE__ */ h("div", { className: "setting-item setting-item-dropdown" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Show image embeds")), /* @__PURE__ */ h(
+      "select",
+      {
+        value: settings.fallbackToEmbeds,
+        onChange: (e) => {
+          const evt = e;
+          onSettingsChange({
+            fallbackToEmbeds: evt.target.value
+          });
+        },
+        className: "dropdown"
+      },
+      /* @__PURE__ */ h("option", { value: "always" }, "Always"),
+      /* @__PURE__ */ h("option", { value: "if-empty" }, "If property missing or empty"),
+      /* @__PURE__ */ h("option", { value: "never" }, "Never")
+    )),
+    /* @__PURE__ */ h("div", { className: "setting-item setting-item-dropdown" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Fit")), /* @__PURE__ */ h(
+      "select",
+      {
+        value: settings.coverFitMode,
+        onChange: (e) => {
+          const evt = e;
+          onSettingsChange({
+            coverFitMode: evt.target.value
+          });
+        },
+        className: "dropdown"
+      },
+      /* @__PURE__ */ h("option", { value: "crop" }, "Crop"),
+      /* @__PURE__ */ h("option", { value: "contain" }, "Contain")
+    )),
+    /* @__PURE__ */ h("div", { className: "setting-item" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Ratio")), /* @__PURE__ */ h("div", { style: { display: "flex", alignItems: "center", gap: "8px" } }, /* @__PURE__ */ h(
+      "input",
+      {
+        type: "range",
+        min: "0.25",
+        max: "2.5",
+        step: "0.05",
+        value: settings.imageAspectRatio,
+        onChange: (e) => {
+          const evt = e;
+          onSettingsChange({
+            imageAspectRatio: parseFloat(evt.target.value)
+          });
+        },
+        style: { flex: 1 }
+      }
+    ), /* @__PURE__ */ h("span", { style: { minWidth: "40px" } }, settings.imageAspectRatio.toFixed(2))))
+  )), /* @__PURE__ */ h("div", { className: "settings-section" }, renderSectionHeader("properties", "Properties"), /* @__PURE__ */ h(
+    "div",
+    {
+      className: `settings-section-content ${expandedSections.properties ? "" : "collapsed"}`
+    },
+    renderTextInput(
+      "Subtitle property",
+      "subtitleProperty",
+      "Comma-separated if multiple"
+    ),
+    renderTextInput(
+      "URL property",
+      "urlProperty",
+      "Comma-separated if multiple"
+    ),
+    /* @__PURE__ */ h("div", { className: "setting-item setting-item-dropdown" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "Property labels")), /* @__PURE__ */ h(
+      "select",
+      {
+        value: settings.propertyLabels,
+        onChange: (e) => {
+          const evt = e;
+          onSettingsChange({
+            propertyLabels: evt.target.value
+          });
+        },
+        className: "dropdown"
+      },
+      /* @__PURE__ */ h("option", { value: "inline" }, "Inline"),
+      /* @__PURE__ */ h("option", { value: "above" }, "On top"),
+      /* @__PURE__ */ h("option", { value: "hide" }, "Hide")
+    ))
+  )), PROPERTY_GROUPS.map(renderPropertyGroup), /* @__PURE__ */ h("div", { className: "setting-item setting-item-dropdown" }, /* @__PURE__ */ h("div", { className: "setting-item-info" }, /* @__PURE__ */ h("label", null, "List marker"), /* @__PURE__ */ h("div", { className: "setting-desc" }, "Marker style for list view")), /* @__PURE__ */ h(
     "select",
     {
       value: settings.listMarker,
@@ -8065,31 +8460,6 @@ function Settings({
 }
 
 // src/utils/dropdown-position.ts
-function positionDropdown(buttonElement, menuElement) {
-  const buttonRect = buttonElement.getBoundingClientRect();
-  let top = buttonRect.bottom + 4;
-  let left = buttonRect.left;
-  const menuRect = menuElement.getBoundingClientRect();
-  const viewportWidth = window.innerWidth;
-  const viewportHeight = window.innerHeight;
-  const EDGE_PADDING = 8;
-  if (left + menuRect.width > viewportWidth - EDGE_PADDING) {
-    left = Math.max(
-      EDGE_PADDING,
-      viewportWidth - menuRect.width - EDGE_PADDING
-    );
-  }
-  if (top + menuRect.height > viewportHeight - EDGE_PADDING) {
-    const topPosition = buttonRect.top - menuRect.height - 4;
-    if (topPosition >= EDGE_PADDING) {
-      top = topPosition;
-    } else {
-      top = EDGE_PADDING;
-    }
-  }
-  menuElement.style.top = `${top}px`;
-  menuElement.style.left = `${left}px`;
-}
 function setupClickOutside(containerElement, onClickOutside) {
   const handleClick = (event) => {
     if (!containerElement.contains(event.target)) {
@@ -8155,44 +8525,34 @@ function Toolbar({
   showSettings,
   onSettingsChange
 }) {
-  const viewButtonRef = dc.useRef(null);
   const viewMenuRef = dc.useRef(null);
-  const sortButtonRef = dc.useRef(null);
   const sortMenuRef = dc.useRef(null);
-  const limitWrapperRef = dc.useRef(null);
   const limitMenuRef = dc.useRef(null);
-  const queryButtonRef = dc.useRef(null);
   const queryMenuRef = dc.useRef(null);
   const settingsButtonRef = dc.useRef(null);
   const settingsMenuRef = dc.useRef(null);
-  const settingsWrapperRef = dc.useRef(null);
   dc.useEffect(() => {
-    if (showViewDropdown && viewButtonRef.current && viewMenuRef.current) {
-      positionDropdown(viewButtonRef.current, viewMenuRef.current);
+    if (showViewDropdown && viewMenuRef.current) {
       return setupClickOutside(viewMenuRef.current, onToggleViewDropdown);
     }
   }, [showViewDropdown, onToggleViewDropdown]);
   dc.useEffect(() => {
-    if (showSortDropdown && sortButtonRef.current && sortMenuRef.current) {
-      positionDropdown(sortButtonRef.current, sortMenuRef.current);
+    if (showSortDropdown && sortMenuRef.current) {
       return setupClickOutside(sortMenuRef.current, onToggleSortDropdown);
     }
   }, [showSortDropdown, onToggleSortDropdown]);
   dc.useEffect(() => {
-    if (showLimitDropdown && limitWrapperRef.current && limitMenuRef.current) {
-      positionDropdown(limitWrapperRef.current, limitMenuRef.current);
+    if (showLimitDropdown && limitMenuRef.current) {
       return setupClickOutside(limitMenuRef.current, onToggleLimitDropdown);
     }
   }, [showLimitDropdown, onToggleLimitDropdown]);
   dc.useEffect(() => {
-    if (showQueryEditor && queryButtonRef.current && queryMenuRef.current) {
-      positionDropdown(queryButtonRef.current, queryMenuRef.current);
+    if (showQueryEditor && queryMenuRef.current) {
       return setupClickOutside(queryMenuRef.current, onToggleCode);
     }
   }, [showQueryEditor, onToggleCode]);
   dc.useEffect(() => {
-    if (showSettings && settingsButtonRef.current && settingsMenuRef.current) {
-      positionDropdown(settingsButtonRef.current, settingsMenuRef.current);
+    if (showSettings && settingsButtonRef.current) {
       const settingsWrapper = settingsButtonRef.current.closest(
         ".settings-dropdown-wrapper"
       );
@@ -8204,37 +8564,9 @@ function Toolbar({
       }
     }
   }, [showSettings, onToggleSettings]);
-  dc.useEffect(() => {
-    const handleResize = () => {
-      if (showViewDropdown && viewButtonRef.current && viewMenuRef.current) {
-        positionDropdown(viewButtonRef.current, viewMenuRef.current);
-      }
-      if (showSortDropdown && sortButtonRef.current && sortMenuRef.current) {
-        positionDropdown(sortButtonRef.current, sortMenuRef.current);
-      }
-      if (showLimitDropdown && limitWrapperRef.current && limitMenuRef.current) {
-        positionDropdown(limitWrapperRef.current, limitMenuRef.current);
-      }
-      if (showQueryEditor && queryButtonRef.current && queryMenuRef.current) {
-        positionDropdown(queryButtonRef.current, queryMenuRef.current);
-      }
-      if (showSettings && settingsButtonRef.current && settingsMenuRef.current) {
-        positionDropdown(settingsButtonRef.current, settingsMenuRef.current);
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [
-    showViewDropdown,
-    showSortDropdown,
-    showLimitDropdown,
-    showQueryEditor,
-    showSettings
-  ]);
   return /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("div", { className: "bottom-controls" }, /* @__PURE__ */ h("div", { className: "view-controls-wrapper" }, /* @__PURE__ */ h("div", { className: "view-dropdown-wrapper" }, /* @__PURE__ */ h(
     "button",
     {
-      ref: viewButtonRef,
       className: "view-dropdown-btn",
       onClick: onToggleViewDropdown,
       "aria-label": "Switch view",
@@ -8376,7 +8708,6 @@ function Toolbar({
   )) : null), /* @__PURE__ */ h("div", { className: "sort-dropdown-wrapper" }, /* @__PURE__ */ h(
     "button",
     {
-      ref: sortButtonRef,
       className: "sort-dropdown-btn",
       onClick: onToggleSortDropdown,
       "aria-label": "Change sort order",
@@ -8808,7 +9139,6 @@ function Toolbar({
   ) : null)), /* @__PURE__ */ h(
     "div",
     {
-      ref: limitWrapperRef,
       className: `results-count-wrapper${showLimitDropdown ? " active" : ""}`,
       onClick: onToggleLimitDropdown,
       onKeyDown: (e) => {
@@ -8962,7 +9292,7 @@ function Toolbar({
       /* @__PURE__ */ h("line", { x1: "12", y1: "5", x2: "12", y2: "19" }),
       /* @__PURE__ */ h("line", { x1: "5", y1: "12", x2: "19", y2: "12" })
     )
-  ), /* @__PURE__ */ h("div", { className: "meta-controls" }, /* @__PURE__ */ h(
+  ), /* @__PURE__ */ h("div", { className: "property-controls" }, /* @__PURE__ */ h(
     "button",
     {
       className: "shuffle-btn",
@@ -9018,7 +9348,6 @@ function Toolbar({
   ), /* @__PURE__ */ h("div", { className: "query-dropdown-wrapper" }, /* @__PURE__ */ h(
     "button",
     {
-      ref: queryButtonRef,
       className: "query-toggle-btn",
       onClick: onToggleCode,
       "aria-label": showQueryEditor ? "Hide query" : "Edit query",
@@ -9108,7 +9437,7 @@ function Toolbar({
       },
       isPinned ? /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("path", { d: "M12 17v5" }), /* @__PURE__ */ h("path", { d: "M15 9.34V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H7.89" }), /* @__PURE__ */ h("path", { d: "m2 2 20 20" }), /* @__PURE__ */ h("path", { d: "M9 9v1.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h11" })) : /* @__PURE__ */ h(Fragment, null, /* @__PURE__ */ h("line", { x1: "12", y1: "17", x2: "12", y2: "22" }), /* @__PURE__ */ h("path", { d: "M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z" }))
     )
-  ) : null, /* @__PURE__ */ h("div", { ref: settingsWrapperRef, className: "settings-dropdown-wrapper" }, /* @__PURE__ */ h(
+  ) : null, /* @__PURE__ */ h("div", { className: "settings-dropdown-wrapper" }, /* @__PURE__ */ h(
     "button",
     {
       ref: settingsButtonRef,
@@ -9475,105 +9804,101 @@ ${newQuery}
   return content.substring(0, startIndex) + replacement + content.substring(endIndex);
 }
 
-// src/utils/image.ts
+// src/utils/randomize.ts
 var import_obsidian5 = require("obsidian");
-var VALID_IMAGE_EXTENSIONS = [
-  "avif",
-  "bmp",
-  "gif",
-  "jpeg",
-  "jpg",
-  "png",
-  "svg",
-  "webp"
-];
-function isExternalUrl(url) {
-  return /^https?:\/\//i.test(url);
+function getPaneType(event, defaultInNewTab) {
+  const modEvent = import_obsidian5.Keymap.isModEvent(event);
+  return modEvent === "split" || modEvent === "window" ? modEvent : modEvent ? !defaultInNewTab : defaultInNewTab;
 }
-function hasValidImageExtension(path) {
-  return /\.(avif|bmp|gif|jpe?g|png|svg|webp)$/i.test(path);
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
-function validateImageUrl(url) {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.onload = () => resolve(true);
-    img.onerror = () => resolve(false);
-    setTimeout(() => resolve(false), 5e3);
-    img.src = url;
-  });
+function getActiveBasesView(app) {
+  var _a, _b, _c, _d;
+  const activeLeaf = app.workspace.activeLeaf;
+  if (!activeLeaf)
+    return null;
+  const view = activeLeaf.view;
+  const viewType = view.getViewType();
+  if (viewType === "bases" || viewType === "base-view") {
+    const wrapper = view;
+    if (((_c = (_b = (_a = wrapper.controller) == null ? void 0 : _a.view) == null ? void 0 : _b.data) == null ? void 0 : _c.data) && Array.isArray(wrapper.controller.view.data.data)) {
+      const viewInstanceType = wrapper.controller.view.type || "unknown";
+      if (viewInstanceType === "dynamic-views-grid" || viewInstanceType === "dynamic-views-masonry") {
+        return wrapper.controller.view;
+      }
+      return {
+        type: viewInstanceType,
+        data: wrapper.controller.view.data,
+        onDataUpdated: (_d = wrapper.controller.view.onDataUpdated) == null ? void 0 : _d.bind(
+          wrapper.controller.view
+        ),
+        isShuffled: wrapper.controller.view.isShuffled,
+        shuffledOrder: wrapper.controller.view.shuffledOrder
+      };
+    }
+    if (wrapper.basesView) {
+      return wrapper.basesView;
+    }
+  }
+  return null;
 }
-function stripWikilinkSyntax(path) {
-  if (!path)
-    return "";
-  const wikilinkMatch = path.match(/^!?\[\[([^\]|]+)(?:\|[^\]]*)?\]\]$/);
-  return wikilinkMatch ? wikilinkMatch[1].trim() : path;
+async function openRandomFile(app, paneType) {
+  var _a;
+  const basesView = getActiveBasesView(app);
+  if (!basesView) {
+    new import_obsidian5.Notice("No active Bases view");
+    return;
+  }
+  const entries = (_a = basesView.data) == null ? void 0 : _a.data;
+  if (!entries || entries.length === 0) {
+    return;
+  }
+  const randomIndex = Math.floor(Math.random() * entries.length);
+  const randomEntry = entries[randomIndex];
+  if (!randomEntry.file) {
+    return;
+  }
+  const filePath = randomEntry.file.path;
+  await app.workspace.openLinkText(filePath, "", paneType);
 }
-async function processImagePaths(imagePaths) {
-  const internalPaths = [];
-  const externalUrls = [];
-  for (const imgPath of imagePaths) {
-    const cleanPath = stripWikilinkSyntax(imgPath);
-    if (cleanPath.length === 0)
-      continue;
-    if (isExternalUrl(cleanPath)) {
-      if (hasValidImageExtension(cleanPath) || !cleanPath.includes(".")) {
-        const isValid = await validateImageUrl(cleanPath);
-        if (isValid) {
-          externalUrls.push(cleanPath);
-        }
+function toggleShuffleActiveView(app) {
+  var _a, _b, _c;
+  const basesView = getActiveBasesView(app);
+  if (!basesView) {
+    new import_obsidian5.Notice("No active Bases view");
+    return;
+  }
+  const isDynamicView = basesView.type === "dynamic-views-grid" || basesView.type === "dynamic-views-masonry";
+  if (isDynamicView) {
+    const dynamicView = basesView;
+    const currentState = (_a = dynamicView.isShuffled) != null ? _a : false;
+    dynamicView.isShuffled = !currentState;
+    if (dynamicView.isShuffled) {
+      const entries = (_b = basesView.data) == null ? void 0 : _b.data;
+      if (entries && entries.length > 0) {
+        const paths = entries.map((e) => e.file.path);
+        dynamicView.shuffledOrder = shuffleArray([...paths]);
       }
     } else {
-      if (hasValidImageExtension(cleanPath)) {
-        internalPaths.push(cleanPath);
+      dynamicView.shuffledOrder = [];
+    }
+    if (dynamicView.onDataUpdated) {
+      dynamicView.onDataUpdated();
+    }
+  } else {
+    const entries = (_c = basesView.data) == null ? void 0 : _c.data;
+    if (entries && entries.length > 0) {
+      shuffleArray(entries);
+      if (basesView.onDataUpdated) {
+        basesView.onDataUpdated();
       }
     }
   }
-  return { internalPaths, externalUrls };
-}
-function resolveInternalImagePaths(internalPaths, sourcePath, app) {
-  const resourcePaths = [];
-  for (const propPath of internalPaths) {
-    const imageFile = app.metadataCache.getFirstLinkpathDest(
-      propPath,
-      sourcePath
-    );
-    if (imageFile && VALID_IMAGE_EXTENSIONS.includes(imageFile.extension)) {
-      const resourcePath = app.vault.getResourcePath(imageFile);
-      resourcePaths.push(resourcePath);
-    }
-  }
-  return resourcePaths;
-}
-async function extractEmbedImages(file, app) {
-  const metadata = app.metadataCache.getFileCache(file);
-  if (!(metadata == null ? void 0 : metadata.embeds))
-    return [];
-  const bodyResourcePaths = [];
-  const bodyExternalUrls = [];
-  for (const embed of metadata.embeds) {
-    const embedLink = embed.link;
-    if (isExternalUrl(embedLink)) {
-      if (hasValidImageExtension(embedLink) || !embedLink.includes(".")) {
-        bodyExternalUrls.push(embedLink);
-      }
-    } else {
-      const targetFile = app.metadataCache.getFirstLinkpathDest(
-        embedLink,
-        file.path
-      );
-      if (targetFile && VALID_IMAGE_EXTENSIONS.includes(targetFile.extension)) {
-        const resourcePath = app.vault.getResourcePath(targetFile);
-        bodyResourcePaths.push(resourcePath);
-      }
-    }
-  }
-  for (const externalUrl of bodyExternalUrls) {
-    const isValid = await validateImageUrl(externalUrl);
-    if (isValid) {
-      bodyResourcePaths.push(externalUrl);
-    }
-  }
-  return bodyResourcePaths;
 }
 
 // src/utils/preview.ts
@@ -9596,23 +9921,21 @@ var markdownPatterns = [
   // Strikethrough (after code blocks processed)
   /==((?:(?!==).)+)==/g,
   // Highlight
-  /\[([^\]]+)\]\([^)]+\)/g,
+  /\[((?:[^\]]|\](?!\]))+)\]\([^)]+\)/g,
   // Links
-  /!\[\[[^\]]+\]\]/g,
+  /!\[\[(?:[^\]]|\](?!\]))+\]\]/g,
   // Embedded wikilinks (images, etc.)
-  /\[\[[^\]|]+\|[^\]]+\]\]/g,
+  /\[\[(?:[^\]|]|\](?!\]))+\|(?:[^\]]|\](?!\]))*\]\]/g,
   // Wikilinks with display
-  /\[\[[^\]]+\]\]/g,
+  /\[\[(?:[^\]]|\](?!\]))+\]\]/g,
   // Wikilinks
   /#[a-zA-Z0-9_\-/]+/g,
   // Tags
-  /^[-*+]\s*\[[ xX]\]\s+/gm,
+  /^\s*[-*+]\s*\[[ xX]\]\s+/gm,
   // Task list markers (bullet-style)
-  /^(\d+\.\s*)\[[ xX]\]\s+/gm,
-  // Task list markers (numbered with dot) - preserves number
-  /^(\d+\)\s*)\[[ xX]\]\s+/gm,
-  // Task list markers (numbered with paren) - preserves number
-  /^[-*+]\s+/gm,
+  /^\s*(\d+[.)]\s*)\[[ xX]\]\s+/gm,
+  // Task list markers (numbered) - preserves number
+  /^\s*[-*+]\s+/gm,
   // Bullet list markers
   /^#{1,6}\s+.+$/gm,
   // Heading lines (full removal)
@@ -9788,7 +10111,7 @@ async function loadImagesForEntries(entries, fallbackToEmbeds, app, imageCache, 
     })
   );
 }
-async function loadSnippetForEntry(path, file, app, descriptionData, fallbackToContent, omitFirstLine, snippetCache, fileName, titleString) {
+async function loadSnippetForEntry(path, file, app, textPreviewData, fallbackToContent, omitFirstLine, snippetCache, fileName, titleString) {
   if (path in snippetCache) {
     return;
   }
@@ -9797,7 +10120,7 @@ async function loadSnippetForEntry(path, file, app, descriptionData, fallbackToC
       snippetCache[path] = await loadFilePreview(
         file,
         app,
-        descriptionData,
+        textPreviewData,
         {
           fallbackToContent,
           omitFirstLine
@@ -9820,7 +10143,7 @@ async function loadSnippetsForEntries(entries, fallbackToContent, omitFirstLine,
         entry.path,
         entry.file,
         app,
-        entry.descriptionData,
+        entry.textPreviewData,
         fallbackToContent,
         omitFirstLine,
         snippetCache,
@@ -9832,7 +10155,6 @@ async function loadSnippetsForEntries(entries, fallbackToContent, omitFirstLine,
 }
 
 // src/components/view.tsx
-init_property();
 init_style_settings();
 
 // src/utils/masonry-layout.ts
@@ -9878,7 +10200,7 @@ function applyMasonryLayout(container, cards, result) {
 }
 
 // src/components/view.tsx
-function View({
+function View2({
   plugin,
   app,
   dc,
@@ -9976,7 +10298,7 @@ function View({
     [markdownPatterns2]
   );
   const getPersistedSettings = dc.useCallback(() => {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _A, _B, _C, _D, _E, _F, _G, _H, _I, _J, _K, _L, _M, _N, _O, _P, _Q, _R;
     if (!ctime || !persistenceManager)
       return DEFAULT_SETTINGS;
     const globalSettings = persistenceManager.getGlobalSettings();
@@ -9984,19 +10306,49 @@ function View({
     const viewSettings = persistenceManager.getViewSettings(ctime);
     const baseSettings = { ...globalSettings };
     baseSettings.titleProperty = (_a = viewSettings.titleProperty) != null ? _a : defaultViewSettings.titleProperty;
-    baseSettings.descriptionProperty = (_b = viewSettings.descriptionProperty) != null ? _b : defaultViewSettings.descriptionProperty;
+    baseSettings.textPreviewProperty = (_b = viewSettings.textPreviewProperty) != null ? _b : defaultViewSettings.textPreviewProperty;
     baseSettings.imageProperty = (_c = viewSettings.imageProperty) != null ? _c : defaultViewSettings.imageProperty;
-    baseSettings.propertyDisplay1 = (_d = viewSettings.propertyDisplay1) != null ? _d : defaultViewSettings.propertyDisplay1;
-    baseSettings.propertyDisplay2 = (_e = viewSettings.propertyDisplay2) != null ? _e : defaultViewSettings.propertyDisplay2;
-    baseSettings.propertyDisplay3 = (_f = viewSettings.propertyDisplay3) != null ? _f : defaultViewSettings.propertyDisplay3;
-    baseSettings.propertyDisplay4 = (_g = viewSettings.propertyDisplay4) != null ? _g : defaultViewSettings.propertyDisplay4;
-    baseSettings.propertyLayout12SideBySide = (_h = viewSettings.propertyLayout12SideBySide) != null ? _h : defaultViewSettings.propertyLayout12SideBySide;
-    baseSettings.propertyLayout34SideBySide = (_i = viewSettings.propertyLayout34SideBySide) != null ? _i : defaultViewSettings.propertyLayout34SideBySide;
-    baseSettings.showTextPreview = (_j = viewSettings.showTextPreview) != null ? _j : defaultViewSettings.showTextPreview;
-    baseSettings.fallbackToContent = (_k = viewSettings.fallbackToContent) != null ? _k : defaultViewSettings.fallbackToContent;
-    baseSettings.fallbackToEmbeds = (_l = viewSettings.fallbackToEmbeds) != null ? _l : defaultViewSettings.fallbackToEmbeds;
-    baseSettings.queryHeight = (_m = viewSettings.queryHeight) != null ? _m : defaultViewSettings.queryHeight;
-    baseSettings.listMarker = (_n = viewSettings.listMarker) != null ? _n : defaultViewSettings.listMarker;
+    baseSettings.subtitleProperty = (_d = viewSettings.subtitleProperty) != null ? _d : defaultViewSettings.subtitleProperty;
+    baseSettings.urlProperty = (_e = viewSettings.urlProperty) != null ? _e : defaultViewSettings.urlProperty;
+    baseSettings.propertyDisplay1 = (_f = viewSettings.propertyDisplay1) != null ? _f : defaultViewSettings.propertyDisplay1;
+    baseSettings.propertyDisplay2 = (_g = viewSettings.propertyDisplay2) != null ? _g : defaultViewSettings.propertyDisplay2;
+    baseSettings.propertyDisplay3 = (_h = viewSettings.propertyDisplay3) != null ? _h : defaultViewSettings.propertyDisplay3;
+    baseSettings.propertyDisplay4 = (_i = viewSettings.propertyDisplay4) != null ? _i : defaultViewSettings.propertyDisplay4;
+    baseSettings.propertyDisplay5 = (_j = viewSettings.propertyDisplay5) != null ? _j : defaultViewSettings.propertyDisplay5;
+    baseSettings.propertyDisplay6 = (_k = viewSettings.propertyDisplay6) != null ? _k : defaultViewSettings.propertyDisplay6;
+    baseSettings.propertyDisplay7 = (_l = viewSettings.propertyDisplay7) != null ? _l : defaultViewSettings.propertyDisplay7;
+    baseSettings.propertyDisplay8 = (_m = viewSettings.propertyDisplay8) != null ? _m : defaultViewSettings.propertyDisplay8;
+    baseSettings.propertyDisplay9 = (_n = viewSettings.propertyDisplay9) != null ? _n : defaultViewSettings.propertyDisplay9;
+    baseSettings.propertyDisplay10 = (_o = viewSettings.propertyDisplay10) != null ? _o : defaultViewSettings.propertyDisplay10;
+    baseSettings.propertyDisplay11 = (_p = viewSettings.propertyDisplay11) != null ? _p : defaultViewSettings.propertyDisplay11;
+    baseSettings.propertyDisplay12 = (_q = viewSettings.propertyDisplay12) != null ? _q : defaultViewSettings.propertyDisplay12;
+    baseSettings.propertyDisplay13 = (_r = viewSettings.propertyDisplay13) != null ? _r : defaultViewSettings.propertyDisplay13;
+    baseSettings.propertyDisplay14 = (_s = viewSettings.propertyDisplay14) != null ? _s : defaultViewSettings.propertyDisplay14;
+    baseSettings.propertyGroup1SideBySide = (_t = viewSettings.propertyGroup1SideBySide) != null ? _t : defaultViewSettings.propertyGroup1SideBySide;
+    baseSettings.propertyGroup2SideBySide = (_u = viewSettings.propertyGroup2SideBySide) != null ? _u : defaultViewSettings.propertyGroup2SideBySide;
+    baseSettings.propertyGroup3SideBySide = (_v = viewSettings.propertyGroup3SideBySide) != null ? _v : defaultViewSettings.propertyGroup3SideBySide;
+    baseSettings.propertyGroup4SideBySide = (_w = viewSettings.propertyGroup4SideBySide) != null ? _w : defaultViewSettings.propertyGroup4SideBySide;
+    baseSettings.propertyGroup5SideBySide = (_x = viewSettings.propertyGroup5SideBySide) != null ? _x : defaultViewSettings.propertyGroup5SideBySide;
+    baseSettings.propertyGroup6SideBySide = (_y = viewSettings.propertyGroup6SideBySide) != null ? _y : defaultViewSettings.propertyGroup6SideBySide;
+    baseSettings.propertyGroup7SideBySide = (_z = viewSettings.propertyGroup7SideBySide) != null ? _z : defaultViewSettings.propertyGroup7SideBySide;
+    baseSettings.propertyGroup1Position = (_A = viewSettings.propertyGroup1Position) != null ? _A : defaultViewSettings.propertyGroup1Position;
+    baseSettings.propertyGroup2Position = (_B = viewSettings.propertyGroup2Position) != null ? _B : defaultViewSettings.propertyGroup2Position;
+    baseSettings.propertyGroup3Position = (_C = viewSettings.propertyGroup3Position) != null ? _C : defaultViewSettings.propertyGroup3Position;
+    baseSettings.propertyGroup4Position = (_D = viewSettings.propertyGroup4Position) != null ? _D : defaultViewSettings.propertyGroup4Position;
+    baseSettings.propertyGroup5Position = (_E = viewSettings.propertyGroup5Position) != null ? _E : defaultViewSettings.propertyGroup5Position;
+    baseSettings.propertyGroup6Position = (_F = viewSettings.propertyGroup6Position) != null ? _F : defaultViewSettings.propertyGroup6Position;
+    baseSettings.propertyGroup7Position = (_G = viewSettings.propertyGroup7Position) != null ? _G : defaultViewSettings.propertyGroup7Position;
+    baseSettings.propertyLabels = (_H = viewSettings.propertyLabels) != null ? _H : defaultViewSettings.propertyLabels;
+    baseSettings.showTitle = (_I = viewSettings.showTitle) != null ? _I : defaultViewSettings.showTitle;
+    baseSettings.showTextPreview = (_J = viewSettings.showTextPreview) != null ? _J : defaultViewSettings.showTextPreview;
+    baseSettings.fallbackToContent = (_K = viewSettings.fallbackToContent) != null ? _K : defaultViewSettings.fallbackToContent;
+    baseSettings.fallbackToEmbeds = (_L = viewSettings.fallbackToEmbeds) != null ? _L : defaultViewSettings.fallbackToEmbeds;
+    baseSettings.imageFormat = (_M = viewSettings.imageFormat) != null ? _M : defaultViewSettings.imageFormat;
+    baseSettings.coverFitMode = (_N = viewSettings.coverFitMode) != null ? _N : defaultViewSettings.coverFitMode;
+    baseSettings.imageAspectRatio = (_O = viewSettings.imageAspectRatio) != null ? _O : defaultViewSettings.imageAspectRatio;
+    baseSettings.queryHeight = (_P = viewSettings.queryHeight) != null ? _P : defaultViewSettings.queryHeight;
+    baseSettings.listMarker = (_Q = viewSettings.listMarker) != null ? _Q : defaultViewSettings.listMarker;
+    baseSettings.cardSize = (_R = viewSettings.cardSize) != null ? _R : defaultViewSettings.cardSize;
     return baseSettings;
   }, [ctime, persistenceManager]);
   const getFilePersistedValue = dc.useCallback(
@@ -10098,14 +10450,38 @@ function View({
       if (ctime && persistenceManager) {
         const viewSettings = {
           titleProperty: settings.titleProperty,
-          descriptionProperty: settings.descriptionProperty,
+          textPreviewProperty: settings.textPreviewProperty,
           imageProperty: settings.imageProperty,
+          subtitleProperty: settings.subtitleProperty,
+          urlProperty: settings.urlProperty,
           propertyDisplay1: settings.propertyDisplay1,
           propertyDisplay2: settings.propertyDisplay2,
           propertyDisplay3: settings.propertyDisplay3,
           propertyDisplay4: settings.propertyDisplay4,
-          propertyLayout12SideBySide: settings.propertyLayout12SideBySide,
-          propertyLayout34SideBySide: settings.propertyLayout34SideBySide,
+          propertyDisplay5: settings.propertyDisplay5,
+          propertyDisplay6: settings.propertyDisplay6,
+          propertyDisplay7: settings.propertyDisplay7,
+          propertyDisplay8: settings.propertyDisplay8,
+          propertyDisplay9: settings.propertyDisplay9,
+          propertyDisplay10: settings.propertyDisplay10,
+          propertyDisplay11: settings.propertyDisplay11,
+          propertyDisplay12: settings.propertyDisplay12,
+          propertyDisplay13: settings.propertyDisplay13,
+          propertyDisplay14: settings.propertyDisplay14,
+          propertyGroup1SideBySide: settings.propertyGroup1SideBySide,
+          propertyGroup2SideBySide: settings.propertyGroup2SideBySide,
+          propertyGroup3SideBySide: settings.propertyGroup3SideBySide,
+          propertyGroup4SideBySide: settings.propertyGroup4SideBySide,
+          propertyGroup5SideBySide: settings.propertyGroup5SideBySide,
+          propertyGroup6SideBySide: settings.propertyGroup6SideBySide,
+          propertyGroup7SideBySide: settings.propertyGroup7SideBySide,
+          propertyGroup1Position: settings.propertyGroup1Position,
+          propertyGroup2Position: settings.propertyGroup2Position,
+          propertyGroup3Position: settings.propertyGroup3Position,
+          propertyGroup4Position: settings.propertyGroup4Position,
+          propertyGroup5Position: settings.propertyGroup5Position,
+          propertyGroup6Position: settings.propertyGroup6Position,
+          propertyGroup7Position: settings.propertyGroup7Position,
           propertyLabels: settings.propertyLabels,
           showTitle: settings.showTitle,
           showTextPreview: settings.showTextPreview,
@@ -10122,6 +10498,14 @@ function View({
       }
     }, 300);
   }, [settings, ctime, persistenceManager]);
+  dc.useEffect(() => {
+    const globalSettings = persistenceManager.getGlobalSettings();
+    if (app.isMobile && globalSettings.preventSidebarSwipe === "all-views" && explorerRef.current) {
+      const controller = new AbortController();
+      setupSwipeInterception(explorerRef.current, controller.signal);
+      return () => controller.abort();
+    }
+  }, [app.isMobile, persistenceManager]);
   dc.useEffect(() => {
     if (isPinned && toolbarRef.current) {
       const scrollContainer = toolbarRef.current.closest(
@@ -10313,17 +10697,38 @@ function View({
       const newHasImageAvailable = {};
       if (settings.showTextPreview) {
         const snippetEntries = sorted.slice(0, displayedCount).map((p) => {
+          var _a, _b, _c, _d;
           try {
             const file = app.vault.getAbstractFileByPath(p.$path);
             if (!(file instanceof import_obsidian6.TFile)) {
               newSnippets[p.$path] = "(File not found)";
               return null;
             }
-            const descFromProp = getFirstDatacorePropertyValue(
-              p,
-              settings.descriptionProperty
-            );
-            const descAsString = typeof descFromProp === "string" || typeof descFromProp === "number" ? String(descFromProp) : null;
+            let textPreviewValue = null;
+            if (settings.textPreviewProperty) {
+              const ctime2 = ((_b = (_a = p.$ctime) == null ? void 0 : _a.toMillis) == null ? void 0 : _b.call(_a)) || 0;
+              const mtime = ((_d = (_c = p.$mtime) == null ? void 0 : _c.toMillis) == null ? void 0 : _d.call(_c)) || 0;
+              const textPreviewProps = settings.textPreviewProperty.split(",").map((prop) => prop.trim());
+              for (const prop of textPreviewProps) {
+                const timestamp = resolveTimestampProperty(
+                  prop,
+                  ctime2,
+                  mtime
+                );
+                if (timestamp) {
+                  textPreviewValue = timestamp;
+                  break;
+                }
+                const textPreviewPropValue = getFirstDatacorePropertyValue(
+                  p,
+                  prop
+                );
+                if (typeof textPreviewPropValue === "string" || typeof textPreviewPropValue === "number") {
+                  textPreviewValue = String(textPreviewPropValue);
+                  break;
+                }
+              }
+            }
             let titleValue = p.value(settings.titleProperty);
             if (Array.isArray(titleValue))
               titleValue = titleValue[0];
@@ -10331,7 +10736,7 @@ function View({
             return {
               path: p.$path,
               file,
-              descriptionData: descAsString,
+              textPreviewData: textPreviewValue,
               fileName: p.$name,
               titleString
             };
@@ -10746,11 +11151,11 @@ function View({
       const randomPath = sorted[randomIndex].$path;
       const file = app.vault.getAbstractFileByPath(randomPath);
       if (file instanceof import_obsidian6.TFile) {
-        const newLeaf = import_obsidian6.Keymap.isModEvent(event);
-        void app.workspace.getLeaf(newLeaf).openFile(file);
+        const paneType = getPaneType(event, settings.openRandomInNewTab);
+        void app.workspace.getLeaf(paneType).openFile(file);
       }
     },
-    [sorted, app]
+    [sorted, app, settings.openRandomInNewTab]
   );
   const handleToggleCode = dc.useCallback(() => {
     setShowQueryEditor(!showQueryEditor);
@@ -10852,13 +11257,10 @@ function View({
     (e) => {
       e.stopPropagation();
       const limit = parseInt(resultLimit);
-      const count = limit > 0 && totalCount > limit ? limit : totalCount;
-      const text = `Copied ${count} result${count === 1 ? "" : "s"} to clipboard`;
       const links = sorted.slice(0, limit > 0 ? limit : sorted.length).map((p) => `[[${p.$name}]]`).join("\n");
       void navigator.clipboard.writeText(links);
-      console.log(text);
     },
-    [resultLimit, totalCount, sorted]
+    [resultLimit, sorted]
   );
   const handleSettingsChange = dc.useCallback(
     (newSettings) => {
@@ -11032,7 +11434,7 @@ if (typeof globalThis !== "undefined") {
 }
 
 // src/bases/card-view.ts
-var import_obsidian8 = require("obsidian");
+var import_obsidian9 = require("obsidian");
 
 // src/shared/settings-schema.ts
 var _pluginInstance = null;
@@ -11082,13 +11484,13 @@ function getBasesViewOptions() {
         {
           type: "text",
           displayName: "Text preview property",
-          key: "descriptionProperty",
+          key: "textPreviewProperty",
           placeholder: "Comma-separated if multiple",
-          default: DEFAULT_VIEW_SETTINGS.descriptionProperty
+          default: DEFAULT_VIEW_SETTINGS.textPreviewProperty
         },
         {
           type: "toggle",
-          displayName: "Use note content if text preview property missing or empty",
+          displayName: "Show note content if text preview property missing or empty",
           key: "fallbackToContent",
           default: DEFAULT_VIEW_SETTINGS.fallbackToContent
         }
@@ -11100,7 +11502,7 @@ function getBasesViewOptions() {
       items: [
         {
           type: "dropdown",
-          displayName: "Image format",
+          displayName: "Format",
           key: "imageFormat",
           options: {
             thumbnail: "Thumbnail",
@@ -11111,7 +11513,7 @@ function getBasesViewOptions() {
         },
         {
           type: "dropdown",
-          displayName: "Image position",
+          displayName: "Position",
           key: "imagePosition",
           options: {
             left: "Left",
@@ -11141,7 +11543,7 @@ function getBasesViewOptions() {
         },
         {
           type: "dropdown",
-          displayName: "Image fit",
+          displayName: "Fit",
           key: "coverFitMode",
           options: {
             crop: "Crop",
@@ -11151,7 +11553,7 @@ function getBasesViewOptions() {
         },
         {
           type: "slider",
-          displayName: "Image ratio",
+          displayName: "Ratio",
           key: "imageAspectRatio",
           min: 0.25,
           max: 2.5,
@@ -11180,7 +11582,7 @@ function getBasesViewOptions() {
         },
         {
           type: "dropdown",
-          displayName: "Show property labels",
+          displayName: "Property labels",
           key: "propertyLabels",
           options: {
             inline: "Inline",
@@ -11212,8 +11614,8 @@ function getBasesViewOptions() {
         {
           type: "toggle",
           displayName: "Show side-by-side",
-          key: "propertyLayout12SideBySide",
-          default: DEFAULT_VIEW_SETTINGS.propertyLayout12SideBySide
+          key: "propertyGroup1SideBySide",
+          default: DEFAULT_VIEW_SETTINGS.propertyGroup1SideBySide
         },
         {
           type: "dropdown",
@@ -11248,8 +11650,8 @@ function getBasesViewOptions() {
         {
           type: "toggle",
           displayName: "Show side-by-side",
-          key: "propertyLayout34SideBySide",
-          default: DEFAULT_VIEW_SETTINGS.propertyLayout34SideBySide
+          key: "propertyGroup2SideBySide",
+          default: DEFAULT_VIEW_SETTINGS.propertyGroup2SideBySide
         },
         {
           type: "dropdown",
@@ -11284,8 +11686,8 @@ function getBasesViewOptions() {
         {
           type: "toggle",
           displayName: "Show side-by-side",
-          key: "propertyLayout56SideBySide",
-          default: DEFAULT_VIEW_SETTINGS.propertyLayout56SideBySide
+          key: "propertyGroup3SideBySide",
+          default: DEFAULT_VIEW_SETTINGS.propertyGroup3SideBySide
         },
         {
           type: "dropdown",
@@ -11320,8 +11722,8 @@ function getBasesViewOptions() {
         {
           type: "toggle",
           displayName: "Show side-by-side",
-          key: "propertyLayout78SideBySide",
-          default: DEFAULT_VIEW_SETTINGS.propertyLayout78SideBySide
+          key: "propertyGroup4SideBySide",
+          default: DEFAULT_VIEW_SETTINGS.propertyGroup4SideBySide
         },
         {
           type: "dropdown",
@@ -11356,8 +11758,8 @@ function getBasesViewOptions() {
         {
           type: "toggle",
           displayName: "Show side-by-side",
-          key: "propertyLayout910SideBySide",
-          default: DEFAULT_VIEW_SETTINGS.propertyLayout910SideBySide
+          key: "propertyGroup5SideBySide",
+          default: DEFAULT_VIEW_SETTINGS.propertyGroup5SideBySide
         },
         {
           type: "dropdown",
@@ -11392,8 +11794,8 @@ function getBasesViewOptions() {
         {
           type: "toggle",
           displayName: "Show side-by-side",
-          key: "propertyLayout1112SideBySide",
-          default: DEFAULT_VIEW_SETTINGS.propertyLayout1112SideBySide
+          key: "propertyGroup6SideBySide",
+          default: DEFAULT_VIEW_SETTINGS.propertyGroup6SideBySide
         },
         {
           type: "dropdown",
@@ -11428,8 +11830,8 @@ function getBasesViewOptions() {
         {
           type: "toggle",
           displayName: "Show side-by-side",
-          key: "propertyLayout1314SideBySide",
-          default: DEFAULT_VIEW_SETTINGS.propertyLayout1314SideBySide
+          key: "propertyGroup7SideBySide",
+          default: DEFAULT_VIEW_SETTINGS.propertyGroup7SideBySide
         },
         {
           type: "dropdown",
@@ -11451,12 +11853,12 @@ function getMasonryViewOptions() {
 function readBasesSettings(config, globalSettings, defaultViewSettings) {
   var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
   const titlePropertyValue = config.get("titleProperty");
-  const descriptionPropertyValue = config.get("descriptionProperty");
+  const textPreviewPropertyValue = config.get("textPreviewProperty");
   const imagePropertyValue = config.get("imageProperty");
   const urlPropertyValue = config.get("urlProperty");
   return {
     titleProperty: typeof titlePropertyValue === "string" ? titlePropertyValue : defaultViewSettings.titleProperty,
-    descriptionProperty: typeof descriptionPropertyValue === "string" ? descriptionPropertyValue : defaultViewSettings.descriptionProperty,
+    textPreviewProperty: typeof textPreviewPropertyValue === "string" ? textPreviewPropertyValue : defaultViewSettings.textPreviewProperty,
     imageProperty: typeof imagePropertyValue === "string" ? imagePropertyValue : defaultViewSettings.imageProperty,
     urlProperty: typeof urlPropertyValue === "string" ? urlPropertyValue : defaultViewSettings.urlProperty,
     omitFirstLine: globalSettings.omitFirstLine,
@@ -11509,11 +11911,11 @@ function readBasesSettings(config, globalSettings, defaultViewSettings) {
       }
       return "";
     })(),
-    propertyLayout12SideBySide: Boolean(
-      (_d = config.get("propertyLayout12SideBySide")) != null ? _d : defaultViewSettings.propertyLayout12SideBySide
+    propertyGroup1SideBySide: Boolean(
+      (_d = config.get("propertyGroup1SideBySide")) != null ? _d : defaultViewSettings.propertyGroup1SideBySide
     ),
-    propertyLayout34SideBySide: Boolean(
-      (_e = config.get("propertyLayout34SideBySide")) != null ? _e : defaultViewSettings.propertyLayout34SideBySide
+    propertyGroup2SideBySide: Boolean(
+      (_e = config.get("propertyGroup2SideBySide")) != null ? _e : defaultViewSettings.propertyGroup2SideBySide
     ),
     propertyDisplay5: (() => {
       const value = config.get("propertyDisplay5");
@@ -11529,8 +11931,8 @@ function readBasesSettings(config, globalSettings, defaultViewSettings) {
       }
       return "";
     })(),
-    propertyLayout56SideBySide: Boolean(
-      (_f = config.get("propertyLayout56SideBySide")) != null ? _f : defaultViewSettings.propertyLayout56SideBySide
+    propertyGroup3SideBySide: Boolean(
+      (_f = config.get("propertyGroup3SideBySide")) != null ? _f : defaultViewSettings.propertyGroup3SideBySide
     ),
     propertyDisplay7: (() => {
       const value = config.get("propertyDisplay7");
@@ -11546,8 +11948,8 @@ function readBasesSettings(config, globalSettings, defaultViewSettings) {
       }
       return "";
     })(),
-    propertyLayout78SideBySide: Boolean(
-      (_g = config.get("propertyLayout78SideBySide")) != null ? _g : defaultViewSettings.propertyLayout78SideBySide
+    propertyGroup4SideBySide: Boolean(
+      (_g = config.get("propertyGroup4SideBySide")) != null ? _g : defaultViewSettings.propertyGroup4SideBySide
     ),
     propertyDisplay9: (() => {
       const value = config.get("propertyDisplay9");
@@ -11563,8 +11965,8 @@ function readBasesSettings(config, globalSettings, defaultViewSettings) {
       }
       return "";
     })(),
-    propertyLayout910SideBySide: Boolean(
-      (_h = config.get("propertyLayout910SideBySide")) != null ? _h : defaultViewSettings.propertyLayout910SideBySide
+    propertyGroup5SideBySide: Boolean(
+      (_h = config.get("propertyGroup5SideBySide")) != null ? _h : defaultViewSettings.propertyGroup5SideBySide
     ),
     propertyDisplay11: (() => {
       const value = config.get("propertyDisplay11");
@@ -11580,8 +11982,8 @@ function readBasesSettings(config, globalSettings, defaultViewSettings) {
       }
       return "";
     })(),
-    propertyLayout1112SideBySide: Boolean(
-      (_i = config.get("propertyLayout1112SideBySide")) != null ? _i : defaultViewSettings.propertyLayout1112SideBySide
+    propertyGroup6SideBySide: Boolean(
+      (_i = config.get("propertyGroup6SideBySide")) != null ? _i : defaultViewSettings.propertyGroup6SideBySide
     ),
     propertyDisplay13: (() => {
       const value = config.get("propertyDisplay13");
@@ -11597,8 +11999,8 @@ function readBasesSettings(config, globalSettings, defaultViewSettings) {
       }
       return "";
     })(),
-    propertyLayout1314SideBySide: Boolean(
-      (_j = config.get("propertyLayout1314SideBySide")) != null ? _j : defaultViewSettings.propertyLayout1314SideBySide
+    propertyGroup7SideBySide: Boolean(
+      (_j = config.get("propertyGroup7SideBySide")) != null ? _j : defaultViewSettings.propertyGroup7SideBySide
     ),
     propertyGroup1Position: (() => {
       const value = config.get("propertyGroup1Position");
@@ -11633,15 +12035,23 @@ function readBasesSettings(config, globalSettings, defaultViewSettings) {
       return value === "hide" || value === "inline" || value === "above" ? value : defaultViewSettings.propertyLabels;
     })(),
     imageFormat: (() => {
-      const value = config.get("imageFormat");
-      return value === "thumbnail-left" || value === "thumbnail-right" || value === "thumbnail-top" || value === "thumbnail-bottom" || value === "cover-left" || value === "cover-right" || value === "cover-top" || value === "cover-bottom" || value === "none" ? value : defaultViewSettings.imageFormat;
+      const format = config.get("imageFormat");
+      const position = config.get("imagePosition");
+      if (format === "none")
+        return "none";
+      if ((format === "thumbnail" || format === "cover") && (position === "left" || position === "right" || position === "top" || position === "bottom")) {
+        return `${format}-${position}`;
+      }
+      const value = format;
+      if (value === "thumbnail-left" || value === "thumbnail-right" || value === "thumbnail-top" || value === "thumbnail-bottom" || value === "cover-left" || value === "cover-right" || value === "cover-top" || value === "cover-bottom" || value === "none") {
+        return value;
+      }
+      return defaultViewSettings.imageFormat;
     })(),
     coverFitMode: (() => {
       const value = config.get("coverFitMode");
       return value === "crop" || value === "contain" ? value : defaultViewSettings.coverFitMode;
     })(),
-    timestampFormat: globalSettings.timestampFormat,
-    // From global settings
     listMarker: (() => {
       const value = config.get("listMarker");
       return typeof value === "string" ? value : DEFAULT_SETTINGS.listMarker;
@@ -11656,7 +12066,7 @@ function readBasesSettings(config, globalSettings, defaultViewSettings) {
     // Not configurable in Bases
     openFileAction: globalSettings.openFileAction,
     // From global settings
-    openRandomInNewPane: globalSettings.openRandomInNewPane,
+    openRandomInNewTab: globalSettings.openRandomInNewTab,
     // From global settings
     showShuffleInRibbon: globalSettings.showShuffleInRibbon,
     // From global settings
@@ -11677,12 +12087,13 @@ function readBasesSettings(config, globalSettings, defaultViewSettings) {
     imageAspectRatio: (() => {
       const value = config.get("imageAspectRatio");
       return typeof value === "number" ? value : defaultViewSettings.imageAspectRatio;
-    })()
+    })(),
+    preventSidebarSwipe: globalSettings.preventSidebarSwipe
+    // From global settings
   };
 }
 
 // src/bases/card-view.ts
-init_property();
 init_style_settings();
 
 // src/bases/shared-renderer.ts
@@ -11742,7 +12153,9 @@ function setupScrollGradients(container, updateGradientFn) {
     if (!wrapper)
       return;
     requestAnimationFrame(() => {
-      updateGradientFn(element);
+      requestAnimationFrame(() => {
+        updateGradientFn(element);
+      });
     });
     wrapper.addEventListener("scroll", () => {
       updateGradientFn(element);
@@ -11752,7 +12165,129 @@ function setupScrollGradients(container, updateGradientFn) {
 
 // src/bases/shared-renderer.ts
 init_style_settings();
-init_property();
+
+// src/shared/keyboard-nav.ts
+var CARD_SELECTOR = ".card";
+var COLUMN_TOLERANCE = 5;
+var CROSS_AXIS_WEIGHT = 0.5;
+function calculateDistance(primaryDist, crossAxisDist) {
+  return primaryDist + crossAxisDist * CROSS_AXIS_WEIGHT;
+}
+function isSameColumn(leftA, leftB) {
+  return Math.abs(leftA - leftB) <= COLUMN_TOLERANCE;
+}
+function handleArrowNavigation(e, currentCard, container, onNavigate) {
+  const cards = Array.from(
+    container.querySelectorAll(CARD_SELECTOR)
+  );
+  const currentIndex = cards.indexOf(currentCard);
+  if (currentIndex === -1 || cards.length <= 1)
+    return;
+  const cardRects = cards.map((card) => {
+    const rect = card.getBoundingClientRect();
+    return {
+      card,
+      left: rect.left,
+      centerX: rect.left + rect.width / 2,
+      centerY: rect.top + rect.height / 2
+    };
+  });
+  const current = cardRects[currentIndex];
+  let targetCard = null;
+  let minDistance = Infinity;
+  for (let i = 0; i < cardRects.length; i++) {
+    if (i === currentIndex)
+      continue;
+    const candidate = cardRects[i];
+    let isValid = false;
+    let distance = 0;
+    switch (e.key) {
+      case "ArrowDown":
+        if (candidate.centerY > current.centerY && isSameColumn(candidate.left, current.left)) {
+          distance = calculateDistance(
+            candidate.centerY - current.centerY,
+            Math.abs(candidate.centerX - current.centerX)
+          );
+          isValid = true;
+        }
+        break;
+      case "ArrowUp":
+        if (candidate.centerY < current.centerY && isSameColumn(candidate.left, current.left)) {
+          distance = calculateDistance(
+            current.centerY - candidate.centerY,
+            Math.abs(candidate.centerX - current.centerX)
+          );
+          isValid = true;
+        }
+        break;
+      case "ArrowRight":
+        if (candidate.centerX > current.centerX) {
+          distance = calculateDistance(
+            candidate.centerX - current.centerX,
+            Math.abs(candidate.centerY - current.centerY)
+          );
+          isValid = true;
+        }
+        break;
+      case "ArrowLeft":
+        if (candidate.centerX < current.centerX) {
+          distance = calculateDistance(
+            current.centerX - candidate.centerX,
+            Math.abs(candidate.centerY - current.centerY)
+          );
+          isValid = true;
+        }
+        break;
+    }
+    if (isValid && distance < minDistance) {
+      minDistance = distance;
+      targetCard = candidate.card;
+    }
+  }
+  if (targetCard) {
+    const targetIndex = cards.indexOf(targetCard);
+    if (onNavigate) {
+      onNavigate(targetCard, targetIndex);
+    }
+    targetCard.focus();
+    targetCard.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }
+}
+function isArrowKey(key) {
+  return ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key);
+}
+
+// src/bases/shared-renderer.ts
+function truncateTitleWithExtension2(titleEl, textEl) {
+  const containerStyle = getComputedStyle(titleEl);
+  const lineHeight = parseFloat(containerStyle.lineHeight);
+  const maxLines = parseInt(
+    containerStyle.getPropertyValue("--dynamic-views-title-lines") || "2"
+  );
+  const maxHeight = lineHeight * maxLines;
+  const fullText = textEl.textContent || "";
+  if (!fullText)
+    return;
+  if (titleEl.scrollHeight <= maxHeight)
+    return;
+  let low = 0;
+  let high = fullText.length;
+  const ellipsis = "\u2026";
+  while (low < high) {
+    const mid = Math.ceil((low + high) / 2);
+    textEl.textContent = fullText.slice(0, mid) + ellipsis;
+    if (titleEl.scrollHeight <= maxHeight) {
+      low = mid;
+    } else {
+      high = mid - 1;
+    }
+  }
+  textEl.textContent = fullText.slice(0, low) + ellipsis;
+  while (titleEl.scrollHeight > maxHeight && low > 0) {
+    low--;
+    textEl.textContent = fullText.slice(0, low) + ellipsis;
+  }
+}
 var SharedCardRenderer = class {
   constructor(app, plugin, updateLayoutRef) {
     this.app = app;
@@ -11760,24 +12295,37 @@ var SharedCardRenderer = class {
     this.updateLayoutRef = updateLayoutRef;
     this.propertyObservers = [];
     this.zoomCleanupFns = /* @__PURE__ */ new Map();
-    this.zoomedOriginalParents = /* @__PURE__ */ new Map();
+    this.zoomedClones = /* @__PURE__ */ new Map();
+    this.slideshowCleanups = [];
+    this.cardScopes = [];
+    this.cardAbortControllers = [];
+    this.activeScope = null;
   }
   /**
-   * Cleanup observers and zoom state when renderer is destroyed
+   * Cleanup observers, scopes, event listeners, and zoom state when renderer is destroyed
    */
   cleanup() {
     this.propertyObservers.forEach((obs) => obs.disconnect());
     this.propertyObservers = [];
-    this.zoomCleanupFns.forEach((cleanup, embedEl) => {
-      embedEl.classList.remove("is-zoomed");
-      const originalParent = this.zoomedOriginalParents.get(embedEl);
-      if (originalParent && embedEl.parentElement !== originalParent) {
-        originalParent.appendChild(embedEl);
-      }
-      cleanup();
-    });
-    this.zoomCleanupFns.clear();
-    this.zoomedOriginalParents.clear();
+    this.slideshowCleanups.forEach((cleanup) => cleanup());
+    this.slideshowCleanups = [];
+    if (this.activeScope) {
+      this.app.keymap.popScope(this.activeScope);
+      this.activeScope = null;
+    }
+    this.cardScopes = [];
+    this.cardAbortControllers.forEach((controller) => controller.abort());
+    this.cardAbortControllers = [];
+    if (document.body.classList.contains("dynamic-views-zoom-close-on-click")) {
+      this.zoomedClones.forEach((clone) => {
+        clone.remove();
+      });
+      this.zoomedClones.clear();
+      this.zoomCleanupFns.forEach((cleanup) => {
+        cleanup();
+      });
+      this.zoomCleanupFns.clear();
+    }
   }
   /**
    * Render text with link detection
@@ -11821,6 +12369,7 @@ var SharedCardRenderer = class {
         void this.app.workspace.openLinkText(link.url, "", newLeaf);
       });
       el2.addEventListener("dragstart", (e) => {
+        e.stopPropagation();
         const file = this.app.metadataCache.getFirstLinkpathDest(link.url, "");
         if (!(file instanceof import_obsidian7.TFile))
           return;
@@ -11853,6 +12402,7 @@ var SharedCardRenderer = class {
     });
     el.addEventListener("dragstart", (e) => {
       var _a, _b;
+      e.stopPropagation();
       (_a = e.dataTransfer) == null ? void 0 : _a.clearData();
       const dragText = link.caption === link.url ? link.url : `[${link.caption}](${link.url})`;
       (_b = e.dataTransfer) == null ? void 0 : _b.setData("text/plain", dragText);
@@ -11865,8 +12415,9 @@ var SharedCardRenderer = class {
    * @param entry - Bases entry
    * @param settings - View settings
    * @param hoverParent - Parent object for hover-link event
+   * @param keyboardNav - Optional keyboard navigation config
    */
-  renderCard(container, card, entry, settings, hoverParent) {
+  renderCard(container, card, entry, settings, hoverParent, keyboardNav) {
     const cardEl = container.createDiv("card");
     const imageFormat = settings.imageFormat;
     let format = "none";
@@ -11899,6 +12450,76 @@ var SharedCardRenderer = class {
       "clickable-card",
       settings.openFileAction === "card"
     );
+    const abortController = new AbortController();
+    this.cardAbortControllers.push(abortController);
+    const { signal } = abortController;
+    if (keyboardNav) {
+      cardEl.tabIndex = keyboardNav.index === keyboardNav.focusableCardIndex ? 0 : -1;
+      const cardScope = new import_obsidian7.Scope(this.app.scope);
+      cardScope.register(["Mod"], "Enter", () => {
+        void this.app.workspace.openLinkText(card.path, "", "tab");
+        return false;
+      });
+      cardScope.register(["Mod"], " ", () => {
+        void this.app.workspace.openLinkText(card.path, "", "tab");
+        return false;
+      });
+      this.cardScopes.push(cardScope);
+      cardEl.addEventListener(
+        "focus",
+        () => {
+          if (keyboardNav.onFocusChange) {
+            keyboardNav.onFocusChange(keyboardNav.index);
+          }
+          if (this.activeScope && this.activeScope !== cardScope) {
+            this.app.keymap.popScope(this.activeScope);
+          }
+          this.activeScope = cardScope;
+          this.app.keymap.pushScope(cardScope);
+        },
+        { signal }
+      );
+      cardEl.addEventListener(
+        "blur",
+        () => {
+          if (this.activeScope === cardScope) {
+            this.app.keymap.popScope(cardScope);
+            this.activeScope = null;
+          }
+        },
+        { signal }
+      );
+      cardEl.addEventListener(
+        "keydown",
+        (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            if (!e.metaKey && !e.ctrlKey) {
+              e.preventDefault();
+              void this.app.workspace.openLinkText(card.path, "", false);
+            }
+          } else if (isArrowKey(e.key)) {
+            e.preventDefault();
+            if (keyboardNav.containerRef.current) {
+              handleArrowNavigation(
+                e,
+                cardEl,
+                keyboardNav.containerRef.current,
+                (_targetCard, targetIndex) => {
+                  if (keyboardNav.onFocusChange) {
+                    keyboardNav.onFocusChange(targetIndex);
+                  }
+                }
+              );
+            }
+          } else if (e.key === "Tab") {
+            e.preventDefault();
+          } else if (e.key === "Escape") {
+            cardEl.blur();
+          }
+        },
+        { signal }
+      );
+    }
     cardEl.addEventListener("click", (e) => {
       if (settings.openFileAction === "card") {
         const target = e.target;
@@ -11906,7 +12527,10 @@ var SharedCardRenderer = class {
         const isTag = target.classList.contains("tag") || target.closest(".tag");
         const isPathSegment = target.classList.contains("path-segment") || target.closest(".path-segment");
         const isImage = target.tagName === "IMG";
-        if (!isLink && !isTag && !isPathSegment && !isImage) {
+        const isZoomEnabled = !document.body.classList.contains(
+          "dynamic-views-image-zoom-disabled"
+        );
+        if (!isLink && !isTag && !isPathSegment && !(isImage && isZoomEnabled)) {
           const newLeaf = e.metaKey || e.ctrlKey;
           const file = this.app.vault.getAbstractFileByPath(card.path);
           if (file instanceof import_obsidian7.TFile) {
@@ -11915,27 +12539,390 @@ var SharedCardRenderer = class {
         }
       }
     });
-    cardEl.addEventListener("mouseover", (e) => {
-      this.app.workspace.trigger("hover-link", {
-        event: e,
-        source: "dynamic-views",
-        hoverParent,
-        targetEl: cardEl,
-        linktext: card.path
+    if (settings.openFileAction === "card") {
+      cardEl.addEventListener("mouseover", (e) => {
+        this.app.workspace.trigger("hover-link", {
+          event: e,
+          source: "dynamic-views",
+          hoverParent,
+          targetEl: cardEl,
+          linktext: card.path
+        });
       });
-    });
-    cardEl.addEventListener("contextmenu", (e) => {
+    }
+    const handleContextMenu = (e) => {
       e.stopPropagation();
       e.preventDefault();
       const menu = new import_obsidian7.Menu();
-      this.app.workspace.trigger(
-        "file-menu",
-        menu,
-        entry.file,
-        "file-explorer"
-      );
+      const file = entry.file;
+      const isMobile = import_obsidian7.Platform.isMobile;
+      if (isMobile) {
+        menu.addItem(
+          (item) => item.setTitle("Open link").setIcon("lucide-file").onClick(() => {
+            void this.app.workspace.openLinkText(card.path, "", false);
+          })
+        );
+        menu.addItem(
+          (item) => item.setTitle("Open in new tab").setIcon("lucide-file-plus").onClick(() => {
+            void this.app.workspace.openLinkText(card.path, "", "tab");
+          })
+        );
+        menu.addSeparator();
+        menu.addItem(
+          (item) => item.setTitle("Rename...").setIcon("lucide-edit-3").onClick(async () => {
+            try {
+              await this.app.fileManager.promptForFileRename(file);
+            } catch (e2) {
+              new import_obsidian7.Notice("Failed to rename file");
+            }
+          })
+        );
+        menu.addItem(
+          (item) => item.setTitle("Share").setIcon("lucide-arrow-up-right").onClick(() => {
+            this.app.openWithDefaultApp(card.path);
+          })
+        );
+        menu.addSeparator();
+        this.app.workspace.trigger("file-menu", menu, file, "file-explorer");
+        menu.addSeparator();
+        menu.addItem(
+          (item) => item.setTitle("Delete file").setIcon("lucide-trash-2").setWarning(true).onClick(async () => {
+            try {
+              await this.app.fileManager.trashFile(file);
+            } catch (e2) {
+              new import_obsidian7.Notice("Failed to delete file");
+            }
+          })
+        );
+      } else {
+        this.app.workspace.trigger("file-menu", menu, file, "file-explorer");
+      }
       menu.showAtMouseEvent(e);
-    });
+      const menuEl = document.body.querySelector(".menu");
+      if (!menuEl)
+        return;
+      menuEl.style.visibility = "hidden";
+      const titlesToRemove = isMobile ? /* @__PURE__ */ new Set([
+        "Merge entire file with...",
+        "Open to the right",
+        "Open in new window",
+        "Copy path",
+        "Copy relative path",
+        "Open in default app",
+        "Reveal in Finder",
+        "Show in Explorer",
+        "Show in system explorer",
+        "Reveal file in navigation"
+      ]) : /* @__PURE__ */ new Set([
+        // Desktop: items to exclude entirely
+        "Merge entire file with..."
+      ]);
+      requestAnimationFrame(() => {
+        var _a;
+        if (!document.body.contains(menuEl))
+          return;
+        try {
+          if (isMobile) {
+            const menuScroll2 = menuEl.querySelector(".menu-scroll");
+            if (menuScroll2 && menuScroll2.firstChild) {
+              const labelGroup = document.createElement("div");
+              labelGroup.className = "menu-group";
+              const labelItem = document.createElement("div");
+              labelItem.className = "menu-item is-label";
+              labelItem.setAttribute("data-section", "title");
+              const titleDiv = document.createElement("div");
+              titleDiv.className = "menu-item-title";
+              const pathParts = card.path.split("/");
+              let filename = pathParts[pathParts.length - 1];
+              if (filename.toLowerCase().endsWith(".md")) {
+                filename = filename.slice(0, -3);
+              }
+              titleDiv.textContent = filename;
+              labelItem.appendChild(titleDiv);
+              labelGroup.appendChild(labelItem);
+              menuScroll2.insertBefore(labelGroup, menuScroll2.firstChild);
+              const separator = document.createElement("div");
+              separator.className = "menu-separator";
+              labelGroup.after(separator);
+            }
+          }
+          const itemsByTitle = /* @__PURE__ */ new Map();
+          menuEl.querySelectorAll(".menu-item:not(.is-label)").forEach((item) => {
+            const titleEl = item.querySelector(".menu-item-title");
+            if (titleEl == null ? void 0 : titleEl.textContent) {
+              itemsByTitle.set(titleEl.textContent, item);
+            }
+          });
+          const menuScroll = menuEl.querySelector(".menu-scroll");
+          if (!menuScroll)
+            return;
+          if (!isMobile) {
+            const createMenuItem = (title, icon, onClick, isWarning = false) => {
+              const item = document.createElement("div");
+              item.className = isWarning ? "menu-item tappable is-warning" : "menu-item tappable";
+              item.innerHTML = `
+                <div class="menu-item-icon">${icon}</div>
+                <div class="menu-item-title">${title}</div>
+              `;
+              item.addEventListener("click", () => {
+                onClick();
+                document.body.click();
+              });
+              return item;
+            };
+            const icons = {
+              filePlus: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-file-plus"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M9 15h6"></path><path d="M12 18v-6"></path></svg>`,
+              splitVertical: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-separator-vertical"><line x1="12" x2="12" y1="3" y2="21"></line><polyline points="8 8 4 12 8 16"></polyline><polyline points="16 16 20 12 16 8"></polyline></svg>`,
+              edit: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>`,
+              arrowUpRight: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-arrow-up-right"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>`,
+              trash: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon lucide-trash-2"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg>`
+            };
+            if (!itemsByTitle.has("Open in new tab")) {
+              itemsByTitle.set(
+                "Open in new tab",
+                createMenuItem("Open in new tab", icons.filePlus, () => {
+                  void this.app.workspace.openLinkText(card.path, "", "tab");
+                })
+              );
+            }
+            if (!itemsByTitle.has("Open to the right")) {
+              itemsByTitle.set(
+                "Open to the right",
+                createMenuItem("Open to the right", icons.splitVertical, () => {
+                  void this.app.workspace.openLinkText(card.path, "", "split");
+                })
+              );
+            }
+            if (!itemsByTitle.has("Rename...")) {
+              itemsByTitle.set(
+                "Rename...",
+                createMenuItem("Rename...", icons.edit, () => {
+                  this.app.fileManager.promptForFileRename(file).catch(() => {
+                    new import_obsidian7.Notice("Failed to rename file");
+                  });
+                })
+              );
+            }
+            const openInDefaultApp = createMenuItem(
+              "Open in default app",
+              icons.arrowUpRight,
+              () => {
+                const fullPath = this.app.vault.adapter.getFullPath(card.path);
+                if (!fullPath) {
+                  new import_obsidian7.Notice("Cannot open file: path not found");
+                  return;
+                }
+                const { spawn } = (
+                  // eslint-disable-next-line @typescript-eslint/no-require-imports
+                  require("child_process")
+                );
+                const onSpawnError = () => new import_obsidian7.Notice("Failed to open file");
+                if (process.platform === "darwin") {
+                  spawn("open", [fullPath], {
+                    detached: true,
+                    stdio: "ignore"
+                  }).on("error", onSpawnError);
+                } else if (process.platform === "win32") {
+                  spawn("explorer.exe", [fullPath], {
+                    detached: true,
+                    stdio: "ignore"
+                  }).on("error", onSpawnError);
+                } else {
+                  spawn("xdg-open", [fullPath], {
+                    detached: true,
+                    stdio: "ignore"
+                  }).on("error", onSpawnError);
+                }
+              }
+            );
+            itemsByTitle.set("Open in default app", openInDefaultApp);
+            if (!itemsByTitle.has("Delete file")) {
+              itemsByTitle.set(
+                "Delete file",
+                createMenuItem(
+                  "Delete file",
+                  icons.trash,
+                  () => {
+                    this.app.fileManager.trashFile(file).catch(() => {
+                      new import_obsidian7.Notice("Failed to delete file");
+                    });
+                  },
+                  true
+                )
+              );
+            }
+          }
+          const revealTitles = [
+            "Reveal in Finder",
+            "Show in Explorer",
+            "Show in system explorer",
+            "Reveal in file explorer"
+          ];
+          let revealTitle = "Reveal in Finder";
+          for (const title of revealTitles) {
+            if (itemsByTitle.has(title)) {
+              revealTitle = title;
+              break;
+            }
+          }
+          const menuStructure = isMobile ? [
+            { items: ["Open link", "Open in new tab"], separator: true },
+            {
+              items: ["Rename...", "Move file to...", "Bookmark..."],
+              separator: true
+            },
+            { items: ["Copy Obsidian URL"], separator: true },
+            { items: ["Share"], separator: true }
+          ] : [
+            {
+              items: [
+                "Open in new tab",
+                "Open to the right",
+                "Open in new window"
+              ],
+              separator: true
+            },
+            {
+              items: ["Rename...", "Move file to...", "Bookmark..."],
+              separator: true
+            },
+            {
+              items: [
+                "Copy Obsidian URL",
+                "Copy path",
+                "Copy relative path"
+              ],
+              separator: true
+            },
+            {
+              items: [
+                "Open in default app",
+                revealTitle,
+                "Reveal file in navigation"
+              ],
+              separator: true
+            }
+          ];
+          const knownItems = new Set(menuStructure.flatMap((g) => g.items));
+          knownItems.add("Delete file");
+          titlesToRemove.forEach((t) => knownItems.add(t));
+          const pluginItems = [];
+          itemsByTitle.forEach((item, title) => {
+            if (!knownItems.has(title)) {
+              pluginItems.push(item);
+            }
+          });
+          if (isMobile) {
+            const labelGroup = menuScroll.querySelector(
+              ".menu-group:has(.is-label)"
+            );
+            const labelSep = labelGroup == null ? void 0 : labelGroup.nextElementSibling;
+            menuScroll.innerHTML = "";
+            if (labelGroup) {
+              menuScroll.appendChild(labelGroup);
+              if (labelSep == null ? void 0 : labelSep.classList.contains("menu-separator")) {
+                menuScroll.appendChild(labelSep);
+              }
+            }
+          } else {
+            menuScroll.innerHTML = "";
+          }
+          for (const group of menuStructure) {
+            const groupEl = document.createElement("div");
+            groupEl.className = "menu-group";
+            let hasItems = false;
+            for (const title of group.items) {
+              const item = itemsByTitle.get(title);
+              if (item && !titlesToRemove.has(title)) {
+                groupEl.appendChild(item);
+                hasItems = true;
+              }
+            }
+            if (hasItems) {
+              menuScroll.appendChild(groupEl);
+              if (group.separator) {
+                const sep = document.createElement("div");
+                sep.className = "menu-separator";
+                menuScroll.appendChild(sep);
+              }
+            }
+          }
+          if (pluginItems.length > 0) {
+            const pluginGroup = document.createElement("div");
+            pluginGroup.className = "menu-group";
+            pluginItems.forEach((item) => pluginGroup.appendChild(item));
+            menuScroll.appendChild(pluginGroup);
+            const sep = document.createElement("div");
+            sep.className = "menu-separator";
+            menuScroll.appendChild(sep);
+          }
+          const deleteItem = itemsByTitle.get("Delete file");
+          if (deleteItem) {
+            const deleteGroup = document.createElement("div");
+            deleteGroup.className = "menu-group";
+            deleteGroup.appendChild(deleteItem);
+            menuScroll.appendChild(deleteGroup);
+          }
+          let currentSelected = null;
+          menuScroll.addEventListener("mouseover", (e2) => {
+            const item = e2.target.closest(".menu-item");
+            if (item && item !== currentSelected) {
+              currentSelected == null ? void 0 : currentSelected.classList.remove("selected");
+              item.classList.add("selected");
+              currentSelected = item;
+            }
+          });
+          menuScroll.addEventListener("mouseleave", () => {
+            currentSelected == null ? void 0 : currentSelected.classList.remove("selected");
+            currentSelected = null;
+          });
+          menuEl.querySelectorAll(".menu-group").forEach((group) => {
+            if (group.children.length === 0) {
+              const prev = group.previousElementSibling;
+              const next = group.nextElementSibling;
+              if (prev == null ? void 0 : prev.classList.contains("menu-separator")) {
+                prev.remove();
+              }
+              if (next == null ? void 0 : next.classList.contains("menu-separator")) {
+                next.remove();
+              }
+              group.remove();
+            }
+          });
+          let prevWasSeparator = false;
+          menuEl.querySelectorAll(".menu-separator").forEach((sep) => {
+            if (prevWasSeparator) {
+              sep.remove();
+            } else {
+              prevWasSeparator = true;
+            }
+            if (sep.nextElementSibling && !sep.nextElementSibling.classList.contains("menu-separator")) {
+              prevWasSeparator = false;
+            }
+          });
+          const lastMenuChild = (_a = menuEl.querySelector(".menu-scroll")) == null ? void 0 : _a.lastElementChild;
+          if (lastMenuChild == null ? void 0 : lastMenuChild.classList.contains("menu-separator")) {
+            lastMenuChild.remove();
+          }
+          const rect = menuEl.getBoundingClientRect();
+          let top = e.clientY;
+          let left = e.clientX;
+          if (top + rect.height > window.innerHeight) {
+            top = Math.max(0, window.innerHeight - rect.height - 10);
+          }
+          if (left + rect.width > window.innerWidth) {
+            left = Math.max(0, window.innerWidth - rect.width - 10);
+          }
+          menuEl.style.top = `${top}px`;
+          menuEl.style.left = `${left}px`;
+        } finally {
+          menuEl.style.visibility = "visible";
+        }
+      });
+    };
+    if (settings.openFileAction === "card") {
+      cardEl.addEventListener("contextmenu", handleContextMenu);
+    }
     const handleDrag = (e) => {
       const file = this.app.vault.getAbstractFileByPath(card.path);
       if (!(file instanceof import_obsidian7.TFile))
@@ -11949,25 +12936,84 @@ var SharedCardRenderer = class {
       );
       if (settings.showTitle) {
         const titleEl = card.hasValidUrl ? containerEl.createDiv("card-title") : containerEl;
+        const normalized = normalizePropertyName(
+          this.app,
+          settings.titleProperty || ""
+        );
+        const isFullname = normalized === "file.fullname";
+        const displayTitle = isFullname ? stripExtFromTitle(card.title, card.path, true) : card.title;
+        const icon = getFileTypeIcon(card.path);
+        if (icon) {
+          const iconEl = titleEl.createSpan({ cls: "card-title-icon" });
+          (0, import_obsidian7.setIcon)(iconEl, icon);
+        }
+        const extInfo = getFileExtInfo(card.path, isFullname);
+        const extNoDot = (extInfo == null ? void 0 : extInfo.ext.slice(1)) || "";
+        let extEl = null;
+        if (extInfo) {
+          extEl = titleEl.createSpan({
+            cls: "card-title-ext",
+            text: extInfo.ext,
+            attr: { "data-ext": extNoDot }
+          });
+          if (settings.openFileAction === "title") {
+            extEl.addClass("clickable");
+            extEl.setAttribute("draggable", "true");
+            extEl.addEventListener("click", (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const newLeaf = e.metaKey || e.ctrlKey;
+              void this.app.workspace.openLinkText(card.path, "", newLeaf);
+            });
+            extEl.addEventListener("dragstart", handleDrag);
+          }
+        }
+        let textEl = null;
         if (settings.openFileAction === "title") {
           const link = titleEl.createEl("a", {
             cls: "internal-link",
-            text: card.title,
+            text: displayTitle,
             attr: {
               "data-href": card.path,
               href: card.path,
-              draggable: "true"
+              draggable: "true",
+              "data-ext": extNoDot
             }
           });
+          textEl = link;
           link.addEventListener("click", (e) => {
             e.preventDefault();
             e.stopPropagation();
             const newLeaf = e.metaKey || e.ctrlKey;
             void this.app.workspace.openLinkText(card.path, "", newLeaf);
           });
+          link.addEventListener("mouseover", (e) => {
+            this.app.workspace.trigger("hover-link", {
+              event: e,
+              source: "dynamic-views",
+              hoverParent,
+              targetEl: link,
+              linktext: card.path
+            });
+          });
+          link.addEventListener("contextmenu", handleContextMenu);
           link.addEventListener("dragstart", handleDrag);
         } else {
-          titleEl.appendText(card.title);
+          const textSpan = titleEl.createSpan({
+            cls: "card-title-text-content",
+            text: displayTitle,
+            attr: { "data-ext": extNoDot }
+          });
+          textEl = textSpan;
+        }
+        if (textEl && !document.body.classList.contains(
+          "dynamic-views-title-overflow-scroll"
+        )) {
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              truncateTitleWithExtension2(titleEl, textEl);
+            });
+          });
         }
         if (document.body.classList.contains(
           "dynamic-views-title-overflow-scroll"
@@ -11984,7 +13030,7 @@ var SharedCardRenderer = class {
         const iconEl = containerEl.createDiv(
           "card-title-url-icon text-icon-button svg-icon"
         );
-        iconEl.setAttribute("title", "Open URL");
+        iconEl.setAttribute("aria-label", card.urlValue);
         (0, import_obsidian7.setIcon)(iconEl, "square-arrow-out-up-right");
         iconEl.addEventListener("click", (e) => {
           e.preventDefault();
@@ -12029,16 +13075,6 @@ var SharedCardRenderer = class {
       cardEl.addEventListener("dragstart", handleDrag);
     }
     const rawUrls = card.imageUrl ? Array.isArray(card.imageUrl) ? card.imageUrl : [card.imageUrl] : [];
-    if (rawUrls.length > 1) {
-      console.log(
-        "// [Debug] Raw URLs from card.imageUrl:",
-        rawUrls.length,
-        "items"
-      );
-      rawUrls.forEach((url, i) => {
-        console.log(`//   [${i}]:`, url);
-      });
-    }
     const imageUrls = Array.from(
       new Set(
         rawUrls.filter(
@@ -12053,13 +13089,13 @@ var SharedCardRenderer = class {
         hasImage ? "card-cover-wrapper" : "card-cover-wrapper card-cover-wrapper-placeholder"
       );
       if (hasImage) {
-        const shouldShowCarousel = (position === "top" || position === "bottom") && imageUrls.length >= 2;
-        if (shouldShowCarousel) {
-          const carouselEl = coverWrapper.createDiv(
-            "card-cover card-cover-carousel"
+        const shouldShowSlideshow = isSlideshowEnabled() && (position === "top" || position === "bottom") && imageUrls.length >= 2;
+        if (shouldShowSlideshow) {
+          const slideshowEl = coverWrapper.createDiv(
+            "card-cover card-cover-slideshow"
           );
-          this.renderCarousel(
-            carouselEl,
+          this.renderSlideshow(
+            slideshowEl,
             imageUrls,
             format,
             position,
@@ -12073,7 +13109,8 @@ var SharedCardRenderer = class {
             format,
             position,
             settings,
-            cardEl
+            cardEl,
+            signal
           );
         }
       } else {
@@ -12102,89 +13139,12 @@ var SharedCardRenderer = class {
           return { cardWidth, targetWidth, paddingValue };
         };
         requestAnimationFrame(() => {
-          const {
-            cardWidth: _cardWidth,
-            targetWidth,
-            paddingValue
-          } = updateWrapperDimensions();
-          const cardComputed = getComputedStyle(cardEl);
-          console.log(
-            "[CSS Variable Check]",
-            "cardEl classes:",
-            cardEl.className,
-            "--side-cover-width on card style:",
-            cardEl.style.getPropertyValue("--dynamic-views-side-cover-width"),
-            "card computed --side-cover-width:",
-            cardComputed.getPropertyValue("--dynamic-views-side-cover-width")
-          );
-          const computedStyle = cardComputed;
-          console.log(
-            "[Side Cover Debug - shared-renderer]",
-            "position:",
-            position,
-            "aspectRatio:",
-            aspectRatio,
-            "wrapperRatio:",
-            wrapperRatio,
-            "cardOffsetWidth:",
-            cardEl.offsetWidth,
-            "cardClientWidth:",
-            cardEl.clientWidth,
-            "padding:",
-            computedStyle.padding,
-            "targetWidth:",
-            targetWidth,
-            "paddingValue:",
-            paddingValue
-          );
-          setTimeout(() => {
-            const wrapper = cardEl.querySelector(
-              ".card-cover-wrapper"
-            );
-            const cover = cardEl.querySelector(".card-cover");
-            const img = cardEl.querySelector(".card-cover img");
-            if (wrapper && cover && img) {
-              const wrapperComputed = getComputedStyle(wrapper);
-              console.log(
-                "[Wrapper CSS Debug]",
-                "wrapper classes:",
-                wrapper.className,
-                "wrapper.style.width:",
-                wrapper.style.width,
-                "wrapper parent is card:",
-                wrapper.parentElement === cardEl,
-                "wrapper CSS width value:",
-                wrapperComputed.getPropertyValue("width"),
-                "wrapper resolves variable:",
-                wrapperComputed.getPropertyValue(
-                  "--dynamic-views-side-cover-width"
-                )
-              );
-              console.log(
-                "[Side Cover Rendered]",
-                "position:",
-                position,
-                "wrapperWidth:",
-                wrapper.offsetWidth,
-                "wrapperComputedWidth:",
-                wrapperComputed.width,
-                "coverWidth:",
-                cover.offsetWidth,
-                "coverComputedWidth:",
-                getComputedStyle(cover).width,
-                "imgWidth:",
-                img.offsetWidth,
-                "imgComputedWidth:",
-                getComputedStyle(img).width
-              );
-            }
-          }, 200);
+          updateWrapperDimensions();
           const resizeObserver = new ResizeObserver((entries) => {
             for (const entry2 of entries) {
               const target = entry2.target;
               const newCardWidth = target.offsetWidth;
               if (newCardWidth === 0) {
-                console.log("[Side Cover Resize] Skipped - cardWidth is 0");
                 continue;
               }
               const newTargetWidth = Math.floor(wrapperRatio * newCardWidth);
@@ -12196,15 +13156,6 @@ var SharedCardRenderer = class {
               cardEl.style.setProperty(
                 "--dynamic-views-side-cover-content-padding",
                 `${newPaddingValue}px`
-              );
-              console.log(
-                "[Side Cover Resize]",
-                "newCardWidth:",
-                newCardWidth,
-                "newTargetWidth:",
-                newTargetWidth,
-                "newPaddingValue:",
-                newPaddingValue
               );
             }
           });
@@ -12221,7 +13172,8 @@ var SharedCardRenderer = class {
           format,
           position,
           settings,
-          cardEl
+          cardEl,
+          signal
         );
       } else {
         cardEl.createDiv("card-thumbnail-placeholder");
@@ -12246,7 +13198,8 @@ var SharedCardRenderer = class {
             format,
             position,
             settings,
-            cardEl
+            cardEl,
+            signal
           );
         } else {
           contentContainer.createDiv("card-thumbnail-placeholder");
@@ -12262,109 +13215,165 @@ var SharedCardRenderer = class {
           format,
           position,
           settings,
-          cardEl
+          cardEl,
+          signal
         );
       } else {
         cardEl.createDiv("card-thumbnail-placeholder");
       }
     }
     this.renderProperties(cardEl, card, entry, settings);
+    const breakpoint = parseFloat(
+      getComputedStyle(document.body).getPropertyValue(
+        "--dynamic-views-compact-breakpoint"
+      )
+    ) || 400;
+    const needsThumbnailStacking = format === "thumbnail" && (position === "left" || position === "right") && settings.showTextPreview && card.snippet;
+    const thumbnailEl = needsThumbnailStacking ? cardEl.querySelector(".card-thumbnail") : null;
+    const contentEl = needsThumbnailStacking ? cardEl.querySelector(".card-content") : null;
+    let isStacked = false;
+    const cardObserver = new ResizeObserver((entries) => {
+      for (const entry2 of entries) {
+        const cardWidth = entry2.contentRect.width;
+        if (breakpoint > 0) {
+          cardEl.classList.toggle("compact-mode", cardWidth < breakpoint);
+        }
+        if (thumbnailEl && contentEl) {
+          const thumbnailWidth = thumbnailEl.offsetWidth;
+          const shouldStack = cardWidth < thumbnailWidth * 3;
+          if (shouldStack && !isStacked) {
+            cardEl.insertBefore(thumbnailEl, contentEl);
+            cardEl.classList.add("thumbnail-stack");
+            isStacked = true;
+          } else if (!shouldStack && isStacked) {
+            contentEl.appendChild(thumbnailEl);
+            cardEl.classList.remove("thumbnail-stack");
+            isStacked = false;
+          }
+        }
+      }
+    });
+    cardObserver.observe(cardEl);
+    this.propertyObservers.push(cardObserver);
   }
   /**
-   * Renders carousel for covers with multiple images
+   * Renders slideshow for covers with multiple images
+   * Uses two-image swap with keyframe animations (0.4.0 carousel approach)
    */
-  renderCarousel(carouselEl, imageUrls, format, position, settings) {
-    let currentSlide = 0;
-    console.log("// CAROUSEL INIT:", {
-      totalSlides: imageUrls.length,
-      urls: imageUrls
-    });
-    const slidesContainer = carouselEl.createDiv("carousel-slides");
-    const slideElements = imageUrls.map((url, index) => {
-      const slideEl = slidesContainer.createDiv("carousel-slide");
-      if (index === 0) {
-        slideEl.addClass("is-active");
-      }
-      const imageEmbedContainer = slideEl.createDiv("image-embed");
-      if (index === 0) {
-        const indicator = imageEmbedContainer.createDiv("carousel-indicator");
-        (0, import_obsidian7.setIcon)(indicator, "lucide-images");
-      }
-      const imgEl = imageEmbedContainer.createEl("img", {
-        attr: { src: url, alt: "" }
-      });
-      imageEmbedContainer.style.setProperty(
-        "--cover-image-url",
-        `url("${url}")`
-      );
-      const cardEl = carouselEl.closest(".card");
-      if (cardEl && index === 0) {
-        setupImageLoadHandler(
-          imgEl,
-          imageEmbedContainer,
-          cardEl,
-          this.updateLayoutRef.current || void 0
+  renderSlideshow(slideshowEl, imageUrls, format, position, settings) {
+    const controller = new AbortController();
+    const { signal } = controller;
+    this.slideshowCleanups.push(() => controller.abort());
+    const imageEmbedContainer = slideshowEl.createDiv("image-embed");
+    imageEmbedContainer.style.setProperty(
+      "--cover-image-url",
+      `url("${imageUrls[0]}")`
+    );
+    const cardEl = slideshowEl.closest(".card");
+    imageEmbedContainer.addEventListener(
+      "click",
+      (e) => {
+        handleImageZoomClick(
+          e,
+          (cardEl == null ? void 0 : cardEl.getAttribute("data-path")) || "",
+          this.app,
+          this.zoomCleanupFns,
+          this.zoomedClones
         );
+      },
+      { signal }
+    );
+    const currentImg = imageEmbedContainer.createEl("img", {
+      cls: "slideshow-img slideshow-img-current",
+      attr: { src: imageUrls[0], alt: "" }
+    });
+    imageEmbedContainer.createEl("img", {
+      cls: "slideshow-img slideshow-img-next",
+      attr: { src: "", alt: "" }
+    });
+    if (cardEl) {
+      setupImageLoadHandler(
+        currentImg,
+        imageEmbedContainer,
+        cardEl,
+        this.updateLayoutRef.current || void 0
+      );
+      setupImagePreload(cardEl, imageUrls, signal);
+    }
+    const { navigate } = createSlideshowNavigator(
+      imageUrls,
+      () => {
+        const currImg = imageEmbedContainer.querySelector(
+          ".slideshow-img-current"
+        );
+        const nextImg = imageEmbedContainer.querySelector(
+          ".slideshow-img-next"
+        );
+        if (!currImg || !nextImg)
+          return null;
+        return { imageEmbed: imageEmbedContainer, currImg, nextImg };
+      },
+      signal,
+      {
+        onSlideChange: (_newIndex, nextImg) => {
+          if (cardEl) {
+            handleImageLoad(
+              nextImg,
+              imageEmbedContainer,
+              cardEl,
+              this.updateLayoutRef.current || void 0
+            );
+          }
+        },
+        onAnimationComplete: () => {
+          if (this.updateLayoutRef.current)
+            this.updateLayoutRef.current();
+        }
       }
-      return slideEl;
-    });
-    const updateSlide = (newIndex, direction) => {
-      const oldSlide = slideElements[currentSlide];
-      const newSlide = slideElements[newIndex];
-      console.log("// CAROUSEL TRANSITION:", {
-        from: currentSlide,
-        to: newIndex,
-        direction,
-        oldClasses: oldSlide.className,
-        newClasses: newSlide.className
-      });
-      newSlide.removeClass("is-active", "slide-left", "slide-right");
-      newSlide.addClass(direction === "next" ? "slide-right" : "slide-left");
-      console.log("// After positioning new slide:", newSlide.className);
-      void newSlide.offsetHeight;
-      oldSlide.removeClass("is-active", "slide-left", "slide-right");
-      oldSlide.addClass(direction === "next" ? "slide-left" : "slide-right");
-      newSlide.addClass("is-active");
-      setTimeout(() => {
-        newSlide.removeClass("slide-left", "slide-right");
-      }, 310);
-      console.log("// After transition:", {
-        oldClasses: oldSlide.className,
-        newClasses: newSlide.className
-      });
-      currentSlide = newIndex;
-    };
-    const leftArrow = carouselEl.createDiv("carousel-nav-left");
+    );
+    if (isSlideshowIndicatorEnabled()) {
+      const indicator = slideshowEl.createDiv("slideshow-indicator");
+      (0, import_obsidian7.setIcon)(indicator, "lucide-images");
+    }
+    const leftArrow = slideshowEl.createDiv("slideshow-nav-left");
     (0, import_obsidian7.setIcon)(leftArrow, "lucide-chevron-left");
-    const rightArrow = carouselEl.createDiv("carousel-nav-right");
+    const rightArrow = slideshowEl.createDiv("slideshow-nav-right");
     (0, import_obsidian7.setIcon)(rightArrow, "lucide-chevron-right");
-    leftArrow.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const newIndex = currentSlide === 0 ? imageUrls.length - 1 : currentSlide - 1;
-      const direction = currentSlide === 0 ? "next" : "prev";
-      updateSlide(newIndex, direction);
-    });
-    rightArrow.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const newIndex = currentSlide === imageUrls.length - 1 ? 0 : currentSlide + 1;
-      const direction = currentSlide === imageUrls.length - 1 ? "prev" : "next";
-      updateSlide(newIndex, direction);
-    });
+    leftArrow.addEventListener(
+      "click",
+      (e) => {
+        e.stopPropagation();
+        navigate(-1);
+      },
+      { signal }
+    );
+    rightArrow.addEventListener(
+      "click",
+      (e) => {
+        e.stopPropagation();
+        navigate(1);
+      },
+      { signal }
+    );
   }
   /**
    * Renders image (cover or thumbnail) with all necessary handlers
    */
-  renderImage(imageEl, imageUrls, format, position, settings, cardEl) {
+  renderImage(imageEl, imageUrls, format, position, settings, cardEl, signal) {
     const imageEmbedContainer = imageEl.createDiv("image-embed");
-    imageEmbedContainer.addEventListener("click", (e) => {
-      handleImageZoomClick(
-        e,
-        cardEl.getAttribute("data-path") || "",
-        this.app,
-        this.zoomCleanupFns,
-        this.zoomedOriginalParents
-      );
-    });
+    imageEmbedContainer.addEventListener(
+      "click",
+      (e) => {
+        handleImageZoomClick(
+          e,
+          cardEl.getAttribute("data-path") || "",
+          this.app,
+          this.zoomCleanupFns,
+          this.zoomedClones
+        );
+      },
+      signal ? { signal } : void 0
+    );
     const imgEl = imageEmbedContainer.createEl("img", {
       attr: { src: imageUrls[0], alt: "" }
     });
@@ -12453,7 +13462,7 @@ var SharedCardRenderer = class {
     };
     if (row1HasContent) {
       const row1El = getContainer(1).createDiv("property-row property-row-1");
-      if (settings.propertyLayout12SideBySide) {
+      if (settings.propertyGroup1SideBySide) {
         row1El.addClass("property-row-sidebyside");
       }
       const field1El = row1El.createDiv("property-field property-field-1");
@@ -12504,7 +13513,7 @@ var SharedCardRenderer = class {
     }
     if (row2HasContent) {
       const row2El = getContainer(2).createDiv("property-row property-row-2");
-      if (settings.propertyLayout34SideBySide) {
+      if (settings.propertyGroup2SideBySide) {
         row2El.addClass("property-row-sidebyside");
       }
       const field3El = row2El.createDiv("property-field property-field-3");
@@ -12555,7 +13564,7 @@ var SharedCardRenderer = class {
     }
     if (row3HasContent) {
       const row3El = getContainer(3).createDiv("property-row property-row-3");
-      if (settings.propertyLayout56SideBySide) {
+      if (settings.propertyGroup3SideBySide) {
         row3El.addClass("property-row-sidebyside");
       }
       const field5El = row3El.createDiv("property-field property-field-5");
@@ -12606,7 +13615,7 @@ var SharedCardRenderer = class {
     }
     if (row4HasContent) {
       const row4El = getContainer(4).createDiv("property-row property-row-4");
-      if (settings.propertyLayout78SideBySide) {
+      if (settings.propertyGroup4SideBySide) {
         row4El.addClass("property-row-sidebyside");
       }
       const field7El = row4El.createDiv("property-field property-field-7");
@@ -12657,7 +13666,7 @@ var SharedCardRenderer = class {
     }
     if (row5HasContent) {
       const row5El = getContainer(5).createDiv("property-row property-row-5");
-      if (settings.propertyLayout910SideBySide) {
+      if (settings.propertyGroup5SideBySide) {
         row5El.addClass("property-row-sidebyside");
       }
       const field9El = row5El.createDiv("property-field property-field-9");
@@ -12708,7 +13717,7 @@ var SharedCardRenderer = class {
     }
     if (row6HasContent) {
       const row6El = getContainer(6).createDiv("property-row property-row-6");
-      if (settings.propertyLayout1112SideBySide) {
+      if (settings.propertyGroup6SideBySide) {
         row6El.addClass("property-row-sidebyside");
       }
       const field11El = row6El.createDiv("property-field property-field-11");
@@ -12759,7 +13768,7 @@ var SharedCardRenderer = class {
     }
     if (row7HasContent) {
       const row7El = getContainer(7).createDiv("property-row property-row-7");
-      if (settings.propertyLayout1314SideBySide) {
+      if (settings.propertyGroup7SideBySide) {
         row7El.addClass("property-row-sidebyside");
       }
       const field13El = row7El.createDiv("property-field property-field-13");
@@ -12856,9 +13865,9 @@ var SharedCardRenderer = class {
       labelSpan.textContent = getPropertyLabel(propertyName) + " ";
     }
     const contentWrapper = container.createDiv("property-content-wrapper");
-    const metaContent = contentWrapper.createDiv("property-content");
+    const propertyContent = contentWrapper.createDiv("property-content");
     if (!stringValue) {
-      const markerSpan = metaContent.createSpan("empty-value-marker");
+      const markerSpan = propertyContent.createSpan("empty-value-marker");
       markerSpan.textContent = getEmptyValueMarker();
       return;
     }
@@ -12866,7 +13875,7 @@ var SharedCardRenderer = class {
       try {
         const arrayData = JSON.parse(stringValue);
         if (arrayData.type === "array" && Array.isArray(arrayData.items)) {
-          const listWrapper = metaContent.createSpan("list-wrapper");
+          const listWrapper = propertyContent.createSpan("list-wrapper");
           const separator = getListSeparator();
           arrayData.items.forEach((item, idx) => {
             const span = listWrapper.createSpan();
@@ -12883,7 +13892,7 @@ var SharedCardRenderer = class {
     }
     const isKnownTimestampProperty = propertyName === "file.mtime" || propertyName === "file.ctime" || propertyName === "modified time" || propertyName === "created time";
     if (isKnownTimestampProperty) {
-      const timestampWrapper = metaContent.createSpan();
+      const timestampWrapper = propertyContent.createSpan();
       if (showTimestampIcon() && settings.propertyLabels === "hide") {
         const iconName = getTimestampIcon(propertyName, settings);
         const iconEl = timestampWrapper.createSpan("timestamp-icon");
@@ -12892,7 +13901,7 @@ var SharedCardRenderer = class {
       timestampWrapper.appendText(stringValue);
     } else if ((propertyName === "tags" || propertyName === "note.tags") && card.yamlTags.length > 0) {
       const showHashPrefix = showTagHashPrefix();
-      const tagsWrapper = metaContent.createDiv("tags-wrapper");
+      const tagsWrapper = propertyContent.createDiv("tags-wrapper");
       card.yamlTags.forEach((tag) => {
         const tagEl = tagsWrapper.createEl("a", {
           cls: "tag",
@@ -12910,7 +13919,7 @@ var SharedCardRenderer = class {
       });
     } else if ((propertyName === "file.tags" || propertyName === "file tags") && card.tags.length > 0) {
       const showHashPrefix = showTagHashPrefix();
-      const tagsWrapper = metaContent.createDiv("tags-wrapper");
+      const tagsWrapper = propertyContent.createDiv("tags-wrapper");
       card.tags.forEach((tag) => {
         const tagEl = tagsWrapper.createEl("a", {
           cls: "tag",
@@ -12927,7 +13936,7 @@ var SharedCardRenderer = class {
         });
       });
     } else if ((propertyName === "file.path" || propertyName === "path" || propertyName === "file path") && card.path.length > 0) {
-      const pathWrapper = metaContent.createDiv("path-wrapper");
+      const pathWrapper = propertyContent.createDiv("path-wrapper");
       const segments = card.path.split("/").filter((f) => f);
       segments.forEach((segment, idx) => {
         const span = pathWrapper.createSpan();
@@ -12975,7 +13984,7 @@ var SharedCardRenderer = class {
         }
       });
     } else if ((propertyName === "file.folder" || propertyName === "folder") && card.folderPath.length > 0) {
-      const folderWrapper = metaContent.createDiv("path-wrapper");
+      const folderWrapper = propertyContent.createDiv("path-wrapper");
       const folders = card.folderPath.split("/").filter((f) => f);
       folders.forEach((folder, idx) => {
         const span = folderWrapper.createSpan();
@@ -13015,25 +14024,28 @@ var SharedCardRenderer = class {
         }
       });
     } else {
-      const textWrapper = metaContent.createDiv("text-wrapper");
+      const textWrapper = propertyContent.createDiv("text-wrapper");
       this.renderTextWithLinks(textWrapper, stringValue);
     }
-    if (!metaContent.textContent || metaContent.textContent.trim().length === 0) {
-      metaContent.remove();
+    if (!propertyContent.textContent || propertyContent.textContent.trim().length === 0) {
+      propertyContent.remove();
     }
   }
   /**
    * Measures property fields for side-by-side layout
    */
   measurePropertyFields(container) {
+    if (document.body.classList.contains("dynamic-views-property-width-50-50")) {
+      return;
+    }
     const rows = container.querySelectorAll(".property-row-sidebyside");
     rows.forEach((row) => {
       const rowEl = row;
       const field1 = rowEl.querySelector(
-        ".property-field-1, .property-field-3"
+        ".property-field-1, .property-field-3, .property-field-5, .property-field-7, .property-field-9, .property-field-11, .property-field-13"
       );
       const field2 = rowEl.querySelector(
-        ".property-field-2, .property-field-4"
+        ".property-field-2, .property-field-4, .property-field-6, .property-field-8, .property-field-10, .property-field-12, .property-field-14"
       );
       if (field1 && field2) {
         requestAnimationFrame(() => {
@@ -13041,7 +14053,9 @@ var SharedCardRenderer = class {
         });
         const card = rowEl.closest(".card");
         const observer = new ResizeObserver(() => {
-          this.measureSideBySideRow(rowEl, field1, field2);
+          requestAnimationFrame(() => {
+            this.measureSideBySideRow(rowEl, field1, field2);
+          });
         });
         observer.observe(card);
         this.propertyObservers.push(observer);
@@ -13053,8 +14067,9 @@ var SharedCardRenderer = class {
    */
   measureSideBySideRow(row, field1, field2) {
     try {
-      const card = row.closest(".card");
       const cardProperties = row.closest(".card-properties");
+      if (!row.closest(".card") || !cardProperties)
+        return;
       row.removeClass("property-measured");
       row.addClass("property-measuring");
       void row.offsetWidth;
@@ -13064,14 +14079,16 @@ var SharedCardRenderer = class {
       const wrapper2 = field2.querySelector(
         ".property-content-wrapper"
       );
+      const content1 = field1.querySelector(".property-content");
+      const content2 = field2.querySelector(".property-content");
       const label1 = field1.querySelector(
         ".property-label-inline"
       );
       const label2 = field2.querySelector(
         ".property-label-inline"
       );
-      let width1 = wrapper1 ? wrapper1.scrollWidth : 0;
-      let width2 = wrapper2 ? wrapper2.scrollWidth : 0;
+      let width1 = content1 ? content1.scrollWidth : 0;
+      let width2 = content2 ? content2.scrollWidth : 0;
       const inlineLabelGap = parseFloat(getComputedStyle(field1).gap) || 4;
       if (label1) {
         width1 += label1.scrollWidth + inlineLabelGap;
@@ -13079,18 +14096,7 @@ var SharedCardRenderer = class {
       if (label2) {
         width2 += label2.scrollWidth + inlineLabelGap;
       }
-      const sideCoverPadding = parseFloat(
-        getComputedStyle(card).getPropertyValue(
-          "--dynamic-views-side-cover-content-padding"
-        )
-      ) || 0;
-      let containerWidth;
-      if (sideCoverPadding > 0) {
-        const cardContentWidth = card.clientWidth;
-        containerWidth = cardContentWidth - sideCoverPadding;
-      } else {
-        containerWidth = cardProperties.clientWidth;
-      }
+      const containerWidth = cardProperties.clientWidth;
       if (containerWidth <= 0) {
         return;
       }
@@ -13100,7 +14106,11 @@ var SharedCardRenderer = class {
       const percent2 = width2 / availableWidth * 100;
       let field1Width;
       let field2Width;
-      if (percent1 <= 50) {
+      if (width1 === 0 && width2 === 0) {
+        const half = availableWidth / 2;
+        field1Width = `${half}px`;
+        field2Width = `${half}px`;
+      } else if (percent1 <= 50) {
         field1Width = `${width1}px`;
         field2Width = `${availableWidth - width1}px`;
       } else if (percent2 <= 50) {
@@ -13130,9 +14140,136 @@ var SharedCardRenderer = class {
   }
 };
 
+// src/bases/bases-utils.ts
+var import_obsidian8 = require("obsidian");
+var EMBEDDED_VIEW_SELECTOR = ".markdown-preview-view, .markdown-reading-view, .markdown-source-view";
+function isEmbeddedView(containerEl) {
+  return containerEl.closest(EMBEDDED_VIEW_SELECTOR) !== null;
+}
+function setupBasesSwipeInterception(containerEl, app, globalSettings) {
+  const isEmbedded = isEmbeddedView(containerEl);
+  const shouldIntercept = app.isMobile && (globalSettings.preventSidebarSwipe === "all-views" || globalSettings.preventSidebarSwipe === "base-files" && !isEmbedded);
+  if (shouldIntercept) {
+    const controller = new AbortController();
+    setupSwipeInterception(containerEl, controller.signal);
+    return controller;
+  }
+  return null;
+}
+function setupStyleSettingsObserver(onStyleChange) {
+  const observer = new MutationObserver((mutations) => {
+    var _a;
+    for (const mutation of mutations) {
+      if (mutation.type === "attributes" && mutation.attributeName === "class") {
+        const oldClasses = ((_a = mutation.oldValue) == null ? void 0 : _a.split(" ")) || [];
+        const newClasses = document.body.className.split(" ");
+        const dynamicViewsChanged = oldClasses.filter((c) => c.startsWith("dynamic-views-")).sort().join() !== newClasses.filter((c) => c.startsWith("dynamic-views-")).sort().join();
+        if (dynamicViewsChanged) {
+          onStyleChange();
+          break;
+        }
+      }
+    }
+  });
+  observer.observe(document.body, {
+    attributes: true,
+    attributeOldValue: true,
+    attributeFilter: ["class"]
+  });
+  return () => observer.disconnect();
+}
+function getSortMethod(config) {
+  const sortConfigs = config.getSort();
+  if (sortConfigs && sortConfigs.length > 0) {
+    const firstSort = sortConfigs[0];
+    const property = firstSort.property;
+    const direction = firstSort.direction.toLowerCase();
+    if (property.includes("ctime")) {
+      return `ctime-${direction}`;
+    }
+    if (property.includes("mtime")) {
+      return `mtime-${direction}`;
+    }
+  }
+  return "mtime-desc";
+}
+async function loadContentForEntries(entries, settings, app, snippets, images, hasImageAvailable) {
+  if (settings.showTextPreview) {
+    const snippetEntries = entries.filter((entry) => !(entry.file.path in snippets)).map((entry) => {
+      const file = app.vault.getAbstractFileByPath(entry.file.path);
+      if (!(file instanceof import_obsidian8.TFile))
+        return null;
+      let textPreviewData = null;
+      if (settings.textPreviewProperty) {
+        const textPreviewProps = settings.textPreviewProperty.split(",").map((p) => p.trim());
+        for (const prop of textPreviewProps) {
+          const normalizedProp = normalizePropertyName(app, prop);
+          const timestamp = resolveTimestampProperty(
+            normalizedProp,
+            entry.file.stat.ctime,
+            entry.file.stat.mtime
+          );
+          if (timestamp) {
+            textPreviewData = timestamp;
+            break;
+          }
+          const textPreviewValue = getFirstBasesPropertyValue(
+            app,
+            entry,
+            normalizedProp
+          );
+          if ((textPreviewValue == null ? void 0 : textPreviewValue.data) != null && textPreviewValue.data !== "") {
+            textPreviewData = textPreviewValue.data;
+            break;
+          }
+        }
+      }
+      return {
+        path: entry.file.path,
+        file,
+        textPreviewData
+      };
+    }).filter(
+      (e) => e !== null
+    );
+    await loadSnippetsForEntries(
+      snippetEntries,
+      settings.fallbackToContent,
+      settings.omitFirstLine,
+      app,
+      snippets
+    );
+  }
+  if (settings.imageFormat !== "none") {
+    const imageEntries = entries.filter((entry) => !(entry.file.path in images)).map((entry) => {
+      const file = app.vault.getAbstractFileByPath(entry.file.path);
+      if (!(file instanceof import_obsidian8.TFile))
+        return null;
+      const normalizedImageProperty = settings.imageProperty ? settings.imageProperty.split(",").map((p) => normalizePropertyName(app, p.trim())).join(",") : "";
+      const imagePropertyValues = getAllBasesImagePropertyValues(
+        app,
+        entry,
+        normalizedImageProperty
+      );
+      return {
+        path: entry.file.path,
+        file,
+        imagePropertyValues
+      };
+    }).filter((e) => e !== null);
+    await loadImagesForEntries(
+      imageEntries,
+      settings.fallbackToEmbeds,
+      app,
+      images,
+      hasImageAvailable
+    );
+  }
+}
+
 // src/bases/card-view.ts
 var GRID_VIEW_TYPE = "dynamic-views-grid";
-var DynamicViewsCardView = class extends import_obsidian8.BasesView {
+var DynamicViewsCardView = class extends import_obsidian9.BasesView {
   constructor(controller, scrollEl) {
     super(controller);
     this.type = GRID_VIEW_TYPE;
@@ -13146,9 +14283,12 @@ var DynamicViewsCardView = class extends import_obsidian8.BasesView {
     this.scrollListener = null;
     this.scrollThrottleTimeout = null;
     this.resizeObserver = null;
+    this.currentCardSize = 400;
     this.isShuffled = false;
     this.shuffledOrder = [];
     this.lastSortMethod = null;
+    this.feedContainerRef = { current: null };
+    this.swipeAbortController = null;
     // Style Settings compatibility - must be own property (not prototype)
     this.setSettings = () => {
     };
@@ -13162,26 +14302,16 @@ var DynamicViewsCardView = class extends import_obsidian8.BasesView {
       this.updateLayoutRef
     );
     this.displayedCount = this.app.isMobile ? 25 : BATCH_SIZE;
-    const observer = new MutationObserver((mutations) => {
-      var _a;
-      for (const mutation of mutations) {
-        if (mutation.type === "attributes" && mutation.attributeName === "class") {
-          const oldClasses = ((_a = mutation.oldValue) == null ? void 0 : _a.split(" ")) || [];
-          const newClasses = document.body.className.split(" ");
-          const dynamicViewsChanged = oldClasses.filter((c) => c.startsWith("dynamic-views-")).sort().join() !== newClasses.filter((c) => c.startsWith("dynamic-views-")).sort().join();
-          if (dynamicViewsChanged) {
-            this.onDataUpdated();
-            break;
-          }
-        }
-      }
-    });
-    observer.observe(document.body, {
-      attributes: true,
-      attributeOldValue: true,
-      attributeFilter: ["class"]
-    });
-    this.register(() => observer.disconnect());
+    const globalSettings = this.plugin.persistenceManager.getGlobalSettings();
+    this.swipeAbortController = setupBasesSwipeInterception(
+      this.containerEl,
+      this.app,
+      globalSettings
+    );
+    const disconnectObserver = setupStyleSettingsObserver(
+      () => this.onDataUpdated()
+    );
+    this.register(disconnectObserver);
   }
   onload() {
     super.onload();
@@ -13192,6 +14322,7 @@ var DynamicViewsCardView = class extends import_obsidian8.BasesView {
       if (!this.data) {
         return;
       }
+      this.focusableCardIndex = 0;
       const groupedData = this.data.groupedData;
       const allEntries = this.data.data;
       const settings = readBasesSettings(
@@ -13200,7 +14331,8 @@ var DynamicViewsCardView = class extends import_obsidian8.BasesView {
         this.plugin.persistenceManager.getDefaultViewSettings()
       );
       const containerWidth = this.containerEl.clientWidth;
-      const cardSize = settings.cardSize;
+      this.currentCardSize = settings.cardSize;
+      const cardSize = this.currentCardSize;
       const minColumns = getMinGridColumns();
       const gap = getCardSpacing();
       const cols = Math.max(
@@ -13213,7 +14345,7 @@ var DynamicViewsCardView = class extends import_obsidian8.BasesView {
         String(settings.imageAspectRatio)
       );
       const savedScrollTop = this.containerEl.scrollTop;
-      const sortMethod = this.getSortMethod();
+      const sortMethod = getSortMethod(this.config);
       if (this.lastSortMethod !== null && this.lastSortMethod !== sortMethod) {
         this.isShuffled = false;
         this.shuffledOrder = [];
@@ -13242,10 +14374,18 @@ var DynamicViewsCardView = class extends import_obsidian8.BasesView {
         visibleEntries.push(...processedGroup.entries.slice(0, entriesToTake));
         remainingCount -= entriesToTake;
       }
-      await this.loadContentForEntries(visibleEntries, settings);
+      await loadContentForEntries(
+        visibleEntries,
+        settings,
+        this.app,
+        this.snippets,
+        this.images,
+        this.hasImageAvailable
+      );
       this.containerEl.empty();
       this.cardRenderer.cleanup();
       const feedEl = this.containerEl.createDiv("dynamic-views-grid");
+      this.feedContainerRef.current = feedEl;
       let displayedSoFar = 0;
       for (const processedGroup of processedGroups) {
         if (displayedSoFar >= this.displayedCount)
@@ -13294,7 +14434,7 @@ var DynamicViewsCardView = class extends import_obsidian8.BasesView {
       if (!this.resizeObserver) {
         this.resizeObserver = new ResizeObserver(() => {
           const containerWidth2 = this.containerEl.clientWidth;
-          const cardSize2 = settings.cardSize;
+          const cardSize2 = this.currentCardSize;
           const minColumns2 = getMinGridColumns();
           const gap2 = getCardSpacing();
           const cols2 = Math.max(
@@ -13309,76 +14449,14 @@ var DynamicViewsCardView = class extends import_obsidian8.BasesView {
     })();
   }
   renderCard(container, card, entry, index, settings) {
-    this.cardRenderer.renderCard(container, card, entry, settings, this);
-  }
-  getSortMethod() {
-    const sortConfigs = this.config.getSort();
-    if (sortConfigs && sortConfigs.length > 0) {
-      const firstSort = sortConfigs[0];
-      const property = firstSort.property;
-      const direction = firstSort.direction.toLowerCase();
-      if (property.includes("ctime")) {
-        const result = `ctime-${direction}`;
-        return result;
+    this.cardRenderer.renderCard(container, card, entry, settings, this, {
+      index,
+      focusableCardIndex: this.focusableCardIndex,
+      containerRef: this.feedContainerRef,
+      onFocusChange: (newIndex) => {
+        this.focusableCardIndex = newIndex;
       }
-      if (property.includes("mtime")) {
-        const result = `mtime-${direction}`;
-        return result;
-      }
-    }
-    return "mtime-desc";
-  }
-  async loadContentForEntries(entries, settings) {
-    if (settings.showTextPreview) {
-      const snippetEntries = entries.filter((entry) => !(entry.file.path in this.snippets)).map((entry) => {
-        const file = this.app.vault.getAbstractFileByPath(entry.file.path);
-        if (!(file instanceof import_obsidian8.TFile))
-          return null;
-        const descValue = getFirstBasesPropertyValue(
-          this.app,
-          entry,
-          settings.descriptionProperty
-        );
-        return {
-          path: entry.file.path,
-          file,
-          descriptionData: descValue == null ? void 0 : descValue.data
-        };
-      }).filter(
-        (e) => e !== null
-      );
-      await loadSnippetsForEntries(
-        snippetEntries,
-        settings.fallbackToContent,
-        settings.omitFirstLine,
-        this.app,
-        this.snippets
-      );
-    }
-    if (settings.imageFormat !== "none") {
-      const imageEntries = entries.filter((entry) => !(entry.file.path in this.images)).map((entry) => {
-        const file = this.app.vault.getAbstractFileByPath(entry.file.path);
-        if (!(file instanceof import_obsidian8.TFile))
-          return null;
-        const imagePropertyValues = getAllBasesImagePropertyValues(
-          this.app,
-          entry,
-          settings.imageProperty
-        );
-        return {
-          path: entry.file.path,
-          file,
-          imagePropertyValues
-        };
-      }).filter((e) => e !== null);
-      await loadImagesForEntries(
-        imageEntries,
-        settings.fallbackToEmbeds,
-        this.app,
-        this.images,
-        this.hasImageAvailable
-      );
-    }
+    });
   }
   setupInfiniteScroll(totalEntries) {
     if (this.scrollListener) {
@@ -13426,9 +14504,11 @@ var DynamicViewsCardView = class extends import_obsidian8.BasesView {
     });
   }
   onunload() {
+    var _a;
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
+    (_a = this.swipeAbortController) == null ? void 0 : _a.abort();
     this.cardRenderer.cleanup();
   }
   focus() {
@@ -13438,11 +14518,10 @@ var DynamicViewsCardView = class extends import_obsidian8.BasesView {
 var cardViewOptions = getBasesViewOptions;
 
 // src/bases/masonry-view.ts
-var import_obsidian9 = require("obsidian");
-init_property();
+var import_obsidian10 = require("obsidian");
 init_style_settings();
 var MASONRY_VIEW_TYPE = "dynamic-views-masonry";
-var DynamicViewsMasonryView = class extends import_obsidian9.BasesView {
+var DynamicViewsMasonryView = class extends import_obsidian10.BasesView {
   constructor(controller, scrollEl) {
     super(controller);
     this.type = MASONRY_VIEW_TYPE;
@@ -13460,6 +14539,8 @@ var DynamicViewsMasonryView = class extends import_obsidian9.BasesView {
     this.isShuffled = false;
     this.shuffledOrder = [];
     this.lastSortMethod = null;
+    this.containerRef = { current: null };
+    this.swipeAbortController = null;
     // Style Settings compatibility - must be own property (not prototype)
     this.setSettings = () => {
     };
@@ -13473,26 +14554,16 @@ var DynamicViewsMasonryView = class extends import_obsidian9.BasesView {
       this.updateLayoutRef
     );
     this.displayedCount = this.app.isMobile ? 25 : BATCH_SIZE;
-    const observer = new MutationObserver((mutations) => {
-      var _a;
-      for (const mutation of mutations) {
-        if (mutation.type === "attributes" && mutation.attributeName === "class") {
-          const oldClasses = ((_a = mutation.oldValue) == null ? void 0 : _a.split(" ")) || [];
-          const newClasses = document.body.className.split(" ");
-          const dynamicViewsChanged = oldClasses.filter((c) => c.startsWith("dynamic-views-")).sort().join() !== newClasses.filter((c) => c.startsWith("dynamic-views-")).sort().join();
-          if (dynamicViewsChanged) {
-            this.onDataUpdated();
-            break;
-          }
-        }
-      }
-    });
-    observer.observe(document.body, {
-      attributes: true,
-      attributeOldValue: true,
-      attributeFilter: ["class"]
-    });
-    this.register(() => observer.disconnect());
+    const globalSettings = this.plugin.persistenceManager.getGlobalSettings();
+    this.swipeAbortController = setupBasesSwipeInterception(
+      this.containerEl,
+      this.app,
+      globalSettings
+    );
+    const disconnectObserver = setupStyleSettingsObserver(
+      () => this.onDataUpdated()
+    );
+    this.register(disconnectObserver);
   }
   onload() {
     super.onload();
@@ -13503,6 +14574,7 @@ var DynamicViewsMasonryView = class extends import_obsidian9.BasesView {
       if (!this.data) {
         return;
       }
+      this.focusableCardIndex = 0;
       const groupedData = this.data.groupedData;
       const allEntries = this.data.data;
       const settings = readBasesSettings(
@@ -13527,7 +14599,7 @@ var DynamicViewsMasonryView = class extends import_obsidian9.BasesView {
           }
         }
       }
-      const sortMethod = this.getSortMethod();
+      const sortMethod = getSortMethod(this.config);
       if (this.lastSortMethod !== null && this.lastSortMethod !== sortMethod) {
         this.isShuffled = false;
         this.shuffledOrder = [];
@@ -13556,12 +14628,20 @@ var DynamicViewsMasonryView = class extends import_obsidian9.BasesView {
         visibleEntries.push(...processedGroup.entries.slice(0, entriesToTake));
         remainingCount -= entriesToTake;
       }
-      await this.loadContentForEntries(visibleEntries, settings);
+      await loadContentForEntries(
+        visibleEntries,
+        settings,
+        this.app,
+        this.snippets,
+        this.images,
+        this.hasImageAvailable
+      );
       this.containerEl.empty();
       this.cardRenderer.cleanup();
       this.masonryContainer = this.containerEl.createDiv(
         "dynamic-views-masonry"
       );
+      this.containerRef.current = this.masonryContainer;
       this.setupMasonryLayout(settings);
       let displayedSoFar = 0;
       for (const processedGroup of processedGroups) {
@@ -13647,14 +14727,12 @@ var DynamicViewsMasonryView = class extends import_obsidian9.BasesView {
       if (cards.length === 0)
         return;
       const containerWidth = this.masonryContainer.clientWidth;
-      const gap = getCardSpacing();
-      console.log("masonry calc:", { containerWidth, cardSize: settings.cardSize, minColumns, gap });
       const result = calculateMasonryLayout({
         cards,
         containerWidth,
         cardSize: settings.cardSize,
         minColumns,
-        gap
+        gap: getCardSpacing()
       });
       applyMasonryLayout(this.masonryContainer, cards, result);
     };
@@ -13674,76 +14752,14 @@ var DynamicViewsMasonryView = class extends import_obsidian9.BasesView {
     this.register(() => window.removeEventListener("resize", handleResize));
   }
   renderCard(container, card, entry, index, settings) {
-    this.cardRenderer.renderCard(container, card, entry, settings, this);
-  }
-  getSortMethod() {
-    const sortConfigs = this.config.getSort();
-    if (sortConfigs && sortConfigs.length > 0) {
-      const firstSort = sortConfigs[0];
-      const property = firstSort.property;
-      const direction = firstSort.direction.toLowerCase();
-      if (property.includes("ctime")) {
-        const result = `ctime-${direction}`;
-        return result;
+    this.cardRenderer.renderCard(container, card, entry, settings, this, {
+      index,
+      focusableCardIndex: this.focusableCardIndex,
+      containerRef: this.containerRef,
+      onFocusChange: (newIndex) => {
+        this.focusableCardIndex = newIndex;
       }
-      if (property.includes("mtime")) {
-        const result = `mtime-${direction}`;
-        return result;
-      }
-    }
-    return "mtime-desc";
-  }
-  async loadContentForEntries(entries, settings) {
-    if (settings.showTextPreview) {
-      const snippetEntries = entries.filter((entry) => !(entry.file.path in this.snippets)).map((entry) => {
-        const file = this.app.vault.getAbstractFileByPath(entry.file.path);
-        if (!(file instanceof import_obsidian9.TFile))
-          return null;
-        const descValue = getFirstBasesPropertyValue(
-          this.app,
-          entry,
-          settings.descriptionProperty
-        );
-        return {
-          path: entry.file.path,
-          file,
-          descriptionData: descValue == null ? void 0 : descValue.data
-        };
-      }).filter(
-        (e) => e !== null
-      );
-      await loadSnippetsForEntries(
-        snippetEntries,
-        settings.fallbackToContent,
-        settings.omitFirstLine,
-        this.app,
-        this.snippets
-      );
-    }
-    if (settings.imageFormat !== "none") {
-      const imageEntries = entries.filter((entry) => !(entry.file.path in this.images)).map((entry) => {
-        const file = this.app.vault.getAbstractFileByPath(entry.file.path);
-        if (!(file instanceof import_obsidian9.TFile))
-          return null;
-        const imagePropertyValues = getAllBasesImagePropertyValues(
-          this.app,
-          entry,
-          settings.imageProperty
-        );
-        return {
-          path: entry.file.path,
-          file,
-          imagePropertyValues
-        };
-      }).filter((e) => e !== null);
-      await loadImagesForEntries(
-        imageEntries,
-        settings.fallbackToEmbeds,
-        this.app,
-        this.images,
-        this.hasImageAvailable
-      );
-    }
+    });
   }
   setupInfiniteScroll(totalEntries) {
     if (this.scrollListener) {
@@ -13807,6 +14823,8 @@ var DynamicViewsMasonryView = class extends import_obsidian9.BasesView {
     });
   }
   onunload() {
+    var _a;
+    (_a = this.swipeAbortController) == null ? void 0 : _a.abort();
     this.cardRenderer.cleanup();
   }
   focus() {
@@ -13816,12 +14834,11 @@ var DynamicViewsMasonryView = class extends import_obsidian9.BasesView {
 var masonryViewOptions = getMasonryViewOptions;
 
 // src/settings-tab.ts
-var import_obsidian11 = require("obsidian");
-init_property();
+var import_obsidian12 = require("obsidian");
 
 // src/modals.ts
-var import_obsidian10 = require("obsidian");
-var ClearSettingsModal = class extends import_obsidian10.Modal {
+var import_obsidian11 = require("obsidian");
+var ClearSettingsModal = class extends import_obsidian11.Modal {
   constructor(app, plugin, onConfirm) {
     super(app);
     this.plugin = plugin;
@@ -13855,7 +14872,7 @@ var ClearSettingsModal = class extends import_obsidian10.Modal {
 };
 
 // src/settings-tab.ts
-var PropertySuggest = class extends import_obsidian11.AbstractInputSuggest {
+var PropertySuggest = class extends import_obsidian12.AbstractInputSuggest {
   constructor(app, inputEl, properties) {
     super(app, inputEl);
     this.properties = properties;
@@ -13876,7 +14893,7 @@ var PropertySuggest = class extends import_obsidian11.AbstractInputSuggest {
     this.close();
   }
 };
-var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
+var DynamicViewsSettingTab = class extends import_obsidian12.PluginSettingTab {
   constructor(app, plugin) {
     super(app, plugin);
     this.plugin = plugin;
@@ -13889,10 +14906,6 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
     const defaultViewSettings = this.plugin.persistenceManager.getDefaultViewSettings();
     const trimmedGlobalSettings = {};
     let hasGlobalChanges = false;
-    if (globalSettings.timestampFormat.trim() !== globalSettings.timestampFormat) {
-      trimmedGlobalSettings.timestampFormat = globalSettings.timestampFormat.trim();
-      hasGlobalChanges = true;
-    }
     if (globalSettings.createdTimeProperty.trim() !== globalSettings.createdTimeProperty) {
       trimmedGlobalSettings.createdTimeProperty = globalSettings.createdTimeProperty.trim();
       hasGlobalChanges = true;
@@ -13907,8 +14920,8 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
       trimmedDefaultViewSettings.titleProperty = defaultViewSettings.titleProperty.trim();
       hasDefaultViewChanges = true;
     }
-    if (defaultViewSettings.descriptionProperty.trim() !== defaultViewSettings.descriptionProperty) {
-      trimmedDefaultViewSettings.descriptionProperty = defaultViewSettings.descriptionProperty.trim();
+    if (defaultViewSettings.textPreviewProperty.trim() !== defaultViewSettings.textPreviewProperty) {
+      trimmedDefaultViewSettings.textPreviewProperty = defaultViewSettings.textPreviewProperty.trim();
       hasDefaultViewChanges = true;
     }
     if (defaultViewSettings.imageProperty.trim() !== defaultViewSettings.imageProperty) {
@@ -13931,7 +14944,7 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
     containerEl.empty();
     void this.trimTextFieldSettings();
     const settings = this.plugin.persistenceManager.getGlobalSettings();
-    new import_obsidian11.Setting(containerEl).setName("Open file action").setDesc("How files should open when clicked").addDropdown(
+    new import_obsidian12.Setting(containerEl).setName("Open file action").setDesc("How files should open when clicked").addDropdown(
       (dropdown) => dropdown.addOption("card", "Press on title or card").addOption("title", "Press on title").setValue(settings.openFileAction).onChange(async (value) => {
         await this.plugin.persistenceManager.setGlobalSettings({
           openFileAction: value
@@ -13943,34 +14956,7 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
         document.body.classList.add(`dynamic-views-open-on-${value}`);
       })
     );
-    new import_obsidian11.Setting(containerEl).setName("Open random file in new pane").setDesc(
-      "When opening a random file from Bases view, open it in a new pane instead of the same pane"
-    ).addToggle(
-      (toggle) => toggle.setValue(settings.openRandomInNewPane).onChange(async (value) => {
-        await this.plugin.persistenceManager.setGlobalSettings({
-          openRandomInNewPane: value
-        });
-      })
-    );
-    new import_obsidian11.Setting(containerEl).setName('Show "Shuffle" in ribbon').setDesc(
-      "Display the shuffle button in the left sidebar ribbon. Reload plugin or Obsidian to apply."
-    ).addToggle(
-      (toggle) => toggle.setValue(settings.showShuffleInRibbon).onChange(async (value) => {
-        await this.plugin.persistenceManager.setGlobalSettings({
-          showShuffleInRibbon: value
-        });
-      })
-    );
-    new import_obsidian11.Setting(containerEl).setName('Show "Open random note" in ribbon').setDesc(
-      "Display the random note button in the left sidebar ribbon. Reload plugin or Obsidian to apply."
-    ).addToggle(
-      (toggle) => toggle.setValue(settings.showRandomInRibbon).onChange(async (value) => {
-        await this.plugin.persistenceManager.setGlobalSettings({
-          showRandomInRibbon: value
-        });
-      })
-    );
-    new import_obsidian11.Setting(containerEl).setName("Thumbnail cache size").setDesc("Size of cached thumbnails (affects performance and quality)").addDropdown(
+    new import_obsidian12.Setting(containerEl).setName("Thumbnail cache size").setDesc("Size of cached thumbnails (affects performance and quality)").addDropdown(
       (dropdown) => dropdown.addOption("minimal", "Minimal").addOption("small", "Small").addOption("balanced", "Balanced").addOption("large", "Large").addOption("unlimited", "Unlimited").setValue(settings.thumbnailCacheSize).onChange(
         async (value) => {
           await this.plugin.persistenceManager.setGlobalSettings({
@@ -13979,7 +14965,7 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
         }
       )
     );
-    new import_obsidian11.Setting(containerEl).setName("Omit first line in text preview").setDesc(
+    new import_obsidian12.Setting(containerEl).setName("Omit first line in text preview").setDesc(
       "Always skip first line in text previews (in addition to automatic omission when first line matches title/filename)"
     ).addToggle(
       (toggle) => toggle.setValue(settings.omitFirstLine).onChange(async (value) => {
@@ -13988,20 +14974,34 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
         });
       })
     );
-    const timestampFormatSetting = new import_obsidian11.Setting(containerEl).setName("Timestamp format").addText(
-      (text) => text.setPlaceholder("YYYY-MM-DD HH:mm").setValue(settings.timestampFormat).onChange(async (value) => {
+    const swipeSetting = new import_obsidian12.Setting(containerEl).setName(
+      "Prevent sidebar swipe on mobile"
+    );
+    const swipeDesc = document.createDocumentFragment();
+    swipeDesc.appendText(
+      "Disable mobile sidebar gestures when a plugin view is open. Prevents unintentional triggers when scrolling horizontally."
+    );
+    const swipeTip = document.createElement("span");
+    swipeTip.appendChild(document.createElement("br"));
+    swipeTip.appendText(
+      "Tip: long press the triple dot button in the top-right to bring up the right sidebar."
+    );
+    if (settings.preventSidebarSwipe !== "disabled") {
+      swipeDesc.appendChild(swipeTip);
+    }
+    swipeSetting.setDesc(swipeDesc).addDropdown(
+      (dropdown) => dropdown.addOption("all-views", "In all views").addOption("base-files", "In base files").addOption("disabled", "Disabled").setValue(settings.preventSidebarSwipe).onChange(async (value) => {
+        if (value === "disabled") {
+          swipeTip.remove();
+        } else if (!swipeTip.parentElement) {
+          swipeSetting.descEl.appendChild(swipeTip);
+        }
         await this.plugin.persistenceManager.setGlobalSettings({
-          timestampFormat: value
+          preventSidebarSwipe: value
         });
       })
     );
-    const timestampFormatDesc = timestampFormatSetting.descEl;
-    timestampFormatDesc.createEl("a", {
-      text: "Moment.js",
-      href: "https://momentjs.com/docs/#/displaying/format/"
-    });
-    timestampFormatDesc.appendText(" format for displaying date properties.");
-    const smartTimestampSetting = new import_obsidian11.Setting(containerEl).setName("Smart timestamp").addToggle(
+    const smartTimestampSetting = new import_obsidian12.Setting(containerEl).setName("Smart timestamp").addToggle(
       (toggle) => toggle.setValue(settings.smartTimestamp).onChange(async (value) => {
         await this.plugin.persistenceManager.setGlobalSettings({
           smartTimestamp: value
@@ -14036,7 +15036,7 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
         fallbackSetting.settingEl.hide();
       }
     };
-    new import_obsidian11.Setting(smartTimestampSubSettings).setName("Created time property").setDesc("Leave blank to use file metadata.").addText(
+    new import_obsidian12.Setting(smartTimestampSubSettings).setName("Created time property").setDesc("Leave blank to use file metadata.").addText(
       (text) => text.setPlaceholder("created").setValue(settings.createdTimeProperty).onChange(async (value) => {
         createdTimeValue = value;
         await this.plugin.persistenceManager.setGlobalSettings({
@@ -14045,7 +15045,7 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
         updateFallbackVisibility();
       })
     );
-    new import_obsidian11.Setting(smartTimestampSubSettings).setName("Modified time property").setDesc("Leave blank to use file metadata.").addText(
+    new import_obsidian12.Setting(smartTimestampSubSettings).setName("Modified time property").setDesc("Leave blank to use file metadata.").addText(
       (text) => text.setPlaceholder("modified").setValue(settings.modifiedTimeProperty).onChange(async (value) => {
         modifiedTimeValue = value;
         await this.plugin.persistenceManager.setGlobalSettings({
@@ -14054,7 +15054,7 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
         updateFallbackVisibility();
       })
     );
-    fallbackSetting = new import_obsidian11.Setting(smartTimestampSubSettings).setName("Fall back to file metadata").setDesc("Use file metadata if a property above is missing or empty.").addToggle(
+    fallbackSetting = new import_obsidian12.Setting(smartTimestampSubSettings).setName("Fall back to file metadata").setDesc("Use file metadata if a property above is missing or empty.").addToggle(
       (toggle) => toggle.setValue(settings.fallbackToFileMetadata).onChange(async (value) => {
         await this.plugin.persistenceManager.setGlobalSettings({
           fallbackToFileMetadata: value
@@ -14069,7 +15069,34 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
       conditionalText.hide();
       smartTimestampSubSettings.hide();
     }
-    const appearanceHeading = new import_obsidian11.Setting(containerEl).setName("Appearance").setHeading();
+    new import_obsidian12.Setting(containerEl).setName("Show 'Shuffle' ribbon icon").setDesc(
+      "Display the shuffle button in the left sidebar ribbon. Reload plugin or Obsidian to apply."
+    ).addToggle(
+      (toggle) => toggle.setValue(settings.showShuffleInRibbon).onChange(async (value) => {
+        await this.plugin.persistenceManager.setGlobalSettings({
+          showShuffleInRibbon: value
+        });
+      })
+    );
+    new import_obsidian12.Setting(containerEl).setName("Show 'Open random file' ribbon icon").setDesc(
+      "Display the random file button in the left sidebar ribbon. Reload plugin or Obsidian to apply."
+    ).addToggle(
+      (toggle) => toggle.setValue(settings.showRandomInRibbon).onChange(async (value) => {
+        await this.plugin.persistenceManager.setGlobalSettings({
+          showRandomInRibbon: value
+        });
+      })
+    );
+    new import_obsidian12.Setting(containerEl).setName("Open random file in new tab").setDesc(
+      "When opening a random file, open it in a new tab instead of the same tab"
+    ).addToggle(
+      (toggle) => toggle.setValue(settings.openRandomInNewTab).onChange(async (value) => {
+        await this.plugin.persistenceManager.setGlobalSettings({
+          openRandomInNewTab: value
+        });
+      })
+    );
+    const appearanceHeading = new import_obsidian12.Setting(containerEl).setName("Appearance").setHeading();
     appearanceHeading.settingEl.addClass("dynamic-views-appearance-heading");
     const appearanceDesc = containerEl.createEl("p", {
       cls: "setting-item-description"
@@ -14086,10 +15113,10 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
     appearanceTip.appendText("Tip: Run ");
     appearanceTip.createEl("em").appendText("Show style settings view");
     appearanceTip.appendText(" command to open settings in a tab.");
-    new import_obsidian11.Setting(containerEl).setName("Default settings for new views").setHeading();
+    new import_obsidian12.Setting(containerEl).setName("Default settings for new views").setHeading();
     const defaultViewSettings = this.plugin.persistenceManager.getDefaultViewSettings();
     const allProperties = getAllVaultProperties(this.app);
-    new import_obsidian11.Setting(containerEl).setName("First property").setDesc("Property to show in first position").addSearch((search) => {
+    new import_obsidian12.Setting(containerEl).setName("First property").setDesc("Property to show in first position").addSearch((search) => {
       search.setPlaceholder("Search properties").setValue(defaultViewSettings.propertyDisplay1).onChange(async (value) => {
         await this.plugin.persistenceManager.setDefaultViewSettings({
           propertyDisplay1: value
@@ -14097,7 +15124,7 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
       });
       new PropertySuggest(this.app, search.inputEl, allProperties);
     });
-    new import_obsidian11.Setting(containerEl).setName("Second property").setDesc("Property to show in second position").addSearch((search) => {
+    new import_obsidian12.Setting(containerEl).setName("Second property").setDesc("Property to show in second position").addSearch((search) => {
       search.setPlaceholder("Search properties").setValue(defaultViewSettings.propertyDisplay2).onChange(async (value) => {
         await this.plugin.persistenceManager.setDefaultViewSettings({
           propertyDisplay2: value
@@ -14105,14 +15132,14 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
       });
       new PropertySuggest(this.app, search.inputEl, allProperties);
     });
-    new import_obsidian11.Setting(containerEl).setName("Pair first and second properties").setDesc("Display first two properties horizontally").addToggle(
-      (toggle) => toggle.setValue(defaultViewSettings.propertyLayout12SideBySide).onChange(async (value) => {
+    new import_obsidian12.Setting(containerEl).setName("Pair first and second properties").setDesc("Display first two properties horizontally").addToggle(
+      (toggle) => toggle.setValue(defaultViewSettings.propertyGroup1SideBySide).onChange(async (value) => {
         await this.plugin.persistenceManager.setDefaultViewSettings({
-          propertyLayout12SideBySide: value
+          propertyGroup1SideBySide: value
         });
       })
     );
-    new import_obsidian11.Setting(containerEl).setName("Third property").setDesc("Property to show in third position").addSearch((search) => {
+    new import_obsidian12.Setting(containerEl).setName("Third property").setDesc("Property to show in third position").addSearch((search) => {
       search.setPlaceholder("Search properties").setValue(defaultViewSettings.propertyDisplay3).onChange(async (value) => {
         await this.plugin.persistenceManager.setDefaultViewSettings({
           propertyDisplay3: value
@@ -14120,7 +15147,7 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
       });
       new PropertySuggest(this.app, search.inputEl, allProperties);
     });
-    new import_obsidian11.Setting(containerEl).setName("Fourth property").setDesc("Property to show in fourth position").addSearch((search) => {
+    new import_obsidian12.Setting(containerEl).setName("Fourth property").setDesc("Property to show in fourth position").addSearch((search) => {
       search.setPlaceholder("Search properties").setValue(defaultViewSettings.propertyDisplay4).onChange(async (value) => {
         await this.plugin.persistenceManager.setDefaultViewSettings({
           propertyDisplay4: value
@@ -14128,35 +15155,35 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
       });
       new PropertySuggest(this.app, search.inputEl, allProperties);
     });
-    new import_obsidian11.Setting(containerEl).setName("Pair third and fourth properties").setDesc("Display third and fourth properties horizontally").addToggle(
-      (toggle) => toggle.setValue(defaultViewSettings.propertyLayout34SideBySide).onChange(async (value) => {
+    new import_obsidian12.Setting(containerEl).setName("Pair third and fourth properties").setDesc("Display third and fourth properties horizontally").addToggle(
+      (toggle) => toggle.setValue(defaultViewSettings.propertyGroup2SideBySide).onChange(async (value) => {
         await this.plugin.persistenceManager.setDefaultViewSettings({
-          propertyLayout34SideBySide: value
+          propertyGroup2SideBySide: value
         });
       })
     );
-    new import_obsidian11.Setting(containerEl).setName("Title property").setDesc("Default property to show as file title").addText(
+    new import_obsidian12.Setting(containerEl).setName("Title property").setDesc("Default property to show as file title").addText(
       (text) => text.setPlaceholder("Comma-separated if multiple").setValue(defaultViewSettings.titleProperty).onChange(async (value) => {
         await this.plugin.persistenceManager.setDefaultViewSettings({
           titleProperty: value
         });
       })
     );
-    new import_obsidian11.Setting(containerEl).setName("Show text preview").setDesc("Show text preview by default").addToggle(
+    new import_obsidian12.Setting(containerEl).setName("Show text preview").setDesc("Show text preview by default").addToggle(
       (toggle) => toggle.setValue(defaultViewSettings.showTextPreview).onChange(async (value) => {
         await this.plugin.persistenceManager.setDefaultViewSettings({
           showTextPreview: value
         });
       })
     );
-    new import_obsidian11.Setting(containerEl).setName("Text preview property").setDesc("Default property to show as text preview").addText(
-      (text) => text.setPlaceholder("Comma-separated if multiple").setValue(defaultViewSettings.descriptionProperty).onChange(async (value) => {
+    new import_obsidian12.Setting(containerEl).setName("Text preview property").setDesc("Default property to show as text preview").addText(
+      (text) => text.setPlaceholder("Comma-separated if multiple").setValue(defaultViewSettings.textPreviewProperty).onChange(async (value) => {
         await this.plugin.persistenceManager.setDefaultViewSettings({
-          descriptionProperty: value
+          textPreviewProperty: value
         });
       })
     );
-    new import_obsidian11.Setting(containerEl).setName("Use note content if text preview property unavailable").setDesc(
+    new import_obsidian12.Setting(containerEl).setName("Use note content if text preview property unavailable").setDesc(
       "Fall back to note content when text preview property is not set"
     ).addToggle(
       (toggle) => toggle.setValue(defaultViewSettings.fallbackToContent).onChange(async (value) => {
@@ -14165,7 +15192,7 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
         });
       })
     );
-    new import_obsidian11.Setting(containerEl).setName("Image format").setDesc("Default image format for cards").addDropdown(
+    new import_obsidian12.Setting(containerEl).setName("Format").setDesc("Default image format for cards").addDropdown(
       (dropdown) => dropdown.addOption("thumbnail-left", "Thumbnail left").addOption("thumbnail-right", "Thumbnail right").addOption("cover-top", "Cover top").addOption("cover-bottom", "Cover bottom").addOption("cover-left", "Cover left").addOption("cover-right", "Cover right").addOption("none", "None").setValue(defaultViewSettings.imageFormat).onChange(
         async (value) => {
           await this.plugin.persistenceManager.setDefaultViewSettings({
@@ -14174,21 +15201,21 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
         }
       )
     );
-    new import_obsidian11.Setting(containerEl).setName("Cover fit mode").setDesc("Default fit mode for cover images").addDropdown(
+    new import_obsidian12.Setting(containerEl).setName("Cover fit mode").setDesc("Default fit mode for cover images").addDropdown(
       (dropdown) => dropdown.addOption("crop", "Crop").addOption("contain", "Contain").setValue(defaultViewSettings.coverFitMode).onChange(async (value) => {
         await this.plugin.persistenceManager.setDefaultViewSettings({
           coverFitMode: value
         });
       })
     );
-    new import_obsidian11.Setting(containerEl).setName("Image property").setDesc("Default property to use for card images").addText(
+    new import_obsidian12.Setting(containerEl).setName("Image property").setDesc("Default property to use for card images").addText(
       (text) => text.setPlaceholder("Comma-separated if multiple").setValue(defaultViewSettings.imageProperty).onChange(async (value) => {
         await this.plugin.persistenceManager.setDefaultViewSettings({
           imageProperty: value
         });
       })
     );
-    new import_obsidian11.Setting(containerEl).setName("Show image embeds").setDesc(
+    new import_obsidian12.Setting(containerEl).setName("Show image embeds").setDesc(
       "Control when in-note image embeds are shown alongside image property values"
     ).addDropdown(
       (dropdown) => dropdown.addOption("always", "Always").addOption("if-empty", "If property missing or empty").addOption("never", "Never").setValue(defaultViewSettings.fallbackToEmbeds).onChange(async (value) => {
@@ -14197,14 +15224,14 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
         });
       })
     );
-    new import_obsidian11.Setting(containerEl).setName("List marker").setDesc("Default marker style for list view").addDropdown(
+    new import_obsidian12.Setting(containerEl).setName("List marker").setDesc("Default marker style for list view").addDropdown(
       (dropdown) => dropdown.addOption("bullet", "Bullet").addOption("number", "Number").addOption("none", "None").setValue(defaultViewSettings.listMarker).onChange(async (value) => {
         await this.plugin.persistenceManager.setDefaultViewSettings({
           listMarker: value
         });
       })
     );
-    new import_obsidian11.Setting(containerEl).setName("View height").setDesc(
+    new import_obsidian12.Setting(containerEl).setName("View height").setDesc(
       "Default maximum height of results area in pixels. Set to 0 for unlimited."
     ).addText(
       (text) => text.setPlaceholder("500").setValue(String(defaultViewSettings.queryHeight)).onChange(async (value) => {
@@ -14216,9 +15243,9 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
         }
       })
     );
-    new import_obsidian11.Setting(containerEl).setName("Configuration").setHeading();
-    new import_obsidian11.Setting(containerEl).setName("Manage settings").setDesc("Back up plugin settings to a file or restore from backup.").addButton(
-      (button) => button.setButtonText("Import").onClick(() => {
+    new import_obsidian12.Setting(containerEl).setName("Configuration").setHeading();
+    new import_obsidian12.Setting(containerEl).setName("Manage settings").setDesc("Back up plugin settings to a file or restore from backup.").addButton(
+      (button2) => button2.setButtonText("Import").onClick(() => {
         const input = document.createElement("input");
         input.setAttrs({
           type: "file",
@@ -14238,7 +15265,7 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
                 try {
                   importedJson = JSON.parse(content);
                 } catch (e) {
-                  new import_obsidian11.Notice("Invalid import file");
+                  new import_obsidian12.Notice("Invalid import file");
                   console.error("Invalid import file");
                   return;
                 }
@@ -14269,7 +15296,7 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
                 await this.plugin.persistenceManager.setDefaultViewSettings(
                   newDefaultViewSettings
                 );
-                new import_obsidian11.Notice("Settings imported");
+                new import_obsidian12.Notice("Settings imported");
                 this.display();
               }
               input.remove();
@@ -14279,7 +15306,7 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
         input.click();
       })
     ).addButton(
-      (button) => button.setButtonText("Export").onClick(async () => {
+      (button2) => button2.setButtonText("Export").onClick(async () => {
         const globalSettings = this.plugin.persistenceManager.getGlobalSettings();
         const defaultViewSettings2 = this.plugin.persistenceManager.getDefaultViewSettings();
         const settingsText = JSON.stringify(
@@ -14319,8 +15346,8 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
         exportLink.remove();
       })
     );
-    new import_obsidian11.Setting(containerEl).setName("Clear settings").setDesc("Reset all plugin settings to their default values.").addButton((button) => {
-      button.setButtonText("Clear").setWarning().onClick(() => {
+    new import_obsidian12.Setting(containerEl).setName("Clear settings").setDesc("Reset all plugin settings to their default values.").addButton((button2) => {
+      button2.setButtonText("Clear").setWarning().onClick(() => {
         new ClearSettingsModal(this.app, this.plugin, async () => {
           const newGlobalSettings = JSON.parse(
             JSON.stringify(DEFAULT_SETTINGS)
@@ -14334,130 +15361,31 @@ var DynamicViewsSettingTab = class extends import_obsidian11.PluginSettingTab {
           await this.plugin.persistenceManager.setDefaultViewSettings(
             newDefaultViewSettings
           );
-          new import_obsidian11.Notice("Settings cleared");
+          new import_obsidian12.Notice("Settings cleared");
           this.display();
         }).open();
       });
     });
+    const feedbackContainer = containerEl.createEl("div", {
+      cls: "dynamic-views-feedback-container"
+    });
+    const button = feedbackContainer.createEl("button", {
+      cls: "mod-cta dynamic-views-feedback-button"
+    });
+    button.addEventListener("click", () => {
+      window.open(
+        "https://github.com/greetclammy/dynamic-views?tab=readme-ov-file#%EF%B8%8F-support",
+        "_blank"
+      );
+    });
+    const iconDiv = button.createEl("div");
+    (0, import_obsidian12.setIcon)(iconDiv, "message-square-reply");
+    button.appendText("Leave feedback");
   }
   hide() {
     void this.trimTextFieldSettings();
   }
 };
-
-// src/utils/randomize.ts
-var import_obsidian12 = require("obsidian");
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-function getActiveBasesView(app) {
-  var _a, _b, _c, _d;
-  const activeLeaf = app.workspace.activeLeaf;
-  if (!activeLeaf)
-    return null;
-  const view = activeLeaf.view;
-  const viewType = view.getViewType();
-  if (viewType === "bases" || viewType === "base-view") {
-    const wrapper = view;
-    if (((_c = (_b = (_a = wrapper.controller) == null ? void 0 : _a.view) == null ? void 0 : _b.data) == null ? void 0 : _c.data) && Array.isArray(wrapper.controller.view.data.data)) {
-      const viewInstanceType = wrapper.controller.view.type || "unknown";
-      if (viewInstanceType === "dynamic-views-grid" || viewInstanceType === "dynamic-views-masonry") {
-        return wrapper.controller.view;
-      }
-      return {
-        type: viewInstanceType,
-        data: wrapper.controller.view.data,
-        onDataUpdated: (_d = wrapper.controller.view.onDataUpdated) == null ? void 0 : _d.bind(
-          wrapper.controller.view
-        ),
-        isShuffled: wrapper.controller.view.isShuffled,
-        shuffledOrder: wrapper.controller.view.shuffledOrder
-      };
-    }
-    if (wrapper.basesView) {
-      return wrapper.basesView;
-    }
-  }
-  return null;
-}
-async function openRandomFile(app, openInNewPane) {
-  var _a;
-  const basesView = getActiveBasesView(app);
-  if (!basesView) {
-    new import_obsidian12.Notice("No active Bases view");
-    return;
-  }
-  const entries = (_a = basesView.data) == null ? void 0 : _a.data;
-  if (!entries || entries.length === 0) {
-    return;
-  }
-  const randomIndex = Math.floor(Math.random() * entries.length);
-  const randomEntry = entries[randomIndex];
-  if (!randomEntry.file) {
-    return;
-  }
-  const filePath = randomEntry.file.path;
-  await app.workspace.openLinkText(filePath, "", openInNewPane);
-}
-function toggleShuffleActiveView(app) {
-  var _a, _b, _c;
-  const basesView = getActiveBasesView(app);
-  if (!basesView) {
-    new import_obsidian12.Notice("No active Bases view");
-    return;
-  }
-  const isDynamicView = basesView.type === "dynamic-views-grid" || basesView.type === "dynamic-views-masonry";
-  if (isDynamicView) {
-    const dynamicView = basesView;
-    const currentState = (_a = dynamicView.isShuffled) != null ? _a : false;
-    console.log(
-      "// [Shuffle Debug] toggleShuffle - current state:",
-      currentState
-    );
-    console.log("// [Shuffle Debug] basesView type:", basesView.type);
-    dynamicView.isShuffled = !currentState;
-    if (dynamicView.isShuffled) {
-      const entries = (_b = basesView.data) == null ? void 0 : _b.data;
-      console.log(
-        "// [Shuffle Debug] Enabling shuffle, entries.length:",
-        entries == null ? void 0 : entries.length
-      );
-      if (entries && entries.length > 0) {
-        const paths = entries.map((e) => e.file.path);
-        dynamicView.shuffledOrder = shuffleArray([...paths]);
-        console.log(
-          "// [Shuffle Debug] Created shuffledOrder.length:",
-          dynamicView.shuffledOrder.length
-        );
-        console.log(
-          "// [Shuffle Debug] First 3 shuffled paths:",
-          dynamicView.shuffledOrder.slice(0, 3)
-        );
-      }
-    } else {
-      console.log(
-        "// [Shuffle Debug] Disabling shuffle, clearing shuffledOrder"
-      );
-      dynamicView.shuffledOrder = [];
-    }
-    if (dynamicView.onDataUpdated) {
-      console.log("// [Shuffle Debug] Triggering onDataUpdated");
-      dynamicView.onDataUpdated();
-    }
-  } else {
-    const entries = (_c = basesView.data) == null ? void 0 : _c.data;
-    if (entries && entries.length > 0) {
-      shuffleArray(entries);
-      if (basesView.onDataUpdated) {
-        basesView.onDataUpdated();
-      }
-    }
-  }
-}
 
 // main.ts
 var DynamicViewsPlugin = class extends import_obsidian13.Plugin {
@@ -14487,7 +15415,7 @@ var DynamicViewsPlugin = class extends import_obsidian13.Plugin {
   createView(dc, userQuery) {
     setDatacorePreact(dc.preact);
     return () => {
-      return View({
+      return View2({
         plugin: this,
         app: this.app,
         dc,
@@ -14517,12 +15445,12 @@ var DynamicViewsPlugin = class extends import_obsidian13.Plugin {
       options: masonryViewOptions
     });
     this.app.workspace.trigger("parse-style-settings");
-    if (document.body.classList.contains("dynamic-views-image-zoom-enabled")) {
+    if (!document.body.classList.contains("dynamic-views-image-zoom-disabled")) {
       this.syncOverlayOpacity();
     }
     this.registerEvent(
       this.app.workspace.on("css-change", () => {
-        if (document.body.classList.contains("dynamic-views-image-zoom-enabled")) {
+        if (!document.body.classList.contains("dynamic-views-image-zoom-disabled")) {
           this.syncOverlayOpacity();
         }
       })
@@ -14559,9 +15487,8 @@ var DynamicViewsPlugin = class extends import_obsidian13.Plugin {
           document.querySelectorAll(".image-embed.is-zoomed").forEach((el) => {
             el.classList.remove("is-zoomed");
           });
-          const defaultOpenInNewPane = this.persistenceManager.getGlobalSettings().openRandomInNewPane;
-          const openInNewPane = import_obsidian13.Keymap.isModEvent(evt) ? !defaultOpenInNewPane : defaultOpenInNewPane;
-          await openRandomFile(this.app, openInNewPane);
+          const defaultInNewTab = this.persistenceManager.getGlobalSettings().openRandomInNewTab;
+          await openRandomFile(this.app, getPaneType(evt, defaultInNewTab));
         }
       );
     }
@@ -14580,7 +15507,7 @@ var DynamicViewsPlugin = class extends import_obsidian13.Plugin {
         document.querySelectorAll(".image-embed.is-zoomed").forEach((el) => {
           el.classList.remove("is-zoomed");
         });
-        const openInNewPane = this.persistenceManager.getGlobalSettings().openRandomInNewPane;
+        const openInNewPane = this.persistenceManager.getGlobalSettings().openRandomInNewTab;
         await openRandomFile(this.app, openInNewPane);
       }
     });
@@ -14658,6 +15585,10 @@ return dv.createView(dc, USER_QUERY);
     }
   }
   onunload() {
+    const settings = this.persistenceManager.getGlobalSettings();
+    document.body.classList.remove(
+      `dynamic-views-open-on-${settings.openFileAction}`
+    );
   }
 };
 /*! Bundled license information:
