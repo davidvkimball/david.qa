@@ -2,6 +2,13 @@
   publish = "dist"
   command = "pnpm run build"
 
+# Domain redirect: SPLAT david.qa to davidqa.netlify.app
+[[redirects]]
+  from = "https://david.qa/*"
+  to = "https://davidqa.netlify.app/:splat"
+  status = 301
+  force = true
+
 # Redirects for Astro static assets
 [[redirects]]
   from = "/_astro/*"
